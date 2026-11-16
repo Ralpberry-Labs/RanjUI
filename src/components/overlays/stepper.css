@@ -1,0 +1,70 @@
+/* ==========================================================================
+   Stepper — progress through steps: complete / current / upcoming / error.
+   Horizontal (default) or .stepper-vertical. Connectors fill as you advance.
+   ========================================================================== */
+.stepper { --step-size: 2rem; --step-line: 2px; display: flex; width: 100%; list-style: none; margin: 0; padding: 0; counter-reset: step; }
+.stepper-item { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: .6rem; text-align: center; counter-increment: step; }
+.stepper-start .stepper-item:last-child { flex: 0 0 auto; }
+.stepper-start .stepper-item { align-items: flex-start; text-align: left; }
+.stepper-indicator {
+  position: relative; z-index: 1; display: grid; place-items: center;
+  width: var(--step-size); height: var(--step-size); flex-shrink: 0; border-radius: 50%;
+  border: 2px solid var(--border-strong); background: var(--bg); color: var(--muted-fg);
+  font-size: .8125rem; font-weight: 600; font-variant-numeric: tabular-nums;
+  transition: background .35s var(--ease), border-color .35s var(--ease), color .35s var(--ease), box-shadow .35s var(--ease), transform .35s var(--ease-spring);
+}
+.stepper-indicator:empty::before { content: counter(step); }
+.stepper-indicator svg { width: 1rem; height: 1rem; }
+.stepper-item[data-state="current"] .stepper-indicator { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 18%, transparent); }
+.stepper-item[data-state="complete"] .stepper-indicator { border-color: var(--primary); background: var(--primary); color: var(--primary-fg); }
+.stepper-item[data-state="complete"] .stepper-indicator::before, .stepper-item[data-state="complete"] .stepper-indicator > * { opacity: 0; }
+.stepper-item[data-state="complete"] .stepper-indicator::after, .stepper-item[data-state="error"] .stepper-indicator::after {
+  content: ''; position: absolute; inset: 0; margin: auto; width: 1rem; height: 1rem; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+  animation: stepper-check .4s var(--ease-spring);
+}
+@keyframes stepper-check { from { transform: scale(.3); opacity: 0; } }
+.stepper-item[data-state="error"] .stepper-indicator { border-color: var(--destructive); background: var(--destructive); color: #fff; }
+.stepper-item[data-state="error"] .stepper-indicator::before, .stepper-item[data-state="error"] .stepper-indicator > * { opacity: 0; }
+.stepper-item[data-state="error"] .stepper-indicator::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M12 7v6M12 17h.01'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M12 7v6M12 17h.01'/%3E%3C/svg%3E");
+}
+.stepper-text { display: flex; flex-direction: column; gap: .1rem; min-width: 0; padding: 0 .35rem; }
+.stepper-title { font-size: .8438rem; font-weight: 600; color: var(--muted-fg); line-height: 1.3; transition: color .35s var(--ease); }
+.stepper-desc { font-size: .75rem; color: var(--muted-fg); line-height: 1.4; }
+.stepper-item[data-state="current"] .stepper-title, .stepper-item[data-state="complete"] .stepper-title { color: var(--fg); }
+.stepper-item[data-state="error"] .stepper-title { color: var(--destructive); }
+
+/* Connector */
+.stepper-item:not(:last-child)::after {
+  content: ''; position: absolute; z-index: 0;
+  top: calc(var(--step-size) / 2 - var(--step-line) / 2); left: calc(50% + var(--step-size) / 2 + .5rem); right: calc(-50% + var(--step-size) / 2 + .5rem);
+  height: var(--step-line); border-radius: 2px;
+  background: linear-gradient(var(--primary), var(--primary)) left / var(--fill, 0%) 100% no-repeat, var(--border);
+  transition: background-size .5s var(--ease-out);
+}
+.stepper-start .stepper-item:not(:last-child)::after { left: calc(var(--step-size) + .5rem); right: .5rem; }
+.stepper-item[data-state="complete"]:not(:last-child)::after { --fill: 100%; }
+
+/* Clickable */
+.stepper-item[data-clickable] { cursor: pointer; outline: none; }
+.stepper-item[data-clickable]:hover .stepper-indicator { transform: scale(1.08); }
+.stepper-item[data-clickable]:focus-visible .stepper-indicator { box-shadow: 0 0 0 3px var(--ring); }
+
+/* Vertical */
+.stepper-vertical { flex-direction: column; }
+.stepper-vertical .stepper-item { flex-direction: row; align-items: flex-start; text-align: left; gap: .875rem; padding-bottom: 1.5rem; }
+.stepper-vertical .stepper-item:last-child { padding-bottom: 0; }
+.stepper-vertical .stepper-text { padding: .3rem 0 0; }
+.stepper-vertical .stepper-item:not(:last-child)::after {
+  top: calc(var(--step-size) + .375rem); bottom: .375rem; left: calc(var(--step-size) / 2 - var(--step-line) / 2); right: auto;
+  width: var(--step-line); height: auto;
+  background: linear-gradient(var(--primary), var(--primary)) top / 100% var(--fill, 0%) no-repeat, var(--border);
+}
+.stepper-body { margin-top: .6rem; font-size: .8125rem; color: var(--muted-fg); }
+.stepper-item:not([data-state="current"]) .stepper-body { display: none; }
+.stepper-sm { --step-size: 1.5rem; } .stepper-sm .stepper-indicator { font-size: .6875rem; }
+/* Narrow: hide descriptions, keep titles */
+@media (max-width: 560px) { .stepper:not(.stepper-vertical) .stepper-desc { display: none; } .stepper:not(.stepper-vertical) .stepper-title { font-size: .75rem; } }

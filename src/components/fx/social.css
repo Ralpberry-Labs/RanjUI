@@ -1,0 +1,138 @@
+/* ==========================================================================
+   Ranj UI — Social micro-interactions: like, bookmark, reactions, notification bell
+   ========================================================================== */
+
+/* Rolling number used by like/bookmark counters */
+.fx-roll { position: relative; display: inline-grid; overflow: hidden; vertical-align: bottom; font-variant-numeric: tabular-nums; }
+.fx-roll > span { grid-area: 1 / 1; transition: transform .35s var(--ease-out), opacity .35s var(--ease-out); }
+.fx-roll > .fx-roll-out-up { transform: translateY(-100%); opacity: 0; }
+.fx-roll > .fx-roll-out-down { transform: translateY(100%); opacity: 0; }
+.fx-roll > .fx-roll-in-up { transform: translateY(100%); opacity: 0; }
+.fx-roll > .fx-roll-in-down { transform: translateY(-100%); opacity: 0; }
+
+/* ---------- Like ---------- */
+.like-btn {
+  --on: #f43f5e; --size: 22px;
+  position: relative; display: inline-flex; align-items: center; gap: .45rem; padding: .4rem .7rem .4rem .55rem;
+  border-radius: var(--radius-full); color: var(--muted-fg); font-weight: 600; font-size: .9rem;
+  transition: background var(--transition), color var(--transition); -webkit-tap-highlight-color: transparent;
+}
+.like-btn:hover { background: color-mix(in oklab, var(--on) 10%, transparent); color: var(--on); }
+.like-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.like-btn-icon { position: relative; width: var(--size); height: var(--size); display: grid; place-items: center; }
+.like-btn-icon svg { width: 100%; height: 100%; overflow: visible; transition: transform .2s var(--ease); }
+.like-btn-icon path { fill: transparent; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; transition: fill .2s, stroke .2s; }
+.like-btn:active .like-btn-icon svg { transform: scale(.82); }
+.like-btn[aria-pressed="true"] { color: var(--on); }
+.like-btn[aria-pressed="true"] .like-btn-icon path { fill: var(--on); stroke: var(--on); }
+.like-btn[data-burst] .like-btn-icon svg { animation: like-pop .6s var(--ease-spring); }
+.like-btn-icon::before {
+  content: ''; position: absolute; inset: -40%; border-radius: 50%; border: 2px solid var(--on); opacity: 0; transform: scale(.3); pointer-events: none;
+}
+.like-btn[data-burst] .like-btn-icon::before { animation: like-ring .55s var(--ease-out); }
+@keyframes like-pop { 0% { transform: scale(0); } 40% { transform: scale(1.3) rotate(-8deg); } 70% { transform: scale(.92) rotate(4deg); } 100% { transform: scale(1); } }
+@keyframes like-ring { 0% { opacity: 1; transform: scale(.3); border-width: 6px; } 100% { opacity: 0; transform: scale(1.15); border-width: 0; } }
+.fx-particle {
+  position: absolute; left: 50%; top: 50%; width: var(--s, 6px); height: var(--s, 6px); margin: calc(var(--s, 6px) / -2); border-radius: 50%;
+  background: var(--c, var(--on)); pointer-events: none;
+  animation: fx-particle .7s var(--ease-out) forwards;
+}
+@keyframes fx-particle {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: .9; }
+}
+.like-btn-lg { --size: 30px; font-size: 1rem; }
+
+/* ---------- Bookmark ---------- */
+.bookmark-btn {
+  --on: var(--warning); --size: 22px;
+  position: relative; display: inline-flex; align-items: center; gap: .45rem; padding: .4rem .7rem .4rem .55rem;
+  border-radius: var(--radius-full); color: var(--muted-fg); font-weight: 600; font-size: .9rem;
+  transition: background var(--transition), color var(--transition); -webkit-tap-highlight-color: transparent;
+}
+.bookmark-btn:hover { background: color-mix(in oklab, var(--on) 12%, transparent); color: var(--fg); }
+.bookmark-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.bookmark-btn-icon { position: relative; width: var(--size); height: var(--size); }
+.bookmark-btn-icon svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.bookmark-btn-icon .bm-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.bookmark-btn-icon .bm-fill { fill: var(--on); stroke: var(--on); stroke-width: 2; stroke-linejoin: round; clip-path: inset(100% 0 0 0); transition: clip-path .45s var(--ease-out); }
+.bookmark-btn[aria-pressed="true"] { color: var(--fg); }
+.bookmark-btn[aria-pressed="true"] .bm-fill { clip-path: inset(0 0 0 0); }
+.bookmark-btn[data-burst] .bookmark-btn-icon { animation: bookmark-drop .6s var(--ease-spring); }
+@keyframes bookmark-drop { 0% { transform: translateY(0) scaleY(1); } 30% { transform: translateY(-6px) scaleY(1.12); } 60% { transform: translateY(1px) scaleY(.9); } 100% { transform: none; } }
+.bookmark-btn-label { display: inline-grid; }
+.bookmark-btn-label > span { grid-area: 1 / 1; transition: opacity .25s, transform .35s var(--ease-spring); }
+.bookmark-btn-label > span:last-child { opacity: 0; transform: translateY(6px); }
+.bookmark-btn[aria-pressed="true"] .bookmark-btn-label > span:first-child { opacity: 0; transform: translateY(-6px); }
+.bookmark-btn[aria-pressed="true"] .bookmark-btn-label > span:last-child { opacity: 1; transform: none; }
+
+/* ---------- Reactions ---------- */
+.reaction { position: relative; display: inline-flex; }
+.reaction-trigger {
+  display: inline-flex; align-items: center; gap: .45rem; padding: .45rem .8rem; border-radius: var(--radius-full);
+  font-weight: 600; font-size: .9rem; color: var(--muted-fg); transition: background var(--transition), color var(--transition);
+  -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+}
+.reaction-trigger:hover { background: var(--muted); color: var(--fg); }
+.reaction-trigger:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.reaction-emoji { display: inline-block; font-size: 1.15rem; line-height: 1; }
+.reaction-trigger svg { width: 20px; height: 20px; }
+.reaction[data-reacted] .reaction-trigger { color: var(--reaction-color, var(--primary)); }
+.reaction-trigger[data-pop] .reaction-emoji { animation: reaction-pop .5s var(--ease-spring); }
+@keyframes reaction-pop { 0% { transform: scale(.2) rotate(-20deg); } 60% { transform: scale(1.35) rotate(8deg); } 100% { transform: none; } }
+.reaction-picker {
+  position: fixed; z-index: var(--z-popover); display: flex; gap: 2px; padding: 6px; border-radius: var(--radius-full);
+  background: var(--popover); border: 1px solid var(--border); box-shadow: var(--shadow-xl);
+  transform-origin: 20% 100%; animation: reaction-in .3s var(--ease-spring);
+}
+.reaction-picker[data-closing] { animation: reaction-out .16s var(--ease) forwards; }
+@keyframes reaction-in { from { opacity: 0; transform: translateY(8px) scale(.85); } }
+@keyframes reaction-out { to { opacity: 0; transform: translateY(6px) scale(.9); } }
+.reaction-option {
+  position: relative; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; font-size: 1.75rem; line-height: 1;
+  transition: transform .25s var(--ease-spring); transform-origin: 50% 90%;
+  animation: reaction-item .45s var(--ease-spring) both; animation-delay: calc(var(--i, 0) * 35ms);
+}
+@keyframes reaction-item { from { opacity: 0; transform: translateY(14px) scale(.4); } }
+.reaction-option:hover, .reaction-option:focus-visible { transform: translateY(-8px) scale(1.4); outline: none; z-index: 1; }
+.reaction-option::after {
+  content: attr(data-label); position: absolute; bottom: calc(100% + 6px); left: 50%; translate: -50% 0; padding: .15rem .5rem;
+  border-radius: var(--radius-full); background: rgb(0 0 0 / .78); color: #fff; font-size: .55rem; font-weight: 700; white-space: nowrap;
+  opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .2s var(--ease-out); pointer-events: none;
+}
+.reaction-option:hover::after, .reaction-option:focus-visible::after { opacity: 1; transform: none; }
+
+/* ---------- Notification bell ---------- */
+.bell {
+  --on: var(--destructive); --size: 22px;
+  position: relative; display: inline-grid; place-items: center; width: calc(var(--size) + 18px); height: calc(var(--size) + 18px);
+  border-radius: var(--radius-full); color: var(--fg); transition: background var(--transition);
+}
+.bell:hover { background: var(--muted); }
+.bell:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.bell svg { width: var(--size); height: var(--size); overflow: visible; transform-origin: 50% 8%; }
+.bell .bell-body, .bell .bell-clapper { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.bell .bell-clapper { transform-box: fill-box; transform-origin: 50% -200%; }
+.bell[data-ring] svg { animation: bell-ring 1s var(--ease-out); }
+.bell[data-ring] .bell-clapper { animation: bell-clap 1s var(--ease-out); }
+@keyframes bell-ring {
+  0% { transform: rotate(0); } 10% { transform: rotate(22deg); } 22% { transform: rotate(-18deg); } 34% { transform: rotate(14deg); }
+  46% { transform: rotate(-10deg); } 58% { transform: rotate(6deg); } 70% { transform: rotate(-3deg); } 82%, 100% { transform: rotate(0); }
+}
+@keyframes bell-clap {
+  0% { transform: translateX(0); } 10% { transform: translateX(-3px); } 22% { transform: translateX(3px); } 34% { transform: translateX(-2.5px); }
+  46% { transform: translateX(2px); } 58% { transform: translateX(-1px); } 70%, 100% { transform: translateX(0); }
+}
+.bell-badge {
+  position: absolute; top: 0; right: 0; translate: 22% -12%; min-width: 17px; height: 17px; padding: 0 4.5px; border-radius: 9px;
+  background: var(--on); color: #fff; font-size: .62rem; font-weight: 700; line-height: 17px; text-align: center;
+  box-shadow: 0 0 0 2px var(--bg); transform: scale(0); transition: transform .35s var(--ease-spring);
+  font-variant-numeric: tabular-nums;
+}
+.bell[data-count] .bell-badge { transform: scale(1); }
+.bell[data-bump] .bell-badge { animation: bell-bump .45s var(--ease-spring); }
+@keyframes bell-bump { 40% { transform: scale(1.45); } }
+.bell-badge::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; background: var(--on); z-index: -1;
+}
+.bell[data-bump] .bell-badge::after { animation: r-ping .9s var(--ease-out); }

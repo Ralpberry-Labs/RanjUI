@@ -1,0 +1,85 @@
+/* ==========================================================================
+   Avatar + Avatar group
+   ========================================================================== */
+.avatar {
+  --avatar-size: 2.5rem;
+  --avatar-radius: var(--radius-full);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--avatar-radius);
+  background: var(--muted);
+  color: var(--muted-fg);
+  font-size: calc(var(--avatar-size) * .38);
+  font-weight: 600;
+  letter-spacing: -.01em;
+  line-height: 1;
+  user-select: none;
+  vertical-align: middle;
+}
+.avatar > img, .avatar > .avatar-img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: inherit;
+}
+.avatar::after { /* hairline so photos never bleed into the background */
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--fg) 8%, transparent);
+}
+.avatar > svg { width: 55%; height: 55%; }
+.avatar-fallback { display: grid; place-items: center; width: 100%; height: 100%; border-radius: inherit; text-transform: uppercase; }
+
+.avatar-xs { --avatar-size: 1.5rem; }
+.avatar-sm { --avatar-size: 2rem; }
+.avatar-md { --avatar-size: 2.5rem; }
+.avatar-lg { --avatar-size: 3.5rem; }
+.avatar-xl { --avatar-size: 5rem; }
+.avatar-2xl { --avatar-size: 7rem; }
+.avatar-square, .avatar-rounded { --avatar-radius: calc(var(--avatar-size) * .26); }
+
+/* Tinted initials (pick by hue) */
+.avatar-tint { --avatar-hue: var(--hue); background: oklch(0.93 0.05 var(--avatar-hue)); color: oklch(0.42 0.15 var(--avatar-hue)); }
+[data-theme="dark"] .avatar-tint { background: oklch(0.32 0.08 var(--avatar-hue)); color: oklch(0.88 0.09 var(--avatar-hue)); }
+.avatar-gradient { color: #fff; background: linear-gradient(135deg, oklch(0.7 0.17 var(--avatar-hue, var(--hue))), oklch(0.55 0.22 calc(var(--avatar-hue, var(--hue)) + 50))); text-shadow: 0 1px 2px rgb(0 0 0 / .15); }
+
+/* Ring */
+.avatar-ring { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--primary); }
+.avatar-ring-gradient { padding: 3px; background: conic-gradient(from 210deg, #f59e0b, #ef4444, #d946ef, #8b5cf6, #f59e0b); }
+.avatar-ring-gradient > img, .avatar-ring-gradient > .avatar-fallback { box-shadow: 0 0 0 2px var(--bg); }
+.avatar-ring-gradient::after { display: none; }
+
+/* Status dot */
+.avatar-status, .avatar[data-status]::before {
+  position: absolute; right: 0; bottom: 0; z-index: 1;
+  width: max(.5rem, calc(var(--avatar-size) * .27)); height: max(.5rem, calc(var(--avatar-size) * .27));
+  border-radius: 50%; background: var(--muted-fg); box-shadow: 0 0 0 2px var(--bg);
+}
+.avatar[data-status]::before { content: ''; }
+.avatar-square[data-status]::before, .avatar-square .avatar-status { right: -2px; bottom: -2px; }
+.avatar[data-status="online"]::before, .avatar-status.online { background: var(--success); }
+.avatar[data-status="busy"]::before, .avatar-status.busy { background: var(--destructive); }
+.avatar[data-status="away"]::before, .avatar-status.away { background: var(--warning); }
+.avatar[data-status="offline"]::before, .avatar-status.offline { background: var(--border-strong); }
+.avatar-badge { position: absolute; right: -.15rem; top: -.15rem; z-index: 1; }
+
+/* Group */
+.avatar-group { --avatar-overlap: -.6rem; display: inline-flex; align-items: center; flex-direction: row; isolation: isolate; }
+.avatar-group > .avatar { box-shadow: 0 0 0 2px var(--avatar-group-ring, var(--bg)); }
+.avatar-group > .avatar + .avatar { margin-left: var(--avatar-overlap); }
+.avatar-group > .avatar-more { background: var(--secondary); color: var(--secondary-fg); font-size: calc(var(--avatar-size) * .32); font-weight: 600; }
+/* Stack that fans out on hover */
+.avatar-group-expand > .avatar { transition: margin var(--dur-slow) var(--ease-spring), transform var(--dur) var(--ease-out); }
+.avatar-group-expand:hover > .avatar + .avatar, .avatar-group-expand:focus-within > .avatar + .avatar { margin-left: .25rem; }
+.avatar-group-expand > .avatar:hover { transform: translateY(-3px); z-index: 2; }
+.avatar-group-sm { --avatar-overlap: -.45rem; }
+.avatar-group-sm > .avatar { --avatar-size: 2rem; }
+.avatar-group-lg > .avatar { --avatar-size: 3rem; }
+.avatar-group-lg { --avatar-overlap: -.85rem; }
+
+/* Avatar + name */
+.avatar-label { display: inline-flex; align-items: center; gap: .7rem; min-width: 0; text-align: left; }
+.avatar-label > div { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+.avatar-label b, .avatar-label strong { font-size: var(--text-sm); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.avatar-label span:not(.avatar):not(.avatar-status) { font-size: var(--text-xs); color: var(--muted-fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tasks — Kanban Board Example | RanjuUI</title>
+  <title>Tasks — Kanban Board Example | Ranj UI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../ranju.css">
+  <link rel="stylesheet" href="../dist/ranj.css">
   <style>
     body { min-height: 100vh; background: var(--muted); }
     .board-header {
@@ -62,7 +62,7 @@
     <div class="flex items-center gap-3">
       <a href="index.html" style="text-decoration:none;color:var(--fg)" class="flex items-center gap-2">
         <span style="color:var(--primary);font-size:1.25rem">&#9650;</span>
-        <span class="font-bold">RanjuUI</span>
+        <span class="font-bold">Ranj UI</span>
       </a>
       <span class="text-muted">/</span>
       <h1 class="font-semibold" style="margin:0;font-size:1.125rem">Sprint Board</h1>
@@ -80,8 +80,8 @@
           <li class="dropdown-item">Unassigned</li>
         </ul>
       </div>
-      <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranju.theme.toggle();updateIcon()" aria-label="Theme"><span id="t-icon">&#9790;</span></button>
-      <button class="btn btn-sm" onclick="Ranju.dialog.open('new-task-dialog')">+ New Task</button>
+      <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranj.theme.toggle();updateIcon()" aria-label="Theme"><span id="t-icon">&#9790;</span></button>
+      <button class="btn btn-sm" onclick="Ranj.dialog.open('new-task-dialog')">+ New Task</button>
     </div>
   </header>
 
@@ -96,7 +96,7 @@
           <span class="board-column-count">3</span>
         </div>
         <div class="board-column-cards">
-          <div class="task-card" onclick="Ranju.dialog.open('task-detail-1')">
+          <div class="task-card" onclick="Ranj.dialog.open('task-detail-1')">
             <div class="task-card-title">Implement dark mode toggle</div>
             <div class="task-card-meta">
               <span class="badge badge-destructive badge-dot">High</span>
@@ -104,7 +104,7 @@
               <span>Sarah K.</span>
             </div>
           </div>
-          <div class="task-card" onclick="Ranju.dialog.open('task-detail-2')">
+          <div class="task-card" onclick="Ranj.dialog.open('task-detail-2')">
             <div class="task-card-title">Write API documentation</div>
             <div class="task-card-meta">
               <span class="badge badge-warning badge-dot">Medium</span>
@@ -112,7 +112,7 @@
               <span>Unassigned</span>
             </div>
           </div>
-          <div class="task-card" onclick="Ranju.dialog.open('task-detail-2')">
+          <div class="task-card" onclick="Ranj.dialog.open('task-detail-2')">
             <div class="task-card-title">Setup CI/CD pipeline</div>
             <div class="task-card-meta">
               <span class="badge badge-warning badge-dot">Medium</span>
@@ -120,7 +120,7 @@
               <span>Alex</span>
             </div>
           </div>
-          <button class="add-task-btn" onclick="Ranju.dialog.open('new-task-dialog')">+ Add task</button>
+          <button class="add-task-btn" onclick="Ranj.dialog.open('new-task-dialog')">+ Add task</button>
         </div>
       </div>
 
@@ -131,7 +131,7 @@
           <span class="board-column-count">2</span>
         </div>
         <div class="board-column-cards">
-          <div class="task-card" onclick="Ranju.dialog.open('task-detail-2')">
+          <div class="task-card" onclick="Ranj.dialog.open('task-detail-2')">
             <div class="task-card-title">User authentication flow</div>
             <div class="task-card-meta">
               <span class="badge badge-destructive badge-dot">High</span>
@@ -139,7 +139,7 @@
               <span>Mike</span>
             </div>
           </div>
-          <div class="task-card" onclick="Ranju.dialog.open('task-detail-2')">
+          <div class="task-card" onclick="Ranj.dialog.open('task-detail-2')">
             <div class="task-card-title">Mobile responsive fixes</div>
             <div class="task-card-meta">
               <span class="badge badge-success badge-dot">Low</span>
@@ -147,7 +147,7 @@
               <span>Sarah K.</span>
             </div>
           </div>
-          <button class="add-task-btn" onclick="Ranju.dialog.open('new-task-dialog')">+ Add task</button>
+          <button class="add-task-btn" onclick="Ranj.dialog.open('new-task-dialog')">+ Add task</button>
         </div>
       </div>
 
@@ -158,7 +158,7 @@
           <span class="board-column-count">1</span>
         </div>
         <div class="board-column-cards">
-          <div class="task-card" onclick="Ranju.dialog.open('task-detail-2')">
+          <div class="task-card" onclick="Ranj.dialog.open('task-detail-2')">
             <div class="task-card-title">Payment integration</div>
             <div class="task-card-meta">
               <span class="badge badge-destructive badge-dot">High</span>
@@ -166,7 +166,7 @@
               <span>Alex</span>
             </div>
           </div>
-          <button class="add-task-btn" onclick="Ranju.dialog.open('new-task-dialog')">+ Add task</button>
+          <button class="add-task-btn" onclick="Ranj.dialog.open('new-task-dialog')">+ Add task</button>
         </div>
       </div>
 
@@ -177,7 +177,7 @@
           <span class="board-column-count">2</span>
         </div>
         <div class="board-column-cards">
-          <div class="task-card" onclick="Ranju.dialog.open('task-detail-2')" style="opacity:.9">
+          <div class="task-card" onclick="Ranj.dialog.open('task-detail-2')" style="opacity:.9">
             <div class="task-card-title">Database schema design</div>
             <div class="task-card-meta">
               <span class="badge badge-success badge-dot">Completed</span>
@@ -185,7 +185,7 @@
               <span>Mike</span>
             </div>
           </div>
-          <div class="task-card" onclick="Ranju.dialog.open('task-detail-2')" style="opacity:.9">
+          <div class="task-card" onclick="Ranj.dialog.open('task-detail-2')" style="opacity:.9">
             <div class="task-card-title">Landing page design</div>
             <div class="task-card-meta">
               <span class="badge badge-success badge-dot">Completed</span>
@@ -193,7 +193,7 @@
               <span>Sarah K.</span>
             </div>
           </div>
-          <button class="add-task-btn" onclick="Ranju.dialog.open('new-task-dialog')">+ Add task</button>
+          <button class="add-task-btn" onclick="Ranj.dialog.open('new-task-dialog')">+ Add task</button>
         </div>
       </div>
 
@@ -224,7 +224,7 @@
       </div>
       <div class="dialog-footer">
         <button class="btn btn-outline btn-sm" data-dialog-close>Close</button>
-        <button class="btn btn-sm" onclick="Ranju.toast({title:'Moved to In Progress',position:'bottom-right'});Ranju.dialog.close('task-detail-1')">Move to In Progress</button>
+        <button class="btn btn-sm" onclick="Ranj.toast({title:'Moved to In Progress',position:'bottom-right'});Ranj.dialog.close('task-detail-1')">Move to In Progress</button>
       </div>
     </div>
   </div>
@@ -282,15 +282,15 @@
       </div>
       <div class="dialog-footer">
         <button class="btn btn-outline" data-dialog-close>Cancel</button>
-        <button class="btn" onclick="Ranju.toast({title:'Task created',variant:'success',position:'bottom-right'});Ranju.dialog.close('new-task-dialog')">Create Task</button>
+        <button class="btn" onclick="Ranj.toast({title:'Task created',variant:'success',position:'bottom-right'});Ranj.dialog.close('new-task-dialog')">Create Task</button>
       </div>
     </div>
   </div>
 
-  <script src="../ranju.js"></script>
+  <script src="../dist/ranj.js"></script>
   <script>
     function updateIcon() {
-      document.getElementById('t-icon').textContent = Ranju.theme.current() === 'dark' ? '\u2600' : '\u263E';
+      document.getElementById('t-icon').textContent = Ranj.theme.current() === 'dark' ? '\u2600' : '\u263E';
     }
     updateIcon();
   </script>

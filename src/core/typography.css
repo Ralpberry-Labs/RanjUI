@@ -1,0 +1,161 @@
+/* ==========================================================================
+   Ranj UI — Typography
+   Headings, text styles, inline code, kbd base and long-form .prose
+   ========================================================================== */
+:root {
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+  --tracking-tighter: -.04em;
+  --tracking-tight: -.025em;
+  --tracking-wide: .025em;
+  --tracking-wider: .06em;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: inherit;
+  text-wrap: balance;
+}
+h1, .h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, var(--text-5xl)); font-weight: 800; letter-spacing: var(--tracking-tighter); }
+h2, .h2 { font-size: clamp(1.6rem, 1.25rem + 1.4vw, var(--text-4xl)); letter-spacing: -.03em; }
+h3, .h3 { font-size: clamp(1.3rem, 1.1rem + .8vw, var(--text-2xl)); line-height: 1.25; }
+h4, .h4 { font-size: var(--text-xl); line-height: 1.3; letter-spacing: -.015em; }
+h5, .h5 { font-size: var(--text-lg); line-height: 1.4; font-weight: 600; letter-spacing: -.01em; }
+h6, .h6 { font-size: var(--text-base); line-height: 1.5; font-weight: 600; letter-spacing: 0; }
+
+.display-1, .display-2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+.display-1 { font-size: clamp(2.75rem, 1.6rem + 5vw, 5.5rem); }
+.display-2 { font-size: clamp(2.25rem, 1.5rem + 3.4vw, var(--text-7xl)); }
+
+.eyebrow {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.lead { font-size: clamp(1.075rem, 1rem + .35vw, var(--text-xl)); line-height: 1.6; color: var(--muted-fg); text-wrap: pretty; }
+.large { font-size: var(--text-lg); font-weight: 600; line-height: 1.5; }
+.small { font-size: var(--text-sm); line-height: 1.45; font-weight: 500; }
+.tiny { font-size: var(--text-xs); line-height: 1.4; }
+.muted { color: var(--muted-fg); }
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+.tabular-nums, .tabular { font-variant-numeric: tabular-nums; }
+
+p { text-wrap: pretty; }
+small { font-size: .875em; }
+strong, b { font-weight: 600; }
+mark { background: color-mix(in oklab, var(--warning) 32%, transparent); color: inherit; padding: 0 .15em; border-radius: 3px; }
+abbr[title] { text-decoration: underline dotted; text-underline-offset: .2em; cursor: help; }
+sub, sup { font-size: .75em; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -.5em; } sub { bottom: -.25em; }
+
+/* Inline code — elements inside .code-block / pre are reset */
+code, .code {
+  font-family: var(--font-mono);
+  font-size: .875em;
+  padding: .12em .4em;
+  border-radius: var(--radius-xs);
+  background: var(--muted);
+  color: var(--fg);
+  font-variant-ligatures: none;
+}
+pre { font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.7; overflow-x: auto; }
+pre code { padding: 0; background: none; border: 0; font-size: inherit; border-radius: 0; }
+samp { font-family: var(--font-mono); font-size: .9em; }
+
+/* Base kbd (the .kbd component adds combos/variants) */
+kbd {
+  font-family: var(--font-sans);
+  font-size: .75em;
+  font-weight: 500;
+}
+
+/* Gradient text */
+.gradient-text, .text-gradient {
+  --gradient: linear-gradient(100deg, var(--primary) 0%, oklch(0.68 0.2 calc(var(--hue) + 60)) 50%, oklch(0.72 0.17 calc(var(--hue) + 120)) 100%);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-text-animated {
+  background-size: 200% auto;
+  animation: typography-gradient-pan 6s linear infinite;
+}
+@keyframes typography-gradient-pan { to { background-position: 200% center; } }
+
+/* ---------- Prose: long-form rich text ---------- */
+.prose {
+  --prose-gap: 1.25em;
+  max-width: 68ch;
+  color: color-mix(in oklab, var(--fg) 86%, var(--bg));
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+}
+.prose > * + * { margin-top: var(--prose-gap); }
+.prose :where(h1, h2, h3, h4, h5, h6) { color: var(--fg); scroll-margin-top: 5rem; }
+.prose :where(h1) { font-size: 2.25em; margin-bottom: .2em; }
+.prose :where(h2) { font-size: 1.6em; margin-top: 2em; }
+.prose :where(h3) { font-size: 1.28em; margin-top: 1.7em; }
+.prose :where(h4) { font-size: 1.1em; margin-top: 1.5em; }
+.prose :where(h2, h3, h4) + * { margin-top: .6em; }
+.prose :where(a) { color: var(--fg); font-weight: 500; text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--primary) 55%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: .22em; transition: text-decoration-color var(--transition), color var(--transition); }
+.prose :where(a):hover { color: var(--primary); text-decoration-color: currentColor; }
+.prose :where(strong) { color: var(--fg); }
+.prose :where(ul, ol) { padding-left: 1.4em; }
+.prose :where(ul) { list-style: disc; }
+.prose :where(ol) { list-style: decimal; }
+.prose :where(li) { padding-left: .3em; }
+.prose :where(li + li) { margin-top: .4em; }
+.prose :where(li)::marker { color: var(--muted-fg); }
+.prose :where(ol > li)::marker { font-weight: 600; font-variant-numeric: tabular-nums; }
+.prose :where(li > ul, li > ol) { margin-top: .4em; }
+.prose :where(blockquote) {
+  padding: .1em 0 .1em 1.1em;
+  border-left: 3px solid var(--primary);
+  color: var(--fg);
+  font-style: italic;
+  font-size: 1.06em;
+}
+.prose :where(hr) { margin: 2.5em 0; border-top-color: var(--border); }
+.prose :where(img, video, figure) { border-radius: var(--radius-lg); }
+.prose :where(figure) { margin-top: 2em; margin-bottom: 2em; }
+.prose :where(figcaption) { margin-top: .7em; font-size: .875em; color: var(--muted-fg); text-align: center; }
+.prose :where(pre) {
+  padding: 1em 1.2em;
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklab, var(--fg) 4%, var(--bg));
+  border: 1px solid var(--border);
+  font-size: .875em;
+}
+[data-theme="dark"] .prose :where(pre) { background: color-mix(in oklab, var(--fg) 3%, var(--bg)); }
+.prose :where(table) { width: 100%; font-size: .9em; line-height: 1.5; display: block; overflow-x: auto; }
+.prose :where(thead th) { text-align: left; font-weight: 600; color: var(--fg); border-bottom: 1px solid var(--border-strong); padding: .55em .9em .55em 0; white-space: nowrap; }
+.prose :where(tbody td) { border-bottom: 1px solid var(--border); padding: .55em .9em .55em 0; vertical-align: top; }
+.prose :where(tbody tr:last-child td) { border-bottom: 0; }
+.prose :where(kbd) { font-family: var(--font-mono); font-size: .8em; padding: .1em .4em; border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: var(--radius-xs); background: var(--bg); }
+.prose-sm { font-size: var(--text-sm); }
+.prose-lg { font-size: var(--text-lg); }
+.prose-none { max-width: none; }
+
+/* v1 compat */
+.font-mono { font-family: var(--font-mono); }
+.tracking-tight { letter-spacing: var(--tracking-tight); }
+.leading-tight { line-height: var(--leading-tight); }
+.leading-relaxed { line-height: var(--leading-relaxed); }

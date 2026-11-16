@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Finance — Financial Dashboard Example | RanjuUI</title>
+  <title>Finance — Financial Dashboard Example | Ranj UI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../ranju.css">
+  <link rel="stylesheet" href="../dist/ranj.css">
   <style>
     body { display: flex; min-height: 100vh; background: var(--muted); }
     .app-sidebar {
@@ -106,9 +106,9 @@
         <h1 class="text-lg font-semibold" style="margin:0">Financial Overview</h1>
       </div>
       <div class="app-topbar-right">
-        <button class="btn btn-outline btn-sm" onclick="Ranju.command.open('cmd-finance')">Search <kbd>Ctrl+K</kbd></button>
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranju.theme.toggle();updateIcon()" aria-label="Theme"><span id="t-icon">&#9790;</span></button>
-        <button class="btn btn-sm" onclick="Ranju.dialog.open('transfer-dialog')">Transfer</button>
+        <button class="btn btn-outline btn-sm" onclick="Ranj.command.open('cmd-finance')">Search <kbd>Ctrl+K</kbd></button>
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranj.theme.toggle();updateIcon()" aria-label="Theme"><span id="t-icon">&#9790;</span></button>
+        <button class="btn btn-sm" onclick="Ranj.dialog.open('transfer-dialog')">Transfer</button>
         <div class="dropdown" data-state="closed">
           <div class="avatar" style="width:2rem;height:2rem;font-size:.75rem;background:var(--primary);color:white;cursor:pointer" data-dropdown-trigger>MK</div>
           <ul class="dropdown-menu" style="right:0;left:auto">
@@ -163,7 +163,7 @@
             <div class="alert-title">Upcoming Payment</div>
             <div class="alert-description">Rent due in 5 days — $1,850</div>
           </div>
-          <button class="btn btn-sm" onclick="Ranju.toast({title:'Payment scheduled',position:'bottom-right'})">Pay Now</button>
+          <button class="btn btn-sm" onclick="Ranj.toast({title:'Payment scheduled',position:'bottom-right'})">Pay Now</button>
         </div>
       </div>
 
@@ -172,7 +172,7 @@
         <div class="card">
           <div class="card-header">
             <div class="card-title">My Accounts</div>
-            <button class="btn btn-ghost btn-sm" onclick="Ranju.toast({title:'Add account',position:'bottom-right'})">+ Add</button>
+            <button class="btn btn-ghost btn-sm" onclick="Ranj.toast({title:'Add account',position:'bottom-right'})">+ Add</button>
           </div>
           <div class="card-content p-0">
             <div class="item-group" style="border:none">
@@ -345,7 +345,7 @@
       </div>
       <div class="dialog-footer">
         <button class="btn btn-outline" data-dialog-close>Cancel</button>
-        <button class="btn" onclick="Ranju.toast({title:'Transfer initiated',description:'$500 to Savings',variant:'success',position:'bottom-right'});Ranju.dialog.close('transfer-dialog')">Transfer</button>
+        <button class="btn" onclick="Ranj.toast({title:'Transfer initiated',description:'$500 to Savings',variant:'success',position:'bottom-right'});Ranj.dialog.close('transfer-dialog')">Transfer</button>
       </div>
     </div>
   </div>
@@ -366,14 +366,14 @@
         </div>
         <div>
           <div class="command-group-label">Actions</div>
-          <div class="command-item" onclick="Ranju.dialog.open('transfer-dialog');Ranju.command.close('cmd-finance')">Transfer Funds</div>
-          <div class="command-item" onclick="Ranju.theme.toggle();updateIcon();Ranju.command.close('cmd-finance')">Toggle Theme</div>
+          <div class="command-item" onclick="Ranj.dialog.open('transfer-dialog');Ranj.command.close('cmd-finance')">Transfer Funds</div>
+          <div class="command-item" onclick="Ranj.theme.toggle();updateIcon();Ranj.command.close('cmd-finance')">Toggle Theme</div>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="../ranju.js"></script>
+  <script src="../dist/ranj.js"></script>
   <script>
     function toggleSidebar() {
       document.getElementById('app-sidebar').classList.toggle('open');
@@ -384,7 +384,7 @@
       document.getElementById('mob-overlay').classList.remove('open');
     }
     function updateIcon() {
-      document.getElementById('t-icon').textContent = Ranju.theme.current() === 'dark' ? '\u2600' : '\u263E';
+      document.getElementById('t-icon').textContent = Ranj.theme.current() === 'dark' ? '\u2600' : '\u263E';
     }
     updateIcon();
   </script>

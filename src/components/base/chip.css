@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Chip / Tag — selectable filters and removable tags
+   ========================================================================== */
+.chip, .tag {
+  --chip-h: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  height: var(--chip-h);
+  padding: 0 .8rem;
+  font-size: .8125rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-xs);
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.chip > svg, .tag > svg { width: .95rem; height: .95rem; flex-shrink: 0; }
+button.chip, .chip[role="checkbox"], .chip[role="option"], .chip[aria-pressed], .chip-selectable { cursor: pointer; }
+button.chip:hover, .chip[aria-pressed]:hover, .chip-selectable:hover { border-color: var(--border-strong); background: var(--bg-subtle); }
+button.chip:active, .chip[aria-pressed]:active { transform: scale(.97); }
+.chip:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.chip[aria-pressed="true"], .chip[aria-checked="true"], .chip[aria-selected="true"], .chip[data-state="checked"] {
+  color: var(--primary-soft-fg);
+  background: var(--primary-soft);
+  border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 20%, transparent) inset;
+}
+.chip .chip-check { width: 0; opacity: 0; margin-right: -.4rem; transition: width var(--dur) var(--ease-out), opacity var(--dur), margin var(--dur) var(--ease-out); overflow: hidden; }
+.chip[aria-pressed="true"] .chip-check, .chip[aria-checked="true"] .chip-check, .chip[data-state="checked"] .chip-check { width: .95rem; opacity: 1; margin-right: 0; }
+.chip .chip-count { font-size: .7rem; font-weight: 600; color: var(--muted-fg); font-variant-numeric: tabular-nums; }
+.chip[aria-pressed="true"] .chip-count { color: inherit; opacity: .8; }
+
+.chip-remove {
+  display: inline-grid; place-items: center; width: 1.15rem; height: 1.15rem; margin-right: -.4rem; border-radius: 50%;
+  color: var(--muted-fg); transition: background-color var(--transition), color var(--transition);
+}
+.chip-remove:hover { background: var(--muted); color: var(--fg); }
+.chip-remove svg { width: .7rem; height: .7rem; }
+.chip > .avatar { --avatar-size: 1.5rem; margin-left: -.55rem; }
+.chip[data-removing] { animation: chip-out var(--dur) var(--ease) forwards; pointer-events: none; }
+@keyframes chip-out { to { opacity: 0; transform: scale(.85); } }
+.chip.chip-enter { animation: r-zoom-in var(--dur) var(--ease-out); }
+
+.chip-sm, .tag-sm { --chip-h: 1.625rem; padding: 0 .6rem; font-size: .75rem; }
+.chip-lg { --chip-h: 2.375rem; padding: 0 1rem; font-size: var(--text-sm); }
+.chip-square, .tag { border-radius: var(--radius-sm); }
+.tag { box-shadow: none; background: var(--secondary); border-color: transparent; color: var(--secondary-fg); --chip-h: 1.625rem; padding: 0 .55rem; font-size: .75rem; }
+.tag-soft { background: var(--primary-soft); color: var(--primary-soft-fg); }
+.chip-soft { background: var(--secondary); border-color: transparent; box-shadow: none; }
+
+.chip-group, .tag-group { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.chip-input {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .375rem; min-height: var(--control-h); padding: .3rem .4rem;
+  border: 1px solid var(--input); border-radius: var(--radius); background: var(--bg); cursor: text;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.chip-input:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px var(--ring); }
+.chip-input > input { flex: 1 1 6rem; min-width: 6rem; height: 1.625rem; border: 0; outline: 0; background: transparent; font-size: var(--text-sm); padding: 0 .3rem; }
+.chip-input > .chip { --chip-h: 1.625rem; padding: 0 .55rem; font-size: .75rem; box-shadow: none; background: var(--secondary); border-color: transparent; }

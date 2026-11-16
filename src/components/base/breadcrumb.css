@@ -1,0 +1,85 @@
+/* ==========================================================================
+   Breadcrumb
+   <nav aria-label="Breadcrumb"><ol class="breadcrumb">
+     <li><a href="#">Home</a></li><li aria-current="page">Settings</li>
+   </ol></nav>
+   ========================================================================== */
+.breadcrumb {
+  --bc-sep: '/';
+  --bc-gap: .5rem;
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: .25rem var(--bc-gap);
+  list-style: none; margin: 0; padding: 0;
+  font-size: var(--text-sm); line-height: 1.4;
+  color: var(--muted-fg);
+  min-width: 0;
+}
+.breadcrumb > li { display: inline-flex; align-items: center; gap: var(--bc-gap); min-width: 0; }
+.breadcrumb > li + li::before {
+  content: var(--bc-sep);
+  flex: none;
+  color: color-mix(in oklab, var(--muted-fg) 60%, transparent);
+  font-weight: 400;
+  user-select: none;
+}
+.breadcrumb a, .breadcrumb button {
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--muted-fg); text-decoration: none;
+  border-radius: var(--radius-xs);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease);
+}
+.breadcrumb a:hover, .breadcrumb button:hover { color: var(--fg); text-decoration: none; }
+.breadcrumb [aria-current="page"], .breadcrumb .active { color: var(--fg); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.breadcrumb svg { width: 1em; height: 1em; flex: none; }
+.breadcrumb-icon-only svg { width: 1.05rem; height: 1.05rem; }
+
+/* Separators */
+.breadcrumb-chevron { --bc-sep: ''; }
+.breadcrumb-chevron > li + li::before,
+.breadcrumb-arrow > li + li::before {
+  content: ''; width: .9em; height: .9em;
+  background: currentColor;
+  -webkit-mask: var(--bc-mask) center / contain no-repeat; mask: var(--bc-mask) center / contain no-repeat;
+}
+.breadcrumb-chevron { --bc-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E"); }
+.breadcrumb-arrow { --bc-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E"); }
+.breadcrumb-dot { --bc-sep: '•'; }
+.breadcrumb-dot > li + li::before { font-size: .7em; }
+.breadcrumb-slash { --bc-sep: '/'; }
+
+/* Pill / contained */
+.breadcrumb-pill {
+  display: inline-flex; padding: .3rem .75rem;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius-full); box-shadow: var(--shadow-xs);
+}
+.breadcrumb-steps { --bc-gap: .25rem; --bc-sep: ''; }
+.breadcrumb-steps > li + li::before { display: none; }
+.breadcrumb-steps a, .breadcrumb-steps [aria-current="page"] {
+  padding: .3rem .7rem; border-radius: var(--radius-sm);
+}
+.breadcrumb-steps a { background: var(--muted); }
+.breadcrumb-steps a:hover { background: var(--secondary-hover); }
+.breadcrumb-steps [aria-current="page"] { background: var(--primary-soft); color: var(--primary-soft-fg); }
+
+/* Collapsed middle: <li class="breadcrumb-ellipsis"><button aria-label="Show path">…</button></li> + .breadcrumb-collapsed on the list */
+.breadcrumb-ellipsis button {
+  display: inline-grid; place-items: center;
+  width: 1.6rem; height: 1.4rem; border-radius: var(--radius-sm);
+  color: var(--muted-fg); letter-spacing: .05em;
+}
+.breadcrumb-ellipsis button:hover { background: var(--secondary); }
+.breadcrumb-collapsed > li.breadcrumb-hidden { display: none; }
+.breadcrumb-ellipsis { display: none !important; }
+.breadcrumb-collapsed > li.breadcrumb-ellipsis { display: inline-flex !important; }
+
+/* Truncate long crumbs */
+.breadcrumb-truncate > li { max-width: 12rem; }
+.breadcrumb-truncate a { overflow: hidden; text-overflow: ellipsis; display: block; }
+
+/* Auto-collapse on small screens: hides middle items */
+@media (max-width: 520px) {
+  .breadcrumb-responsive > li:not(:first-child):not(:nth-last-child(-n+2)):not(.breadcrumb-ellipsis) { display: none; }
+  .breadcrumb-responsive > li.breadcrumb-ellipsis { display: inline-flex !important; }
+}

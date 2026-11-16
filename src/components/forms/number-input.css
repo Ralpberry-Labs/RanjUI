@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Number input — stepper buttons around a formatted field
+   ========================================================================== */
+.number-input {
+  --h: var(--control-h);
+  display: inline-flex; align-items: stretch;
+  width: 100%; max-width: 100%; height: var(--h);
+  background: var(--field-bg);
+  border: 1px solid var(--field-border);
+  border-radius: var(--field-radius);
+  box-shadow: var(--field-shadow);
+  overflow: hidden;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.number-input:hover:not(:focus-within) { border-color: var(--field-border-hover); }
+.number-input:focus-within { border-color: var(--field-focus); box-shadow: var(--field-shadow), var(--field-ring); }
+.number-input:has(input[aria-invalid="true"]) { border-color: var(--destructive); }
+.number-input:has(input:disabled) { opacity: .5; pointer-events: none; }
+.number-input > input {
+  flex: 1; min-width: 0; width: 100%;
+  padding: 0 .5rem; border: 0; outline: none; background: none;
+  font-size: var(--field-fs); font-weight: 500; font-variant-numeric: tabular-nums; text-align: center; color: var(--fg);
+}
+.number-input-btn {
+  flex-shrink: 0; display: grid; place-items: center;
+  width: var(--h); color: var(--muted-fg);
+  transition: background var(--dur-fast), color var(--dur-fast);
+  touch-action: manipulation; user-select: none; -webkit-user-select: none;
+}
+.number-input > .number-input-btn:first-child { border-right: 1px solid var(--field-border); }
+.number-input > input + .number-input-btn { border-left: 1px solid var(--field-border); }
+.number-input-btn:hover:not(:disabled) { background: var(--muted); color: var(--fg); }
+.number-input-btn:active:not(:disabled) { background: var(--secondary-hover); }
+.number-input-btn:active:not(:disabled) svg { transform: scale(.82); }
+.number-input-btn:disabled { opacity: .35; cursor: not-allowed; }
+.number-input-btn svg { width: .95rem; height: .95rem; transition: transform var(--dur) var(--ease-spring); }
+.num-up { animation: num-up var(--dur) var(--ease-out); }
+.num-down { animation: num-down var(--dur) var(--ease-out); }
+@keyframes num-up { from { transform: translateY(35%); opacity: .3; } }
+@keyframes num-down { from { transform: translateY(-35%); opacity: .3; } }
+
+/* Stacked chevrons on the right */
+.number-input-stacked > input { text-align: left; padding: 0 var(--field-px); }
+.number-input-stack { display: flex; flex-direction: column; border-left: 1px solid var(--field-border); }
+.number-input-stack .number-input-btn { flex: 1; width: 1.75rem; }
+.number-input-stack .number-input-btn + .number-input-btn { border-top: 1px solid var(--field-border); }
+.number-input-stack [data-step-up] svg { transform: rotate(180deg); }
+.number-input-stack .number-input-btn svg { width: .8rem; height: .8rem; }
+.number-input-stack [data-step-up]:active:not(:disabled) svg { transform: rotate(180deg) scale(.82); }
+
+/* Pill / compact (cart quantity) */
+.number-input-pill { border-radius: var(--radius-full); width: auto; }
+.number-input-pill > input { width: 3rem; flex: none; }
+.number-input-pill .number-input-btn { border: 0 !important; border-radius: 50%; margin: 3px; width: calc(var(--h) - 8px); }
+.number-input-sm { --h: var(--control-h-sm); }
+.number-input-sm > input { font-size: .8125rem; }
+.number-input-lg { --h: var(--control-h-lg); }
+.number-input-lg > input { font-size: 1.05rem; }
+.number-input-inline { width: auto; }
+.number-input-inline > input { width: 4.5rem; flex: none; }

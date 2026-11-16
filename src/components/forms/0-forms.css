@@ -1,0 +1,160 @@
+/* ==========================================================================
+   Forms — shared foundations: control surface vars, floating panels, listbox
+   ========================================================================== */
+:root {
+  --field-bg: var(--bg);
+  --field-bg-hover: var(--bg);
+  --field-border: var(--input);
+  --field-border-hover: var(--border-strong);
+  --field-focus: color-mix(in oklab, var(--primary) 70%, var(--input));
+  --field-ring: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+  --field-ring-error: 0 0 0 3px color-mix(in oklab, var(--destructive) 18%, transparent);
+  --field-shadow: var(--shadow-xs);
+  --field-radius: var(--radius);
+  --field-px: .75rem;
+  --field-fs: .875rem;
+}
+[data-theme="dark"] {
+  --field-bg: color-mix(in oklab, var(--input) 32%, transparent);
+  --field-bg-hover: color-mix(in oklab, var(--input) 48%, transparent);
+  --field-focus: color-mix(in oklab, var(--primary) 75%, var(--input));
+  --field-ring: 0 0 0 3px color-mix(in oklab, var(--primary) 28%, transparent);
+  --field-ring-error: 0 0 0 3px color-mix(in oklab, var(--destructive) 28%, transparent);
+}
+
+@keyframes f-panel-in { from { opacity: 0; transform: translateY(-6px); } }
+@keyframes f-panel-in-up { from { opacity: 0; transform: translateY(6px); } }
+@keyframes f-panel-out { to { opacity: 0; transform: scale(.97); } }
+.f-spin { animation: r-spin .7s linear infinite; }
+.f-shake { animation: r-shake .45s var(--ease-in-out); }
+.f-sr { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- Floating panel (listboxes, pickers) ---------- */
+.listbox, .picker-popover {
+  position: fixed;
+  z-index: var(--z-popover);
+  background: var(--popover);
+  color: var(--popover-fg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--field-fs);
+  outline: none;
+  animation: f-panel-in var(--dur) var(--ease-out);
+}
+.listbox[data-side="top"], .picker-popover[data-side="top"] { animation-name: f-panel-in-up; }
+.listbox[data-state="closed"], .picker-popover[data-state="closed"] { animation: f-panel-out 130ms var(--ease) forwards; pointer-events: none; }
+.listbox {
+  padding: .3rem;
+  max-height: min(18rem, 60vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  max-width: calc(100vw - 16px);
+  scroll-padding: .3rem;
+}
+.listbox-search {
+  position: sticky; top: -.3rem; z-index: 1;
+  display: flex; align-items: center; gap: .5rem;
+  margin: -.3rem -.3rem .3rem; padding: .55rem .75rem;
+  background: var(--popover); border-bottom: 1px solid var(--border);
+  color: var(--muted-fg);
+}
+.listbox-search input { flex: 1; min-width: 0; background: none; border: 0; outline: none; font-size: var(--field-fs); color: var(--fg); }
+.listbox-search input::placeholder { color: var(--muted-fg); }
+.listbox-label {
+  padding: .45rem .55rem .3rem;
+  font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--muted-fg);
+}
+.listbox-sep { height: 1px; margin: .3rem -.3rem; background: var(--border); }
+.listbox-option {
+  position: relative;
+  display: flex; align-items: center; gap: .55rem;
+  min-height: 2.125rem;
+  padding: .4rem 2rem .4rem .55rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  user-select: none;
+  color: var(--popover-fg);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  scroll-margin: .3rem;
+}
+.listbox-option > svg, .listbox-option .listbox-icon { flex-shrink: 0; width: 1rem; height: 1rem; color: var(--muted-fg); display: grid; place-items: center; }
+.listbox-option .listbox-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.listbox-option .listbox-desc { display: block; font-size: .75rem; color: var(--muted-fg); white-space: normal; }
+.listbox-option .listbox-meta { margin-left: auto; font-size: .75rem; color: var(--muted-fg); }
+.listbox-option mark { background: none; color: var(--primary); font-weight: 600; }
+.listbox-option[data-highlighted], .listbox-option.is-active { background: var(--secondary); }
+.listbox-option[aria-selected="true"] { font-weight: 500; }
+.listbox-option .listbox-check {
+  position: absolute; right: .55rem; top: 50%;
+  width: 1rem; height: 1rem; margin-top: -.5rem;
+  color: var(--primary);
+  opacity: 0; transform: scale(.4);
+  transition: opacity var(--dur-fast), transform var(--dur) var(--ease-spring);
+}
+.listbox-option[aria-selected="true"] .listbox-check { opacity: 1; transform: none; }
+.listbox-option[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.listbox-option[data-create] { color: var(--primary); }
+.listbox-option[data-create] svg { color: var(--primary); }
+.listbox-empty { padding: 1.25rem .75rem; text-align: center; color: var(--muted-fg); font-size: .85rem; }
+.listbox-loading { display: flex; align-items: center; justify-content: center; gap: .5rem; padding: 1rem; color: var(--muted-fg); font-size: .85rem; }
+.picker-popover { padding: .75rem; max-width: calc(100vw - 16px); }
+
+/* ---------- Chip box (multi-select, tag-input) ---------- */
+.chip-box {
+  --h: var(--control-h);
+  position: relative;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .3rem;
+  width: 100%; min-width: 0; min-height: var(--h);
+  padding: .25rem .4rem .25rem .3rem;
+  font-size: var(--field-fs); color: var(--fg);
+  background: var(--field-bg);
+  border: 1px solid var(--field-border);
+  border-radius: var(--field-radius);
+  box-shadow: var(--field-shadow);
+  cursor: text;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur);
+}
+.chip-box:hover:not(:focus-within) { border-color: var(--field-border-hover); background: var(--field-bg-hover); }
+.chip-box:focus-within, [data-state="open"] > .chip-box { border-color: var(--field-focus); box-shadow: var(--field-shadow), var(--field-ring); }
+[aria-invalid="true"] > .chip-box, .chip-box[aria-invalid="true"] { border-color: var(--destructive); }
+[data-disabled] > .chip-box { opacity: .5; pointer-events: none; }
+.chip-box > input {
+  flex: 1 1 4rem; min-width: 4rem; height: calc(var(--h) - .6rem);
+  padding: 0 .35rem; border: 0; outline: none; background: none; font-size: inherit; color: inherit;
+}
+.chip-box > input::placeholder { color: var(--muted-fg); opacity: .85; }
+.chip-box > .input-btn { margin-left: auto; margin-right: -.1rem; }
+.input-chip {
+  display: inline-flex; align-items: center; gap: .2rem; max-width: 100%;
+  height: 1.6rem; padding: 0 .2rem 0 .55rem;
+  font-size: .8rem; font-weight: 500; line-height: 1;
+  color: var(--secondary-fg); background: var(--secondary);
+  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  border-radius: calc(var(--field-radius) * .75);
+  animation: chip-pop var(--dur-slow) var(--ease-spring);
+  transition: background var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast);
+  user-select: none;
+}
+.input-chip-icon { display: grid; place-items: center; margin-left: -.2rem; margin-right: .1rem; font-size: .85rem; }
+.input-chip-icon .listbox-avatar { width: 1.1rem; height: 1.1rem; font-size: .5rem; }
+.input-chip-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.input-chip-remove {
+  display: grid; place-items: center; width: 1.15rem; height: 1.15rem; border-radius: calc(var(--field-radius) * .5);
+  color: var(--muted-fg); transition: background var(--dur-fast), color var(--dur-fast);
+}
+.input-chip-remove:hover { background: color-mix(in oklab, var(--fg) 10%, transparent); color: var(--fg); }
+.input-chip-remove svg { width: .75rem; height: .75rem; }
+.input-chip[data-active] { box-shadow: 0 0 0 2px var(--ring); background: var(--secondary-hover); }
+.chip-box .input-chip[data-invalid] { background: var(--destructive-soft); color: var(--destructive-soft-fg); border-color: color-mix(in oklab, var(--destructive) 30%, transparent); }
+.input-chip[data-leaving] { animation: chip-out 160ms var(--ease) forwards; }
+.input-chip.f-shake { box-shadow: 0 0 0 2px color-mix(in oklab, var(--warning) 60%, transparent); }
+.chip-box-primary .input-chip { background: var(--primary-soft); color: var(--primary-soft-fg); border-color: transparent; }
+.chip-box-more { font-size: .75rem; color: var(--muted-fg); padding: 0 .3rem; }
+@keyframes chip-pop { from { opacity: 0; transform: scale(.6); } }
+@keyframes chip-out { to { opacity: 0; transform: scale(.6); } }
+.listbox-option mark { padding: 0; margin: 0; border-radius: 0; box-shadow: none; }
+.chip-box:has(> .input-btn) { padding-right: 2.1rem; }
+.chip-box > .input-btn { position: absolute; right: .4rem; top: calc(var(--h) / 2 - .8125rem - 1px); margin: 0; }
+.chip-box > input { flex-basis: 3rem; min-width: 3rem; }

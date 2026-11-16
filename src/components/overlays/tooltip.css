@@ -1,0 +1,47 @@
+/* ==========================================================================
+   Tooltip — `data-tooltip="text"` on ANY element, or rich .tooltip > .tooltip-content.
+   ========================================================================== */
+.tooltip { position: relative; display: inline-flex; }
+.tooltip-content {
+  position: fixed; z-index: var(--z-tooltip); left: 0; top: 0;
+  display: inline-flex; align-items: center; gap: .5rem;
+  max-width: min(18rem, calc(100vw - 1rem)); width: max-content;
+  padding: .375rem .625rem;
+  font-size: .75rem; font-weight: 500; line-height: 1.4; letter-spacing: .005em; text-align: left;
+  color: var(--bg); background: var(--fg);
+  border: 1px solid var(--fg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  pointer-events: none; white-space: normal;
+  animation: ov-pop-in var(--dur-fast) var(--ease-out);
+  --ov-dy: 3px;
+}
+.tooltip-content[data-side="bottom"] { --ov-dy: -3px; }
+.tooltip-content[data-side="left"] { --ov-dx: 3px; --ov-dy: 0px; }
+.tooltip-content[data-side="right"] { --ov-dx: -3px; --ov-dy: 0px; }
+.tooltip-content:not([data-state="open"]):not([data-closing]):not([data-measure]) { display: none; }
+.tooltip-content[data-closing] { animation: ov-fade-out 90ms var(--ease) forwards; }
+.tooltip-content .ov-arrow { width: 8px; height: 8px; }
+.tooltip-content[data-side="bottom"] > .ov-arrow { top: -4.5px; left: calc(var(--arrow-x, 50%) - 4px); }
+.tooltip-content[data-side="top"] > .ov-arrow { bottom: -4.5px; left: calc(var(--arrow-x, 50%) - 4px); }
+.tooltip-content[data-side="left"] > .ov-arrow { right: -4.5px; top: calc(var(--arrow-y, 50%) - 4px); }
+.tooltip-content[data-side="right"] > .ov-arrow { left: -4.5px; top: calc(var(--arrow-y, 50%) - 4px); }
+.tooltip-kbd {
+  display: inline-flex; gap: .15rem; margin-right: -.2rem;
+  font-family: var(--font-sans); font-size: .6875rem; font-weight: 500;
+  color: color-mix(in oklab, var(--bg) 62%, var(--fg));
+}
+.tooltip-kbd kbd {
+  min-width: 1.15rem; height: 1.15rem; padding: 0 .25rem; display: inline-grid; place-items: center;
+  border-radius: 4px; background: color-mix(in oklab, var(--bg) 16%, transparent); font: inherit; color: inherit; border: 0;
+}
+/* Rich tooltip: card-like surface */
+.tooltip-rich {
+  display: block; padding: .75rem .875rem; max-width: min(17rem, calc(100vw - 1rem));
+  color: var(--popover-fg); background: var(--popover); border-color: var(--border); box-shadow: var(--shadow-lg);
+  border-radius: var(--radius); font-weight: 400; font-size: .8125rem;
+}
+.tooltip-rich b, .tooltip-rich strong { font-weight: 600; }
+.tooltip-rich .tooltip-kbd { color: var(--muted-fg); }
+.tooltip-rich .tooltip-kbd kbd { background: var(--muted); }
+.tooltip-primary { color: var(--primary-fg); background: var(--primary); border-color: var(--primary); }

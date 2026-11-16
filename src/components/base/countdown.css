@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Countdown
+   <div class="countdown" data-to="2027-01-01T00:00:00"></div>
+   ========================================================================== */
+.countdown {
+  --cd-size: 2.5rem;
+  --cd-gap: .75rem;
+  display: inline-flex; align-items: flex-start; flex-wrap: wrap;
+  gap: var(--cd-gap);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+.countdown-unit { display: grid; justify-items: center; gap: .35rem; min-width: calc(var(--cd-size) * 1.35); }
+.countdown-num {
+  font-family: var(--font-display);
+  font-size: var(--cd-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.03em;
+}
+.countdown-label { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted-fg); }
+.countdown-sep { font-family: var(--font-display); font-size: var(--cd-size); font-weight: 600; line-height: 1; color: var(--muted-fg); opacity: .6; }
+.countdown-num.is-tick { animation: countdown-tick var(--dur-slow) var(--ease-out); }
+@keyframes countdown-tick { from { transform: translateY(-.25em); opacity: 0; filter: blur(2px); } }
+
+/* Boxed */
+.countdown-boxed .countdown-num {
+  display: grid; place-items: center;
+  min-width: calc(var(--cd-size) * 1.75); height: calc(var(--cd-size) * 1.75);
+  padding: 0 .4em;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+  font-size: calc(var(--cd-size) * .8);
+}
+.countdown-boxed .countdown-sep { margin-top: calc(var(--cd-size) * .45); font-size: calc(var(--cd-size) * .7); }
+
+/* Inline text: "2d 14h 07m 32s" */
+.countdown-inline { color: inherit; --cd-size: 1em; gap: .35em; align-items: baseline; font-weight: 600; }
+.countdown-inline .countdown-unit { display: inline-flex; align-items: baseline; gap: .05em; min-width: 0; }
+.countdown-inline .countdown-num { font-family: inherit; font-weight: inherit; letter-spacing: 0; font-size: 1em; }
+.countdown-inline .countdown-label { font-size: .85em; font-weight: inherit; text-transform: none; letter-spacing: 0; color: inherit; opacity: .7; }
+
+/* Flip clock */
+.countdown-flip { --cd-size: 3rem; --flip-bg: #18181b; --flip-fg: #fafafa; --flip-dur: 600ms; perspective: 600px; }
+.countdown-flip .countdown-num { position: relative; display: flex; gap: .12em; font-size: var(--cd-size); }
+.cd-card {
+  position: relative;
+  width: .82em; height: 1.24em;
+  border-radius: .12em;
+  font-weight: 700; line-height: 1.24em; text-align: center;
+  color: var(--flip-fg);
+  background: var(--flip-bg);
+  box-shadow: 0 .1em .25em -.05em rgb(0 0 0 / .35), inset 0 0 0 1px rgb(255 255 255 / .05);
+}
+.cd-half {
+  position: absolute; left: 0; right: 0; height: 50%;
+  overflow: hidden;
+  background: inherit; border-radius: inherit;
+  backface-visibility: hidden;
+}
+.cd-half > span { display: block; height: 1.24em; }
+.cd-top, .cd-flap-top { top: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; transform-origin: 50% 100%; }
+.cd-bottom, .cd-flap-bottom { bottom: 0; border-top-left-radius: 0; border-top-right-radius: 0; transform-origin: 50% 0; }
+.cd-bottom > span, .cd-flap-bottom > span { transform: translateY(-50%); }
+.cd-top { background: linear-gradient(to bottom, color-mix(in oklab, var(--flip-bg) 88%, #fff), var(--flip-bg)); }
+.cd-flap-top { z-index: 2; background: linear-gradient(to bottom, color-mix(in oklab, var(--flip-bg) 88%, #fff), var(--flip-bg)); }
+.cd-flap-bottom { z-index: 2; transform: rotateX(90deg); }
+.cd-card::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; margin-top: -.5px; background: rgb(0 0 0 / .45); z-index: 3; }
+.cd-card.is-flipping .cd-flap-top { animation: countdown-flip-top calc(var(--flip-dur) / 2) ease-in forwards; }
+.cd-card.is-flipping .cd-flap-bottom { animation: countdown-flip-bottom calc(var(--flip-dur) / 2) ease-out calc(var(--flip-dur) / 2) forwards; }
+@keyframes countdown-flip-top { to { transform: rotateX(-90deg); } }
+@keyframes countdown-flip-bottom { from { transform: rotateX(90deg); } to { transform: rotateX(0); } }
+.countdown-flip .countdown-sep { color: var(--muted-fg); margin-top: .12em; }
+.countdown-flip .countdown-label { margin-top: .2rem; }
+[data-theme="dark"] .countdown-flip { --flip-bg: #232329; }
+
+.countdown-sm { --cd-size: 1.5rem; --cd-gap: .5rem; }
+.countdown-lg { --cd-size: 3.5rem; --cd-gap: 1rem; }
+.countdown.is-done .countdown-num { color: var(--muted-fg); }
+.countdown.is-urgent .countdown-num { color: var(--destructive); }
+.countdown-flip.is-urgent .countdown-num { color: inherit; }
+
+@media (max-width: 480px) {
+  .countdown-flip { --cd-size: 2.2rem; }
+  .countdown-lg { --cd-size: 2.5rem; }
+}

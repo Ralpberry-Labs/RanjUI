@@ -1,31 +1,41 @@
 {
-  "name": "@alps/ranjuui",
-  "version": "1.0.0",
+  "name": "ranj-ui",
+  "version": "2.0.0",
   "license": "MIT",
-  "author": "alps",
-  "homepage": "https://alps-is-core.github.io/RanjuUI/",
-  "description": "Ultra-lightweight, zero dependency, semantic HTML/CSS/JS UI component library. 40+ components.",
+  "author": "Alps",
+  "homepage": "https://alps-is-core.github.io/RanjUI/",
+  "description": "Ranj UI — the zero-dependency HTML/CSS/JS component library: 150+ components, motion effects, animated backgrounds and micro-interactions. No framework, no build step.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Alps-is-Core/RanjuUI.git"
+    "url": "git+https://github.com/Alps-is-Core/RanjUI.git"
   },
   "keywords": [
     "ui",
     "components",
     "component-library",
     "css-framework",
-    "ui-components",
     "vanilla-js",
-    "lightweight"
+    "animations",
+    "micro-interactions",
+    "design-system",
+    "dark-mode",
+    "zero-dependency"
   ],
   "files": [
-    "ranju.css",
-    "ranju.js",
-    "src/css",
-    "src/js"
+    "dist",
+    "src"
   ],
-  "main": "ranju.js",
-  "style": "ranju.css",
-  "unpkg": "ranju.js",
-  "jsdelivr": "ranju.js"
+  "main": "dist/ranj.js",
+  "style": "dist/ranj.css",
+  "unpkg": "dist/ranj.min.js",
+  "jsdelivr": "dist/ranj.min.js",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch",
+    "serve": "python3 -m http.server 4321"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "playwright": "^1.65.1"
+  }
 }

@@ -1,0 +1,37 @@
+/* ==========================================================================
+   Custom select — trigger button styled like an input; listbox in 0-forms.css
+   ========================================================================== */
+.custom-select { position: relative; display: block; width: 100%; min-width: 0; --h: var(--control-h); }
+.custom-select-trigger {
+  display: flex; align-items: center; gap: .5rem;
+  width: 100%; height: var(--h);
+  padding: 0 .6rem 0 var(--field-px);
+  font-size: var(--field-fs); text-align: left; color: var(--fg);
+  background: var(--field-bg);
+  border: 1px solid var(--field-border);
+  border-radius: var(--field-radius);
+  box-shadow: var(--field-shadow);
+  outline: none; cursor: pointer;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur);
+}
+.custom-select-trigger:hover:not(:disabled) { border-color: var(--field-border-hover); background: var(--field-bg-hover); }
+.custom-select-trigger:focus-visible, .custom-select[data-state="open"] .custom-select-trigger { border-color: var(--field-focus); box-shadow: var(--field-shadow), var(--field-ring); }
+.custom-select-trigger:active:not(:disabled) { transform: translateY(.5px); }
+.custom-select-trigger:disabled { opacity: .5; cursor: not-allowed; }
+.custom-select[aria-invalid="true"] .custom-select-trigger, .custom-select-trigger[aria-invalid="true"] { border-color: var(--destructive); }
+.custom-select[aria-invalid="true"] .custom-select-trigger:focus-visible { box-shadow: var(--field-shadow), var(--field-ring-error); }
+.custom-select-value { flex: 1; min-width: 0; display: flex; align-items: center; gap: .5rem; overflow: hidden; }
+.custom-select-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.custom-select[data-placeholder-shown] .custom-select-label { color: var(--muted-fg); }
+.custom-select-icon { flex-shrink: 0; display: grid; place-items: center; width: 1.1rem; height: 1.1rem; line-height: 1; }
+.custom-select-icon svg { width: 1rem; height: 1rem; }
+.custom-select-caret { flex-shrink: 0; display: grid; color: var(--muted-fg); transition: transform var(--dur) var(--ease-out); }
+.custom-select-caret svg { width: 1rem; height: 1rem; }
+.custom-select-sm { --h: var(--control-h-sm); --field-px: .625rem; }
+.custom-select-sm .custom-select-trigger { font-size: .8125rem; border-radius: var(--radius-sm); }
+.custom-select-lg { --h: var(--control-h-lg); }
+.custom-select-ghost .custom-select-trigger { background: transparent; border-color: transparent; box-shadow: none; width: auto; font-weight: 500; }
+.custom-select-ghost .custom-select-trigger:hover { background: var(--muted); border-color: transparent; }
+.custom-select-ghost { width: auto; display: inline-block; }
+.custom-select-panel .listbox-icon { font-size: 1rem; line-height: 1; color: inherit; }
+.listbox-avatar { width: 1.35rem; height: 1.35rem; border-radius: 50%; display: grid; place-items: center; font-size: .62rem; font-weight: 600; color: #fff; }

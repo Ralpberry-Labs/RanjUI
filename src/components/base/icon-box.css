@@ -1,0 +1,57 @@
+/* ==========================================================================
+   Icon box / feature icon
+   ========================================================================== */
+.icon-box {
+  --icon-box-size: 2.75rem;
+  --icon-box-tone: var(--primary);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--icon-box-size);
+  height: var(--icon-box-size);
+  border-radius: calc(var(--icon-box-size) * .28);
+  color: var(--primary-soft-fg);
+  background: var(--primary-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--icon-box-tone) 18%, transparent);
+}
+.icon-box > svg { width: 46%; height: 46%; }
+.icon-box-sm { --icon-box-size: 2rem; }
+.icon-box-lg { --icon-box-size: 3.5rem; }
+.icon-box-xl { --icon-box-size: 4.5rem; }
+.icon-box-circle { border-radius: 50%; }
+.icon-box-success { --icon-box-tone: var(--success); color: var(--success-soft-fg); background: var(--success-soft); }
+.icon-box-warning { --icon-box-tone: var(--warning); color: var(--warning-soft-fg); background: var(--warning-soft); }
+.icon-box-destructive, .icon-box-danger { --icon-box-tone: var(--destructive); color: var(--destructive-soft-fg); background: var(--destructive-soft); }
+.icon-box-info { --icon-box-tone: var(--info); color: var(--info-soft-fg); background: var(--info-soft); }
+.icon-box-neutral { --icon-box-tone: var(--fg); color: var(--fg); background: var(--muted); }
+
+/* Solid with gradient + glossy highlight */
+.icon-box-solid {
+  color: #fff;
+  background: linear-gradient(160deg, oklch(0.68 0.2 var(--icon-box-hue, var(--hue))), oklch(0.52 0.23 calc(var(--icon-box-hue, var(--hue)) + 25)));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), inset 0 -2px 6px rgb(0 0 0 / .12), 0 6px 16px -6px oklch(0.55 0.22 var(--icon-box-hue, var(--hue)) / .7);
+}
+/* Outline tile like Linear/Vercel feature grids */
+.icon-box-outline {
+  color: var(--fg);
+  background: linear-gradient(to bottom, var(--card), var(--bg-subtle));
+  box-shadow: 0 0 0 1px var(--border), var(--shadow-sm), inset 0 1px 0 rgb(255 255 255 / .5);
+}
+[data-theme="dark"] .icon-box-outline { box-shadow: 0 0 0 1px var(--border), var(--shadow-sm), inset 0 1px 0 rgb(255 255 255 / .05); }
+/* Glow halo */
+.icon-box-glow { box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--icon-box-tone) 25%, transparent), 0 0 0 6px color-mix(in oklab, var(--icon-box-tone) 8%, transparent), 0 8px 28px -4px color-mix(in oklab, var(--icon-box-tone) 45%, transparent); }
+.icon-box-solid.icon-box-glow { box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), 0 0 0 6px color-mix(in oklab, var(--primary) 12%, transparent), 0 10px 30px -6px color-mix(in oklab, var(--primary) 70%, transparent); }
+
+/* Feature layout: icon + title + text */
+.feature { display: flex; flex-direction: column; gap: .5rem; min-width: 0; text-align: left; }
+.feature > .icon-box { margin-bottom: .5rem; }
+.feature-title { font-family: var(--font-display); font-size: var(--text-base); font-weight: 650; letter-spacing: -.01em; line-height: 1.35; }
+.feature-text { font-size: var(--text-sm); color: var(--muted-fg); line-height: 1.6; text-wrap: pretty; }
+.feature-row { flex-direction: row; align-items: flex-start; gap: 1rem; }
+.feature-row > .icon-box { margin-bottom: 0; }
+.feature-row > div { display: flex; flex-direction: column; gap: .3rem; min-width: 0; }
+.feature-card { padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-xl); background: var(--card); transition: border-color var(--dur) var(--ease), box-shadow var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.feature-card:hover { border-color: color-mix(in oklab, var(--primary) 35%, var(--border)); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.feature-card:hover .icon-box { transform: scale(1.06) rotate(-4deg); }
+.feature-card .icon-box { transition: transform var(--dur-slow) var(--ease-spring); }

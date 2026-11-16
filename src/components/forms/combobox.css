@@ -1,0 +1,15 @@
+/* ==========================================================================
+   Combobox — editable input with filtered listbox
+   ========================================================================== */
+.combobox { position: relative; display: block; width: 100%; min-width: 0; }
+.combobox-input:not(.input-wrap > *) {
+  display: block; width: 100%; height: var(--control-h); padding: 0 var(--field-px);
+  font-size: var(--field-fs); color: var(--fg); background: var(--field-bg);
+  border: 1px solid var(--field-border); border-radius: var(--field-radius); outline: none;
+}
+.combobox-toggle svg { transition: transform var(--dur) var(--ease-out); }
+.combobox[data-state="open"] .combobox-toggle svg { transform: rotate(180deg); }
+.combobox[data-state="open"] .input-wrap { border-color: var(--field-focus); }
+.combobox[aria-invalid="true"] .input-wrap { border-color: var(--destructive); }
+.combobox-spinner { color: var(--muted-fg); }
+.combobox-empty { padding: 1rem .75rem; text-align: center; color: var(--muted-fg); font-size: .85rem; }

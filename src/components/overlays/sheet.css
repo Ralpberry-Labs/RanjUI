@@ -1,0 +1,42 @@
+/* ==========================================================================
+   Sheet — edge-anchored panel (right default, .sheet-left/-top/-bottom).
+   Lives in a .dialog-overlay (or v1: as the overlay's next sibling).
+   ========================================================================== */
+.sheet {
+  --sheet-size: 24rem;
+  --sheet-from: translate3d(100%, 0, 0);
+  position: fixed; z-index: var(--z-modal);
+  top: 0; right: 0; bottom: 0;
+  width: var(--sheet-size); max-width: calc(100% - 2.5rem);
+  display: flex; flex-direction: column;
+  background: var(--card); color: var(--card-fg);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow-xl);
+  overflow-y: auto; outline: none;
+  animation: sheet-in .5s cubic-bezier(.32, .72, 0, 1);
+}
+.sheet:not([data-state="open"]):not([data-closing]) { display: none; }
+.dialog-overlay > .sheet:not([data-state]) { display: flex; }
+.sheet[data-closing] { animation: sheet-out .3s cubic-bezier(.4, 0, 1, 1) forwards; }
+@keyframes sheet-in { from { transform: var(--sheet-from); } }
+@keyframes sheet-out { to { transform: var(--sheet-from); } }
+
+.sheet-left { right: auto; left: 0; border-left: 0; border-right: 1px solid var(--border); --sheet-from: translate3d(-100%, 0, 0); }
+.sheet-top, .sheet-bottom { left: 0; right: 0; width: auto; max-width: none; height: auto; max-height: min(var(--sheet-size), calc(100dvh - 2.5rem)); border-left: 0; }
+.sheet-top { top: 0; bottom: auto; border-bottom: 1px solid var(--border); --sheet-from: translate3d(0, -100%, 0); --sheet-size: 26rem; }
+.sheet-bottom { top: auto; bottom: 0; border-top: 1px solid var(--border); --sheet-from: translate3d(0, 100%, 0); --sheet-size: 26rem; }
+.sheet-sm { --sheet-size: 20rem; }
+.sheet-lg { --sheet-size: 32rem; }
+.sheet-xl { --sheet-size: 42rem; }
+
+/* Floating: inset card with rounded corners */
+.sheet-floating { top: .5rem; bottom: .5rem; right: .5rem; border: 1px solid var(--border); border-radius: var(--radius-xl); max-width: calc(100% - 1rem); --sheet-from: translate3d(calc(100% + 1rem), 0, 0); }
+.sheet-floating.sheet-left { right: auto; left: .5rem; --sheet-from: translate3d(calc(-100% - 1rem), 0, 0); }
+
+.sheet-header { display: flex; flex-direction: column; gap: .3rem; padding: 1.5rem 1.5rem 1rem; flex-shrink: 0; }
+.sheet-title { font-size: 1.0625rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.3; padding-right: 2rem; }
+.sheet-description { color: var(--muted-fg); font-size: .875rem; line-height: 1.5; }
+.sheet-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: .5rem 1.5rem 1.5rem; }
+.sheet-footer { display: flex; justify-content: flex-end; gap: .5rem; padding: 1rem 1.5rem; border-top: 1px solid var(--border); background: var(--bg-subtle); flex-shrink: 0; }
+.sheet-floating .sheet-footer { border-radius: 0 0 var(--radius-xl) var(--radius-xl); }
+.sheet > .dialog-close { top: 1.1rem; right: 1rem; }

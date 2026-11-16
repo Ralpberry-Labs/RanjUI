@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Callout — inline notice with icon (info/success/warning/danger/note/tip)
+   ========================================================================== */
+.callout {
+  --callout-tone: var(--primary);
+  --callout-bg: var(--primary-soft);
+  --callout-fg: var(--primary-soft-fg);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: .2rem .8rem;
+  align-items: start;
+  padding: .95rem 1.1rem;
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--fg);
+  background: color-mix(in oklab, var(--callout-bg) 70%, var(--bg));
+  border: 1px solid color-mix(in oklab, var(--callout-tone) 24%, transparent);
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+.callout > .callout-icon, .callout > svg:first-child {
+  grid-row: span 2;
+  width: 1.15rem; height: 1.15rem; margin-top: .1rem;
+  color: var(--callout-tone);
+  flex-shrink: 0;
+}
+.callout:not(:has(> .callout-icon, > svg:first-child)) { grid-template-columns: minmax(0, 1fr); }
+.callout-title { font-weight: 600; color: var(--callout-fg); line-height: 1.4; }
+.callout-body, .callout-description { color: color-mix(in oklab, var(--fg) 78%, var(--bg)); grid-column: 2; }
+.callout:not(:has(> .callout-icon, > svg:first-child)) .callout-body { grid-column: 1; }
+.callout-title + .callout-body { margin-top: .1rem; }
+.callout-body a { color: var(--callout-fg); font-weight: 500; text-decoration: underline; text-underline-offset: .2em; }
+.callout-actions { grid-column: 2; display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+.callout-close { position: absolute; top: .6rem; right: .6rem; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: var(--radius-sm); color: var(--muted-fg); transition: background-color var(--transition), color var(--transition); }
+.callout-close:hover { background: color-mix(in oklab, var(--callout-tone) 12%, transparent); color: var(--fg); }
+.callout-close svg { width: .9rem; height: .9rem; }
+.callout:has(.callout-close) { padding-right: 2.75rem; }
+
+.callout-info { --callout-tone: var(--info); --callout-bg: var(--info-soft); --callout-fg: var(--info-soft-fg); }
+.callout-success { --callout-tone: var(--success); --callout-bg: var(--success-soft); --callout-fg: var(--success-soft-fg); }
+.callout-warning { --callout-tone: var(--warning); --callout-bg: var(--warning-soft); --callout-fg: var(--warning-soft-fg); }
+.callout-danger, .callout-destructive, .callout-error { --callout-tone: var(--destructive); --callout-bg: var(--destructive-soft); --callout-fg: var(--destructive-soft-fg); }
+.callout-note, .callout-neutral { --callout-tone: var(--muted-fg); --callout-bg: var(--muted); --callout-fg: var(--fg); }
+
+/* Accent bar on the left (docs style) */
+.callout-bar { border-radius: var(--radius-sm); border-color: transparent; border-left: 3px solid var(--callout-tone); background: color-mix(in oklab, var(--callout-bg) 60%, var(--bg)); }
+/* Plain outline (card-like) */
+.callout-outline { background: var(--card); border-color: var(--border); box-shadow: var(--shadow-xs); }
+/* Solid */
+.callout-solid { background: var(--callout-tone); border-color: transparent; color: #fff; }
+.callout-solid .callout-title, .callout-solid .callout-body, .callout-solid > svg:first-child, .callout-solid .callout-icon { color: inherit; }
+.callout-warning.callout-solid { color: var(--warning-fg); }
+.callout[data-state="closed"] { display: none; }

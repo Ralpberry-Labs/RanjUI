@@ -1,0 +1,203 @@
+/* ==========================================================================
+   Ranj UI — Design tokens
+   Every component reads these. Override any of them on :root or on a scope.
+   ========================================================================== */
+:root {
+  /* Surfaces */
+  --bg: #ffffff;
+  --bg-subtle: #fafafa;
+  --fg: #09090b;
+  --card: #ffffff;
+  --card-fg: #09090b;
+  --popover: #ffffff;
+  --popover-fg: #09090b;
+
+  /* Brand (driven by --hue so accents can be swapped with one number) */
+  --hue: 252;
+  --primary: oklch(0.55 0.22 var(--hue));
+  --primary-hover: oklch(0.49 0.22 var(--hue));
+  --primary-fg: #ffffff;
+  --primary-soft: oklch(0.96 0.03 var(--hue));
+  --primary-soft-fg: oklch(0.45 0.2 var(--hue));
+  --accent: var(--primary-soft);
+  --accent-fg: var(--primary-soft-fg);
+
+  /* Neutrals */
+  --secondary: #f4f4f5;
+  --secondary-fg: #18181b;
+  --secondary-hover: #e4e4e7;
+  --muted: #f4f4f5;
+  --muted-fg: #71717a;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+  --input: #e4e4e7;
+  --ring: color-mix(in oklab, var(--primary) 55%, transparent);
+
+  /* Status */
+  --destructive: #ef4444;
+  --destructive-hover: #dc2626;
+  --destructive-fg: #ffffff;
+  --destructive-soft: #fef2f2;
+  --destructive-soft-fg: #b91c1c;
+  --success: #10b981;
+  --success-fg: #ffffff;
+  --success-soft: #ecfdf5;
+  --success-soft-fg: #047857;
+  --warning: #f59e0b;
+  --warning-fg: #1c1917;
+  --warning-soft: #fffbeb;
+  --warning-soft-fg: #b45309;
+  --info: #0ea5e9;
+  --info-fg: #ffffff;
+  --info-soft: #f0f9ff;
+  --info-soft-fg: #0369a1;
+
+  /* Shape */
+  --radius: 0.625rem;
+  --radius-xs: calc(var(--radius) * 0.4);
+  --radius-sm: calc(var(--radius) * 0.7);
+  --radius-lg: calc(var(--radius) * 1.3);
+  --radius-xl: calc(var(--radius) * 1.8);
+  --radius-2xl: calc(var(--radius) * 2.6);
+  --radius-full: 9999px;
+
+  /* Elevation */
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / .04);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .06), 0 1px 1px rgb(0 0 0 / .03);
+  --shadow: 0 2px 6px -1px rgb(0 0 0 / .08), 0 1px 3px rgb(0 0 0 / .05);
+  --shadow-md: 0 6px 16px -4px rgb(0 0 0 / .1), 0 2px 6px -2px rgb(0 0 0 / .06);
+  --shadow-lg: 0 14px 32px -8px rgb(0 0 0 / .14), 0 4px 10px -4px rgb(0 0 0 / .06);
+  --shadow-xl: 0 28px 60px -16px rgb(0 0 0 / .22), 0 8px 20px -8px rgb(0 0 0 / .08);
+  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--primary) 30%, transparent), 0 8px 30px -6px color-mix(in oklab, var(--primary) 55%, transparent);
+
+  /* Type */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Inter Tight', var(--font-sans);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --text-xs: .75rem; --text-sm: .875rem; --text-base: 1rem; --text-lg: 1.125rem;
+  --text-xl: 1.25rem; --text-2xl: 1.5rem; --text-3xl: 1.875rem; --text-4xl: 2.25rem;
+  --text-5xl: 3rem; --text-6xl: 3.75rem; --text-7xl: 4.5rem;
+
+  /* Motion */
+  --ease: cubic-bezier(.2, 0, 0, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-bounce: cubic-bezier(.68, -0.6, .32, 1.6);
+  --dur-fast: 120ms;
+  --dur: 200ms;
+  --dur-slow: 350ms;
+  --dur-slower: 600ms;
+  --transition: var(--dur) var(--ease);
+  --transition-slow: var(--dur-slow) var(--ease-out);
+
+  /* Layers */
+  --z-dropdown: 50; --z-sticky: 60; --z-overlay: 80; --z-modal: 90;
+  --z-popover: 100; --z-toast: 110; --z-tooltip: 120;
+
+  /* Misc */
+  --overlay: rgb(9 9 11 / .45);
+  --glass: rgb(255 255 255 / .6);
+  --glass-border: rgb(255 255 255 / .5);
+  --scrollbar: #d4d4d8;
+  --scrollbar-hover: #a1a1aa;
+  --skeleton-from: #ececef;
+  --skeleton-to: #f6f6f7;
+  --control-h: 2.375rem;
+  --control-h-sm: 2rem;
+  --control-h-lg: 2.75rem;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #09090b;
+  --bg-subtle: #0f0f12;
+  --fg: #fafafa;
+  --card: #111114;
+  --card-fg: #fafafa;
+  --popover: #131317;
+  --popover-fg: #fafafa;
+  --primary: oklch(0.66 0.2 var(--hue));
+  --primary-hover: oklch(0.72 0.18 var(--hue));
+  --primary-fg: #ffffff;
+  --primary-soft: oklch(0.27 0.07 var(--hue));
+  --primary-soft-fg: oklch(0.82 0.12 var(--hue));
+  --secondary: #1f1f23;
+  --secondary-fg: #fafafa;
+  --secondary-hover: #2a2a2f;
+  --muted: #1c1c20;
+  --muted-fg: #a1a1aa;
+  --border: #26262b;
+  --border-strong: #3a3a41;
+  --input: #2a2a30;
+  --destructive: #ef4444;
+  --destructive-hover: #f87171;
+  --destructive-soft: #2a1314;
+  --destructive-soft-fg: #fca5a5;
+  --success: #10b981;
+  --success-soft: #0d2620;
+  --success-soft-fg: #6ee7b7;
+  --warning: #f59e0b;
+  --warning-soft: #2a2010;
+  --warning-soft-fg: #fcd34d;
+  --info: #0ea5e9;
+  --info-soft: #0c2230;
+  --info-soft-fg: #7dd3fc;
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / .4);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .5);
+  --shadow: 0 2px 6px -1px rgb(0 0 0 / .5), 0 1px 3px rgb(0 0 0 / .4);
+  --shadow-md: 0 6px 16px -4px rgb(0 0 0 / .6), 0 2px 6px -2px rgb(0 0 0 / .4);
+  --shadow-lg: 0 14px 32px -8px rgb(0 0 0 / .7), 0 4px 10px -4px rgb(0 0 0 / .4);
+  --shadow-xl: 0 28px 60px -16px rgb(0 0 0 / .8), 0 8px 20px -8px rgb(0 0 0 / .5);
+  --overlay: rgb(0 0 0 / .65);
+  --glass: rgb(24 24 27 / .55);
+  --glass-border: rgb(255 255 255 / .08);
+  --scrollbar: #3f3f46;
+  --scrollbar-hover: #52525b;
+  --skeleton-from: #1c1c20;
+  --skeleton-to: #27272c;
+  color-scheme: dark;
+}
+
+/* Accent presets — <html data-accent="rose"> or any element */
+[data-accent="blue"]    { --hue: 255; }
+[data-accent="indigo"]  { --hue: 270; }
+[data-accent="violet"]  { --hue: 292; }
+[data-accent="purple"]  { --hue: 305; }
+[data-accent="pink"]    { --hue: 350; }
+[data-accent="rose"]    { --hue: 15; }
+[data-accent="orange"]  { --hue: 45; }
+[data-accent="amber"]   { --hue: 70; }
+[data-accent="lime"]    { --hue: 130; }
+[data-accent="green"]   { --hue: 150; }
+[data-accent="teal"]    { --hue: 185; }
+[data-accent="cyan"]    { --hue: 215; }
+[data-accent="mono"]    { --primary: var(--fg); --primary-hover: color-mix(in oklab, var(--fg) 85%, var(--bg)); --primary-fg: var(--bg); --primary-soft: var(--muted); --primary-soft-fg: var(--fg); }
+
+/* Re-derive brand colors where an accent is scoped to a subtree */
+[data-accent]:not(html), .theme-scope {
+  --primary: oklch(0.55 0.22 var(--hue));
+  --primary-hover: oklch(0.49 0.22 var(--hue));
+  --primary-soft: oklch(0.96 0.03 var(--hue));
+  --primary-soft-fg: oklch(0.45 0.2 var(--hue));
+  --accent: var(--primary-soft); --accent-fg: var(--primary-soft-fg);
+  --ring: color-mix(in oklab, var(--primary) 55%, transparent);
+}
+[data-theme="dark"] [data-accent]:not(html), [data-theme="dark"] .theme-scope, [data-theme="dark"][data-accent]:not(html) {
+  --primary: oklch(0.66 0.2 var(--hue));
+  --primary-hover: oklch(0.72 0.18 var(--hue));
+  --primary-soft: oklch(0.27 0.07 var(--hue));
+  --primary-soft-fg: oklch(0.82 0.12 var(--hue));
+}
+[data-accent="mono"]:not(html) { --primary: var(--fg); --primary-hover: color-mix(in oklab, var(--fg) 85%, var(--bg)); --primary-fg: var(--bg); --primary-soft: var(--muted); --primary-soft-fg: var(--fg); }
+
+/* Radius presets */
+[data-radius="none"] { --radius: 0rem; }
+[data-radius="sm"]   { --radius: 0.35rem; }
+[data-radius="md"]   { --radius: 0.625rem; }
+[data-radius="lg"]   { --radius: 0.9rem; }
+[data-radius="full"] { --radius: 1.25rem; }
+
+/* Density */
+[data-density="compact"] { --control-h: 2.125rem; --control-h-sm: 1.75rem; --control-h-lg: 2.5rem; }
+[data-density="comfy"]   { --control-h: 2.625rem; --control-h-sm: 2.25rem; --control-h-lg: 3rem; }

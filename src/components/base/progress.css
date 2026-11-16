@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Progress + Meter
+   <div class="progress" role="progressbar" aria-valuenow="62" style="--value:62"><div class="progress-fill"></div></div>
+   Legacy: <div class="progress"><div class="progress-fill" style="width:62%"></div></div>
+   ========================================================================== */
+.progress {
+  --progress-h: .5rem;
+  --progress-color: var(--primary);
+  --progress-track: color-mix(in oklab, var(--fg) 8%, transparent);
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: var(--progress-h);
+  overflow: hidden;
+  background: var(--progress-track);
+  border-radius: var(--radius-full);
+}
+.progress-fill, .progress-bar {
+  height: 100%;
+  width: calc(var(--value, 0) * 1%);
+  flex-shrink: 0;
+  background: var(--progress-color);
+  border-radius: inherit;
+  transition: width var(--dur-slower) var(--ease-out);
+}
+.progress > .progress-fill:only-child { box-shadow: inset 0 -1px 0 rgb(0 0 0 / .08); }
+.progress-xs { --progress-h: .1875rem; }
+.progress-sm { --progress-h: .3125rem; }
+.progress-md { --progress-h: .5rem; }
+.progress-lg { --progress-h: .75rem; }
+.progress-xl { --progress-h: 1.25rem; }
+.progress-success { --progress-color: var(--success); }
+.progress-warning { --progress-color: var(--warning); }
+.progress-destructive, .progress-danger { --progress-color: var(--destructive); }
+.progress-info { --progress-color: var(--info); }
+.progress-gradient { --progress-color: linear-gradient(90deg, oklch(0.62 0.23 var(--hue)), oklch(0.7 0.2 calc(var(--hue) + 70))); }
+.progress-glow .progress-fill { box-shadow: 0 0 12px 0 color-mix(in oklab, var(--primary) 70%, transparent); }
+.progress-glow { overflow: visible; }
+
+/* Striped + animated */
+.progress-striped .progress-fill, .progress-striped .progress-bar {
+  background-image: linear-gradient(45deg, rgb(255 255 255 / .22) 25%, transparent 25%, transparent 50%, rgb(255 255 255 / .22) 50%, rgb(255 255 255 / .22) 75%, transparent 75%, transparent);
+  background-color: var(--progress-color);
+  background-size: 1rem 1rem;
+}
+.progress-animated .progress-fill, .progress-animated .progress-bar { animation: progress-stripes .8s linear infinite; }
+@keyframes progress-stripes { from { background-position: 1rem 0; } to { background-position: 0 0; } }
+
+/* Indeterminate */
+.progress-indeterminate .progress-fill, .progress-indeterminate .progress-bar,
+.progress[data-state="indeterminate"] .progress-fill {
+  width: 40% !important;
+  position: absolute; left: 0; top: 0;
+  animation: progress-indeterminate 1.4s var(--ease-in-out) infinite;
+}
+@keyframes progress-indeterminate { from { transform: translateX(-105%); } to { transform: translateX(255%); } }
+
+/* Segmented multi-value: several .progress-fill children with their own --value and color */
+.progress-stacked { gap: 2px; }
+.progress-stacked > .progress-fill { border-radius: 0; }
+.progress-stacked > .progress-fill:first-child { border-radius: var(--radius-full) 0 0 var(--radius-full); }
+/* Stepped blocks: <div class="progress-steps" style="--steps:10;--value:7"></div> */
+.progress-steps {
+  --progress-color: var(--primary);
+  height: .5rem; width: 100%; border-radius: 2px;
+  --seg: calc(100% / var(--steps, 10));
+  background:
+    linear-gradient(90deg, var(--progress-color) calc(var(--value, 0) / var(--steps, 10) * 100%), color-mix(in oklab, var(--fg) 9%, transparent) 0);
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 calc(var(--seg) - 3px), transparent calc(var(--seg) - 3px) var(--seg));
+  mask: repeating-linear-gradient(90deg, #000 0 calc(var(--seg) - 3px), transparent calc(var(--seg) - 3px) var(--seg));
+}
+
+/* Label rows */
+.progress-label { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .5rem; font-size: var(--text-sm); font-weight: 500; }
+.progress-label > :last-child { color: var(--muted-fg); font-variant-numeric: tabular-nums; font-weight: 500; }
+.progress-legend { display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin-top: .65rem; font-size: var(--text-xs); color: var(--muted-fg); }
+.progress-legend > span { display: inline-flex; align-items: center; gap: .4rem; }
+.progress-legend i { width: .55rem; height: .55rem; border-radius: 2px; background: var(--c, var(--primary)); }
+.progress-inline { display: flex; align-items: center; gap: .75rem; }
+.progress-inline > .progress { flex: 1; }
+.progress-inline > span { font-size: var(--text-xs); color: var(--muted-fg); font-variant-numeric: tabular-nums; min-width: 2.5rem; text-align: right; }
+
+/* Circular progress: <div class="progress-ring" style="--value:72"><span>72%</span></div> */
+.progress-ring {
+  --size: 4rem; --thickness: .4rem; --progress-color: var(--primary);
+  position: relative; display: inline-grid; place-items: center; width: var(--size); height: var(--size); border-radius: 50%;
+  background: conic-gradient(var(--progress-color) calc(var(--value, 0) * 1%), color-mix(in oklab, var(--fg) 9%, transparent) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 calc(100% - var(--thickness) + .5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 calc(100% - var(--thickness) + .5px));
+}
+.progress-ring-wrap { position: relative; display: inline-grid; place-items: center; }
+.progress-ring-wrap > :not(.progress-ring) { position: absolute; font-size: var(--text-sm); font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+
+/* ---------- Meter: a value within a known range (disk, quota, strength) ---------- */
+.meter {
+  --meter-h: .625rem;
+  --meter-color: var(--primary);
+  position: relative; width: 100%; height: var(--meter-h); overflow: hidden;
+  background: color-mix(in oklab, var(--fg) 8%, transparent); border-radius: var(--radius-full);
+}
+.meter-fill { height: 100%; width: calc(var(--value, 0) * 1%); border-radius: inherit; background: var(--meter-color); transition: width var(--dur-slower) var(--ease-out), background-color var(--dur); }
+.meter-success { --meter-color: var(--success); }
+.meter-warning { --meter-color: var(--warning); }
+.meter-destructive, .meter-danger { --meter-color: var(--destructive); }
+/* Auto-colored by value thresholds: add data-low/data-high via JS or the classes above */
+.meter-gradient .meter-fill { background: linear-gradient(90deg, var(--success), var(--warning) 60%, var(--destructive)); background-size: calc(10000% / max(var(--value, 1), 1)) 100%; }
+/* Segmented strength meter: <div class="meter-segments" data-level="3"><i></i><i></i><i></i><i></i></div> */
+.meter-segments { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: .3rem; width: 100%; }
+.meter-segments > i { height: .375rem; border-radius: var(--radius-full); background: color-mix(in oklab, var(--fg) 9%, transparent); transition: background-color var(--dur) var(--ease); }
+.meter-segments[data-level="1"] > i:nth-child(-n+1) { background: var(--destructive); }
+.meter-segments[data-level="2"] > i:nth-child(-n+2) { background: var(--warning); }
+.meter-segments[data-level="3"] > i:nth-child(-n+3) { background: color-mix(in oklab, var(--success) 70%, var(--warning)); }
+.meter-segments[data-level="4"] > i:nth-child(-n+4) { background: var(--success); }
+.meter-segments[data-level="5"] > i:nth-child(-n+5) { background: var(--success); }
+/* Native <meter> styled */
+meter.meter-native { width: 100%; height: .625rem; -webkit-appearance: none; appearance: none; background: none; border: 0; }
+meter.meter-native::-webkit-meter-bar { background: color-mix(in oklab, var(--fg) 8%, transparent); border: 0; border-radius: 99px; height: .625rem; }
+meter.meter-native::-webkit-meter-optimum-value { background: var(--success); border-radius: 99px; }
+meter.meter-native::-webkit-meter-suboptimum-value { background: var(--warning); border-radius: 99px; }
+meter.meter-native::-webkit-meter-even-less-good-value { background: var(--destructive); border-radius: 99px; }
+meter.meter-native::-moz-meter-bar { background: var(--success); border-radius: 99px; }

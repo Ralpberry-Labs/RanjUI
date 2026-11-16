@@ -1,0 +1,88 @@
+/* ==========================================================================
+   Switch — spring thumb with stretch, sizes, icons in thumb, loading state
+   ========================================================================== */
+.switch {
+  --w: 2.25rem; --h: 1.25rem; --pad: 2px;
+  --t: calc(var(--h) - var(--pad) * 2 - 2px);
+  --on: var(--primary);
+  position: relative;
+  display: inline-flex; align-items: center; gap: .65rem;
+  font-size: .875rem; line-height: 1.35; color: var(--fg);
+  cursor: pointer; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.switch > input[type="checkbox"] { position: absolute; opacity: 0; width: var(--w); height: var(--h); margin: 0; pointer-events: none; }
+.switch-track {
+  position: relative; flex-shrink: 0;
+  display: flex; align-items: center;
+  width: var(--w); height: var(--h); padding: var(--pad);
+  background: color-mix(in oklab, var(--border-strong) 85%, var(--muted));
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / .06);
+  transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+[data-theme="dark"] .switch-track { background: #34343b; }
+.switch-thumb {
+  position: relative; display: grid; place-items: center;
+  width: var(--t); height: var(--t);
+  background: #fff; color: var(--muted-fg);
+  border-radius: var(--radius-full);
+  box-shadow: 0 1px 3px rgb(0 0 0 / .18), 0 1px 1px rgb(0 0 0 / .06);
+  transition: transform var(--dur-slow) var(--ease-spring), width var(--dur) var(--ease-out), color var(--dur);
+}
+.switch:active > input:not(:disabled) + .switch-track .switch-thumb { width: calc(var(--t) * 1.25); }
+.switch > input:checked + .switch-track { background: var(--on); }
+.switch > input:checked + .switch-track .switch-thumb { transform: translateX(calc(var(--w) - var(--h))); color: var(--on); }
+.switch:active > input:checked:not(:disabled) + .switch-track .switch-thumb { transform: translateX(calc(var(--w) - var(--h) - var(--t) * .25)); }
+.switch > input:focus-visible + .switch-track { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ring); }
+.switch > input:disabled + .switch-track { opacity: .5; }
+.switch:has(> input:disabled) { cursor: not-allowed; color: var(--muted-fg); }
+.switch > input[aria-invalid="true"]:not(:checked) + .switch-track { box-shadow: 0 0 0 1px var(--destructive); }
+
+/* Icons inside the thumb */
+.switch-thumb svg { position: absolute; width: 62%; height: 62%; transition: opacity var(--dur), transform var(--dur-slow) var(--ease-spring); }
+.switch-thumb .switch-icon-on { opacity: 0; transform: rotate(-90deg) scale(.5); }
+.switch > input:checked + .switch-track .switch-icon-on { opacity: 1; transform: none; }
+.switch > input:checked + .switch-track .switch-icon-off { opacity: 0; transform: rotate(90deg) scale(.5); }
+/* Track labels (I / O, ON / OFF) */
+.switch-track-text { position: absolute; font-size: .55rem; font-weight: 700; letter-spacing: .04em; color: #fff; pointer-events: none; transition: opacity var(--dur); }
+.switch-track-text.on { left: .45rem; opacity: 0; }
+.switch-track-text.off { right: .4rem; color: var(--muted-fg); }
+.switch > input:checked + .switch-track .switch-track-text.on { opacity: 1; }
+.switch > input:checked + .switch-track .switch-track-text.off { opacity: 0; }
+
+/* Loading */
+.switch[data-loading] { pointer-events: none; }
+.switch[data-loading] .switch-thumb::after {
+  content: ''; position: absolute; inset: 18%;
+  border: 2px solid color-mix(in oklab, var(--on) 25%, transparent); border-top-color: var(--on);
+  border-radius: 50%; animation: r-spin .7s linear infinite;
+}
+.switch[data-loading] .switch-thumb svg { opacity: 0 !important; }
+.switch[data-loading] > input:not(:checked) + .switch-track .switch-thumb::after { border-color: color-mix(in oklab, var(--muted-fg) 25%, transparent); border-top-color: var(--muted-fg); }
+
+/* Sizes & colors */
+.switch-sm { --w: 1.75rem; --h: 1rem; font-size: .8125rem; gap: .5rem; }
+.switch-lg { --w: 2.875rem; --h: 1.625rem; font-size: .95rem; }
+.switch-xl { --w: 3.5rem; --h: 2rem; --pad: 3px; font-size: 1rem; }
+.switch-success { --on: var(--success); }
+.switch-destructive { --on: var(--destructive); }
+.switch-warning { --on: var(--warning); }
+.switch-reverse { flex-direction: row-reverse; justify-content: space-between; width: 100%; }
+.switch:has(.switch-desc) { align-items: flex-start; }
+.switch:has(.switch-desc) .switch-track { margin-top: .1rem; }
+
+/* Settings-style row */
+.switch-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  width: 100%; padding: .9rem 1rem;
+  border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card);
+  box-shadow: var(--shadow-xs);
+}
+.switch-row + .switch-row { margin-top: .6rem; }
+.switch-row .switch-body { flex: 1; }
+.switch-list { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); width: 100%; overflow: hidden; }
+.switch-list > .switch-row { border: 0; border-radius: 0; box-shadow: none; background: transparent; margin: 0; }
+.switch-list > .switch-row + .switch-row { border-top: 1px solid var(--border); }
+.switch-row > input, .switch-reverse > input { left: auto; right: 1rem; }

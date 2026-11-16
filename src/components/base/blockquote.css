@@ -1,0 +1,46 @@
+/* ==========================================================================
+   Blockquote / Quote card
+   ========================================================================== */
+.blockquote {
+  position: relative;
+  padding: .25rem 0 .25rem 1.25rem;
+  border-left: 3px solid var(--primary);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--fg);
+  text-wrap: pretty;
+}
+.blockquote p + p { margin-top: .75rem; }
+.blockquote cite, .blockquote footer, .quote-author { display: block; margin-top: .85rem; font-size: var(--text-sm); font-style: normal; color: var(--muted-fg); }
+.blockquote cite::before, .blockquote footer::before { content: '— '; }
+.blockquote-lg { font-family: var(--font-display); font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.3; border: 0; padding: 0; }
+.blockquote-lg::before { content: '\201C'; display: block; height: .55em; font-size: 3em; line-height: 1; color: var(--primary); font-family: Georgia, serif; }
+.blockquote-plain { border: 0; padding-left: 0; font-style: italic; color: var(--muted-fg); }
+
+.quote-card {
+  position: relative;
+  display: flex; flex-direction: column; gap: 1.1rem;
+  padding: 1.6rem;
+  background: var(--card);
+  color: var(--card-fg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  text-align: left;
+}
+.quote-card::before {
+  content: '\201C'; position: absolute; right: 1.1rem; top: -.4rem;
+  font-family: Georgia, serif; font-size: 7rem; line-height: 1; font-weight: 700;
+  color: color-mix(in oklab, var(--primary) 14%, transparent); pointer-events: none;
+}
+.quote-card blockquote, .quote-card .quote-text { position: relative; font-size: var(--text-base); line-height: 1.65; color: var(--fg); text-wrap: pretty; }
+.quote-card mark, .blockquote mark { background: color-mix(in oklab, var(--primary) 16%, transparent); color: inherit; padding: 0 .15em; border-radius: 3px; }
+.quote-card figcaption, .quote-card .quote-footer { display: flex; align-items: center; gap: .75rem; margin-top: auto; }
+.quote-card figcaption b, .quote-card .quote-footer b { display: block; font-size: var(--text-sm); font-weight: 600; line-height: 1.3; }
+.quote-card figcaption span, .quote-card .quote-footer span:not(.avatar) { display: block; font-size: var(--text-xs); color: var(--muted-fg); }
+.quote-stars { display: inline-flex; gap: .15rem; color: #f59e0b; }
+.quote-stars svg { width: 1rem; height: 1rem; fill: currentColor; }
+.quote-card-featured { background: linear-gradient(160deg, color-mix(in oklab, var(--primary) 9%, var(--card)), var(--card) 60%); border-color: color-mix(in oklab, var(--primary) 30%, var(--border)); }
+.quote-card-featured blockquote { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; letter-spacing: -.015em; line-height: 1.45; }
+.quote-card-logo { height: 1.4rem; width: auto; color: var(--fg); opacity: .85; }

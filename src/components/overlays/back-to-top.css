@@ -1,0 +1,27 @@
+/* ==========================================================================
+   Back to top — appears after scrolling, shows reading progress as a ring.
+   ========================================================================== */
+.back-to-top {
+  --btt-size: 3rem;
+  position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: var(--z-sticky);
+  display: grid; place-items: center; width: var(--btt-size); height: var(--btt-size);
+  border-radius: var(--radius-full); background: var(--card); color: var(--fg);
+  border: 1px solid var(--border); box-shadow: var(--shadow-lg);
+  opacity: 0; transform: translateY(12px) scale(.85); pointer-events: none;
+  transition: opacity .3s var(--ease), transform .45s var(--ease-spring), background var(--transition);
+}
+.back-to-top-absolute { position: absolute; }
+.back-to-top[data-visible] { opacity: 1; transform: none; pointer-events: auto; }
+.back-to-top:hover { background: var(--muted); }
+.back-to-top:hover .back-to-top-arrow { transform: translateY(-2px); }
+.back-to-top:active { transform: scale(.92); }
+.back-to-top-arrow { width: 1.125rem; height: 1.125rem; transition: transform .3s var(--ease-spring); }
+.back-to-top-ring { position: absolute; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); transform: rotate(-90deg); pointer-events: none; }
+.back-to-top-ring circle { fill: none; stroke-width: 2.5; }
+.back-to-top-ring .btt-track { stroke: transparent; }
+.back-to-top-ring .btt-bar { stroke: var(--primary); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--p, 0) * 100); transition: stroke-dashoffset .12s linear; }
+.back-to-top-pill { width: auto; height: 2.5rem; padding: 0 1rem 0 .85rem; gap: .4rem; display: inline-flex; align-items: center; font-size: .8125rem; font-weight: 600; }
+.back-to-top-pill .back-to-top-ring { display: none; }
+.back-to-top-solid { background: var(--primary); color: var(--primary-fg); border-color: transparent; }
+.back-to-top-solid:hover { background: var(--primary-hover); }
+.back-to-top-solid .btt-bar { stroke: var(--primary-fg); }

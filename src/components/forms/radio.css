@@ -1,0 +1,62 @@
+/* ==========================================================================
+   Radio — custom dot with spring, horizontal groups, radio cards
+   ========================================================================== */
+.radio {
+  --size: 1.0625rem;
+  position: relative;
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: .875rem; line-height: 1.35; color: var(--fg);
+  cursor: pointer; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.radio > input[type="radio"] { position: absolute; opacity: 0; width: var(--size); height: var(--size); margin: 0; pointer-events: none; }
+.radio-mark {
+  position: relative; flex-shrink: 0; display: grid; place-items: center;
+  width: var(--size); height: var(--size);
+  border: 1px solid var(--border-strong); border-radius: 50%;
+  background: var(--field-bg); box-shadow: var(--shadow-xs);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur), transform var(--dur) var(--ease-spring);
+}
+.radio-mark::after {
+  content: ''; width: 46%; height: 46%; border-radius: 50%;
+  background: var(--primary-fg);
+  transform: scale(0);
+  transition: transform var(--dur-slow) var(--ease-spring);
+}
+.radio:hover > input:not(:disabled) + .radio-mark { border-color: color-mix(in oklab, var(--primary) 55%, var(--border-strong)); }
+.radio:active > input:not(:disabled) + .radio-mark { transform: scale(.88); }
+.radio > input:focus-visible + .radio-mark, .radio-card > input:focus-visible ~ * .radio-mark { box-shadow: 0 0 0 3px var(--ring); border-color: var(--primary); }
+.radio > input:checked + .radio-mark, .radio-card > input:checked ~ .radio-mark, .radio-card > input:checked ~ * .radio-mark { background: var(--primary); border-color: var(--primary); }
+.radio > input:checked + .radio-mark::after, .radio-card > input:checked ~ .radio-mark::after, .radio-card > input:checked ~ * .radio-mark::after { transform: scale(1); }
+.radio > input:disabled + .radio-mark { opacity: .5; }
+.radio:has(> input:disabled) { cursor: not-allowed; color: var(--muted-fg); }
+.radio > input[aria-invalid="true"] + .radio-mark { border-color: var(--destructive); }
+.radio:has(.radio-desc) { align-items: flex-start; }
+.radio:has(.radio-desc) .radio-mark { margin-top: .1rem; }
+.radio-sm { --size: .875rem; font-size: .8125rem; }
+.radio-lg { --size: 1.3rem; font-size: .95rem; }
+.radio-outline > input:checked + .radio-mark { background: var(--field-bg); }
+.radio-outline .radio-mark::after { background: var(--primary); width: 52%; height: 52%; }
+
+/* Radio card extras (base card styles live in checkbox.css) */
+.radio-card { flex-direction: column; gap: .5rem; }
+.radio-card-row { flex-direction: row; align-items: center; }
+.radio-card-head { display: flex; align-items: center; justify-content: space-between; gap: .75rem; width: 100%; }
+.radio-card-title { font-weight: 600; font-size: .9rem; }
+.radio-card-desc { font-size: .8125rem; color: var(--muted-fg); line-height: 1.45; }
+.radio-card-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+.radio-card-price small { font-size: .8rem; font-weight: 500; color: var(--muted-fg); letter-spacing: 0; }
+.radio-card .radio-mark { flex-shrink: 0; }
+.radio-card { --size: 1.0625rem; }
+.radio-card-check {
+  position: absolute; top: .65rem; right: .65rem;
+  display: grid; place-items: center; width: 1.25rem; height: 1.25rem; border-radius: 50%;
+  background: var(--primary); color: var(--primary-fg);
+  transform: scale(0); opacity: 0;
+  transition: transform var(--dur-slow) var(--ease-spring), opacity var(--dur-fast);
+}
+.radio-card-check svg { width: .75rem; height: .75rem; stroke-width: 3; }
+.radio-card:has(> input:checked) .radio-card-check { transform: scale(1); opacity: 1; }
+.radio-card-badge { display: inline-flex; align-items: center; height: 1.25rem; padding: 0 .5rem; border-radius: var(--radius-full); font-size: .68rem; font-weight: 600; background: var(--primary-soft); color: var(--primary-soft-fg); }
+.radio-card-center { align-items: center; text-align: center; padding: 1.1rem .75rem; }
+.radio-card:has(.radio-card-check) .radio-card-head { padding-right: 1.5rem; }

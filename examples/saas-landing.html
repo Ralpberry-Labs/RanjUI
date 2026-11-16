@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Launchpad — SaaS Landing Page Example | RanjuUI</title>
+  <title>Launchpad — SaaS Landing Page Example | Ranj UI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../ranju.css">
+  <link rel="stylesheet" href="../dist/ranj.css">
   <style>
     body { overflow-x: hidden; }
     .landing-nav {
@@ -79,7 +79,7 @@
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="flex gap-2 items-center">
-        <button class="btn btn-ghost btn-sm" onclick="Ranju.theme.toggle();updateIcon()">
+        <button class="btn btn-ghost btn-sm" onclick="Ranj.theme.toggle();updateIcon()">
           <span id="t-icon">&#9790;</span>
         </button>
         <a href="#" class="btn btn-outline btn-sm">Log In</a>
@@ -368,10 +368,10 @@
     </div>
   </footer>
 
-  <script src="../ranju.js"></script>
+  <script src="../dist/ranj.js"></script>
   <script>
     function updateIcon() {
-      document.getElementById('t-icon').textContent = Ranju.theme.current() === 'dark' ? '\u2600' : '\u263E';
+      document.getElementById('t-icon').textContent = Ranj.theme.current() === 'dark' ? '\u2600' : '\u263E';
     }
     updateIcon();
   </script>

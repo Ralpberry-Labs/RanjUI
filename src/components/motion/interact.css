@@ -1,0 +1,231 @@
+/* ==========================================================================
+   Ranj UI — Interactions
+   magnetic, tilt, spotlight-card, glare-hover, border-beam, star-border, shine-border,
+   ripple, click-spark, confetti, cursor-follower, pixel-transition, fx-* hover utilities
+   ========================================================================== */
+
+/* ---------- Magnetic ---------- */
+[data-magnetic] { will-change: transform; }
+[data-magnetic]:not(.block) { display: inline-flex; }
+
+/* ---------- Tilt ---------- */
+[data-tilt] { position: relative; transform-style: preserve-3d; will-change: transform; }
+[data-tilt-depth] { transform: translateZ(var(--tilt-z, 0px)); }
+.tilt-glare {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 5;
+  background: radial-gradient(farthest-corner circle at var(--gx, 50%) var(--gy, 50%), rgb(255 255 255 / var(--glare-max, .45)), rgb(255 255 255 / 0) 55%);
+  opacity: var(--go, 0);
+  transition: opacity .35s;
+  mix-blend-mode: overlay;
+}
+
+/* ---------- Spotlight card (+ spotlight grid) ---------- */
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--radius-xl);
+  background: var(--card); color: var(--card-fg);
+  border: 1px solid var(--border);
+}
+.spotlight-card::before, .spotlight-card::after {
+  content: ''; position: absolute; border-radius: inherit; pointer-events: none;
+  opacity: var(--spot-o, 0); transition: opacity .4s;
+}
+.spotlight-card::before { inset: 0; z-index: -1; background: radial-gradient(var(--spot-size, 420px) circle at var(--mx, 50%) var(--my, 50%), var(--spot-color, color-mix(in oklab, var(--primary) 20%, transparent)), transparent 65%); }
+.spotlight-card::after {
+  inset: -1px; padding: 1px; z-index: 2;
+  background: radial-gradient(calc(var(--spot-size, 420px) * .6) circle at var(--mx, 50%) var(--my, 50%), var(--spot-border, color-mix(in oklab, var(--primary) 85%, transparent)), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.spotlight-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.spotlight-grid .spotlight-card::before { opacity: var(--spot-in, 0); }
+
+/* ---------- Glare hover ---------- */
+.glare-hover {
+  --glare-color: rgb(255 255 255 / .55);
+  --glare-angle: -45deg;
+  --glare-dur: 750ms;
+  --glare-band: 18%;
+  position: relative; isolation: isolate; overflow: hidden;
+}
+.glare-hover::after {
+  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: linear-gradient(var(--glare-angle), transparent calc(50% - var(--glare-band)), var(--glare-color) 50%, transparent calc(50% + var(--glare-band)));
+  background-size: 300% 300%; background-repeat: no-repeat;
+  background-position: 100% 100%;
+  transition: background-position 0s;
+}
+.glare-hover:hover::after, .glare-hover:focus-visible::after { background-position: 0 0; transition: background-position var(--glare-dur) var(--ease-in-out); }
+.glare-hover-loop::after { animation: glare-loop 3.5s var(--ease-in-out) infinite; }
+@keyframes glare-loop { 0% { background-position: 100% 100%; } 40%, 100% { background-position: 0 0; } }
+
+/* ---------- Border beam ---------- */
+@property --beam-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.border-beam {
+  --beam-color: var(--primary);
+  --beam-color-2: oklch(0.78 0.18 calc(var(--hue) + 80));
+  --beam-length: 80deg;
+  --beam-width: 1.5px;
+  --beam-speed: 6s;
+  --beam-inset: -1px;
+  position: relative; isolation: isolate;
+}
+.border-beam::before, .border-beam::after {
+  content: ''; position: absolute; inset: var(--beam-inset);
+  padding: var(--beam-width);
+  border-radius: inherit; pointer-events: none; z-index: 1;
+  background: conic-gradient(from var(--beam-angle), transparent 0deg, transparent calc(360deg - var(--beam-length)), var(--beam-color-2) calc(360deg - var(--beam-length) * .55), var(--beam-color) 358deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation: beam-spin var(--beam-speed) linear infinite;
+}
+.border-beam::after { filter: blur(6px); opacity: .8; padding: calc(var(--beam-width) * 2.5); }
+.border-beam-dual::before, .border-beam-dual::after {
+  background: conic-gradient(from var(--beam-angle), transparent 0deg, transparent calc(180deg - var(--beam-length)), var(--beam-color-2) calc(180deg - var(--beam-length) * .5), var(--beam-color) 178deg, transparent 180deg, transparent calc(360deg - var(--beam-length)), var(--beam-color-2) calc(360deg - var(--beam-length) * .5), var(--beam-color) 358deg, transparent 360deg);
+}
+@keyframes beam-spin { to { --beam-angle: 360deg; } }
+
+/* ---------- Star border ---------- */
+.star-border {
+  --star-color: oklch(0.82 0.15 var(--hue));
+  --star-speed: 6s;
+  --star-thickness: 1px;
+  position: relative;
+  display: inline-block;
+  padding: var(--star-thickness) 0;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  isolation: isolate;
+}
+.star-border::before, .star-border::after {
+  content: ''; position: absolute; z-index: 0;
+  width: 300%; height: 50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--star-color), transparent 10%);
+  opacity: .75; pointer-events: none;
+}
+.star-border::before { bottom: -11px; right: -250%; animation: star-bottom var(--star-speed) linear infinite alternate; }
+.star-border::after { top: -10px; left: -250%; animation: star-top var(--star-speed) linear infinite alternate; }
+.star-border-inner {
+  position: relative; z-index: 1;
+  display: block;
+  border-radius: inherit;
+  border: 1px solid color-mix(in oklab, var(--fg) 12%, transparent);
+  background: linear-gradient(180deg, var(--card), color-mix(in oklab, var(--card) 85%, var(--fg)));
+  color: var(--card-fg);
+  padding: .9rem 1.6rem;
+  font-weight: 600;
+  text-align: center;
+}
+button.star-border, a.star-border { cursor: pointer; text-decoration: none; color: inherit; }
+@keyframes star-bottom { 0% { transform: translateX(0); opacity: 1; } 100% { transform: translateX(-100%); opacity: 0; } }
+@keyframes star-top { 0% { transform: translateX(0); opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+
+/* ---------- Shine border ---------- */
+@property --shine-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.shine-border {
+  --shine-colors: #a855f7, #3b82f6, #22d3ee, #ec4899, #f59e0b, #a855f7;
+  --shine-width: 2px;
+  --shine-speed: 7s;
+  --shine-inset: -1px;
+  position: relative; isolation: isolate;
+}
+.shine-border::before {
+  content: ''; position: absolute; inset: var(--shine-inset);
+  padding: var(--shine-width);
+  border-radius: inherit; pointer-events: none; z-index: 1;
+  background: conic-gradient(from var(--shine-angle), var(--shine-colors));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation: shine-spin var(--shine-speed) linear infinite;
+}
+.shine-border-glow::after {
+  content: ''; position: absolute; inset: calc(var(--shine-inset) - 2px);
+  border-radius: inherit; z-index: -1; pointer-events: none;
+  background: conic-gradient(from var(--shine-angle), var(--shine-colors));
+  filter: blur(18px); opacity: .55;
+  animation: shine-spin var(--shine-speed) linear infinite;
+}
+.shine-border-pulse::before { animation: shine-spin var(--shine-speed) linear infinite, shine-pulse 2.4s ease-in-out infinite; }
+@keyframes shine-spin { to { --shine-angle: 360deg; } }
+@keyframes shine-pulse { 50% { opacity: .45; } }
+
+/* ---------- Ripple ---------- */
+.ripple-layer { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; z-index: 0; }
+.ripple-wave {
+  position: absolute; border-radius: 50%;
+  background: var(--ripple-color, currentColor);
+  opacity: var(--ripple-opacity, .22);
+  transform: scale(0);
+  animation: ripple-grow var(--ripple-dur, 550ms) var(--ease-out) forwards;
+}
+.ripple-wave.ripple-out { opacity: 0; transition: opacity var(--ripple-fade, 450ms) ease-out; }
+@keyframes ripple-grow { to { transform: scale(1); } }
+
+/* ---------- Click spark ---------- */
+.spark-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+
+/* ---------- Confetti ---------- */
+.confetti-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: calc(var(--z-tooltip) + 10); }
+
+/* ---------- Cursor follower ---------- */
+.cursor-follower { --cursor-color: var(--primary); --cursor-size: 36px; position: absolute; inset: 0; pointer-events: none; z-index: var(--z-popover); overflow: hidden; border-radius: inherit; }
+.cursor-follower[data-scope="page"] { position: fixed; border-radius: 0; z-index: var(--z-tooltip); }
+.cursor-none, .cursor-none * { cursor: none !important; }
+.cf-dot, .cf-ring, .cf-blob span { position: absolute; left: 0; top: 0; border-radius: 50%; will-change: transform; opacity: 0; transition: opacity .25s; }
+.cursor-follower[data-cf-on] .cf-dot, .cursor-follower[data-cf-on] .cf-ring, .cursor-follower[data-cf-on] .cf-blob span { opacity: 1; }
+.cf-dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--cursor-color); }
+.cf-ring {
+  width: var(--cursor-size); height: var(--cursor-size);
+  margin: calc(var(--cursor-size) / -2) 0 0 calc(var(--cursor-size) / -2);
+  border: 1.5px solid color-mix(in oklab, var(--cursor-color) 70%, transparent);
+  display: grid; place-items: center;
+}
+.cf-ring > b {
+  display: block; width: 100%; height: 100%; border-radius: 50%;
+  transition: transform .35s var(--ease-spring), background .25s;
+}
+.cf-label { position: absolute; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--primary-fg); opacity: 0; transition: opacity .2s; }
+.cursor-follower[data-cf-hover] .cf-ring > b { transform: scale(1.8); background: color-mix(in oklab, var(--cursor-color) 18%, transparent); }
+.cursor-follower[data-cf-hover] .cf-dot { transform: scale(0) !important; }
+.cursor-follower[data-cf-text] .cf-ring > b { transform: scale(2.4); background: var(--cursor-color); }
+.cursor-follower[data-cf-text] .cf-label { opacity: 1; }
+.cursor-follower[data-cf-down] .cf-ring > b { transform: scale(.75); }
+.cf-blob { position: absolute; inset: 0; }
+.cf-blob span { background: var(--cursor-color); }
+.cf-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ---------- Pixel transition ---------- */
+.pixel-transition { --pixel-color: var(--fg); position: relative; display: grid; overflow: hidden; border-radius: var(--radius-xl); isolation: isolate; cursor: pointer; }
+.pixel-transition > .pt-front, .pixel-transition > .pt-back { grid-area: 1 / 1; min-width: 0; }
+.pixel-transition > .pt-back { visibility: hidden; }
+.pixel-transition[data-state="active"] > .pt-back { visibility: visible; }
+.pixel-transition[data-state="active"] > .pt-front { visibility: hidden; }
+.pt-grid { position: absolute; inset: 0; display: grid; pointer-events: none; z-index: 5; }
+.pt-grid > i { background: var(--pixel-color); opacity: 0; }
+.pt-grid > i.on { opacity: 1; }
+.pixel-transition:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+
+/* ---------- fx-* hover utilities ---------- */
+.fx-lift { transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
+.fx-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.fx-press { transition: transform .15s var(--ease-out); }
+.fx-press:active { transform: scale(.96); transition-duration: 60ms; }
+.fx-scale { transition: transform .35s var(--ease-spring); }
+.fx-scale:hover { transform: scale(1.04); }
+.fx-glow-hover { transition: box-shadow .35s var(--ease-out), border-color .35s; }
+.fx-glow-hover:hover { box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 45%, transparent), 0 10px 40px -8px color-mix(in oklab, var(--primary) 65%, transparent); border-color: color-mix(in oklab, var(--primary) 50%, var(--border)); }
+.fx-underline { background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0% 1.5px; transition: background-size .4s var(--ease-out); text-decoration: none !important; padding-bottom: 2px; }
+.fx-underline:hover, .fx-underline:focus-visible { background-size: 100% 1.5px; }
+.fx-float { animation: fx-float 4s ease-in-out infinite; }
+.fx-wiggle:hover { animation: fx-wiggle .5s ease-in-out; }
+.fx-jelly:hover { animation: fx-jelly .6s var(--ease-out); }
+.fx-sheen { position: relative; overflow: hidden; isolation: isolate; }
+.fx-sheen::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / .45) 50%, transparent 65%); transform: translateX(-120%); }
+.fx-sheen:hover::after { transform: translateX(120%); transition: transform .8s var(--ease-in-out); }
+.fx-icon-slide svg:last-child { transition: transform .3s var(--ease-out); }
+.fx-icon-slide:hover svg:last-child { transform: translateX(3px); }
+@keyframes fx-float { 50% { transform: translateY(-8px); } }
+@keyframes fx-wiggle { 20% { transform: rotate(-6deg); } 40% { transform: rotate(5deg); } 60% { transform: rotate(-3deg); } 80% { transform: rotate(2deg); } }
+@keyframes fx-jelly { 0% { transform: scale(1, 1); } 30% { transform: scale(1.12, .88); } 50% { transform: scale(.92, 1.08); } 70% { transform: scale(1.04, .96); } 100% { transform: scale(1, 1); } }

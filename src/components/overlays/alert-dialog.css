@@ -1,0 +1,36 @@
+/* ==========================================================================
+   Alert dialog — interrupting confirmation. Backdrop click never dismisses.
+   Also styles Ranj.confirm() / Ranj.prompt().
+   ========================================================================== */
+.alert-dialog { --dialog-w: 28rem; }
+.dialog-overlay > .alert-dialog:not(.dialog) {
+  position: relative; width: 100%; max-width: var(--dialog-w);
+  background: var(--card); color: var(--card-fg); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); box-shadow: var(--shadow-xl); outline: none;
+  animation: dialog-in var(--dur-slow) var(--ease-out);
+}
+.dialog-overlay[data-closing] > .alert-dialog:not(.dialog) { animation: dialog-out var(--dur) var(--ease) forwards; }
+.alert-dialog-body { display: flex; gap: 1rem; padding: 1.5rem 1.5rem 0; }
+.alert-dialog-media {
+  flex-shrink: 0; display: grid; place-items: center; width: 2.75rem; height: 2.75rem;
+  border-radius: var(--radius-full); background: var(--primary-soft); color: var(--primary-soft-fg);
+}
+.alert-dialog-media svg { width: 1.25rem; height: 1.25rem; }
+.alert-dialog-danger .alert-dialog-media { background: var(--destructive-soft); color: var(--destructive-soft-fg); }
+.alert-dialog-text { display: flex; flex-direction: column; gap: .375rem; min-width: 0; padding-top: .15rem; flex: 1; }
+.alert-dialog-title { font-size: 1.0625rem; font-weight: 600; line-height: 1.35; letter-spacing: -.01em; }
+.alert-dialog-description { color: var(--muted-fg); font-size: .875rem; line-height: 1.55; }
+.alert-dialog-field { margin-top: .75rem; }
+.alert-dialog-field .input { width: 100%; }
+.alert-dialog-error { color: var(--destructive); font-size: .8125rem; margin-top: .4rem; min-height: 0; }
+.alert-dialog-error:empty { display: none; }
+.alert-dialog-field[data-invalid] .input { border-color: var(--destructive); box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 18%, transparent); }
+.alert-dialog-footer { display: flex; justify-content: flex-end; gap: .5rem; padding: 1.5rem; }
+.alert-dialog-centered .alert-dialog-body { flex-direction: column; align-items: center; text-align: center; }
+.alert-dialog-centered .alert-dialog-footer { justify-content: stretch; }
+.alert-dialog-centered .alert-dialog-footer > * { flex: 1; }
+@media (max-width: 480px) {
+  .alert-dialog-body { flex-direction: column; align-items: center; text-align: center; padding: 1.5rem 1.25rem 0; }
+  .alert-dialog-footer { flex-direction: column-reverse; padding: 1.25rem; }
+  .alert-dialog-footer > * { width: 100%; }
+}

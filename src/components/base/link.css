@@ -1,0 +1,59 @@
+/* ==========================================================================
+   Link styles
+   ========================================================================== */
+.link {
+  --link-color: var(--primary);
+  color: var(--link-color);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--link-color) 40%, transparent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: .22em;
+  transition: color var(--transition), text-decoration-color var(--transition);
+  cursor: pointer;
+}
+.link:hover { text-decoration-color: var(--link-color); }
+.link-muted { --link-color: var(--muted-fg); }
+.link-muted:hover { color: var(--fg); text-decoration-color: currentColor; }
+.link-fg { --link-color: var(--fg); }
+.link-plain { text-decoration: none; }
+.link-plain:hover { text-decoration: underline; }
+
+/* Animated underline that draws in from the left */
+.link-underline, .link-animated {
+  --link-color: var(--fg);
+  --link-line: currentColor;
+  color: var(--link-color);
+  font-weight: 500;
+  text-decoration: none;
+  background: linear-gradient(var(--link-line), var(--link-line)) no-repeat 100% 100% / 0 1.5px;
+  transition: background-size var(--dur-slow) var(--ease-out), color var(--transition);
+  padding-bottom: .1em;
+}
+.link-underline:hover, .link-animated:hover, .link-underline:focus-visible { text-decoration: none; background-size: 100% 1.5px; background-position: 0 100%; }
+.link-underline.link-primary { --link-color: var(--primary); }
+/* Thick highlighter sweep */
+.link-highlight {
+  color: var(--fg); font-weight: 500; text-decoration: none;
+  background: linear-gradient(color-mix(in oklab, var(--primary) 22%, transparent), color-mix(in oklab, var(--primary) 22%, transparent)) no-repeat 0 88% / 100% .35em;
+  transition: background-size var(--dur-slow) var(--ease-out);
+}
+.link-highlight:hover { text-decoration: none; background-size: 100% 88%; }
+/* Center-out underline */
+.link-center {
+  position: relative; color: var(--fg); font-weight: 500; text-decoration: none;
+}
+.link-center::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -.15em; height: 1.5px; background: var(--primary);
+  transform: scaleX(0); transition: transform var(--dur-slow) var(--ease-out);
+}
+.link-center:hover { text-decoration: none; }
+.link-center:hover::after { transform: scaleX(1); }
+/* Arrow link */
+.link-arrow { display: inline-flex; align-items: center; gap: .3rem; font-weight: 500; color: var(--primary); text-decoration: none; }
+.link-arrow::after { content: '→'; transition: transform var(--dur) var(--ease-spring); }
+.link-arrow:hover { text-decoration: none; }
+.link-arrow:hover::after { transform: translateX(4px); }
+.link-external::after { content: '↗'; display: inline-block; margin-left: .15em; font-size: .85em; transition: transform var(--dur) var(--ease-out); }
+.link-external:hover::after { transform: translate(2px, -2px); }
+.link:focus-visible, .link-underline:focus-visible, .link-center:focus-visible, .link-arrow:focus-visible, .link-highlight:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; border-radius: 2px; }

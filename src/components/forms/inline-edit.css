@@ -1,0 +1,35 @@
+/* ==========================================================================
+   Inline edit — hover affordance, in-place input, saved flash
+   ========================================================================== */
+.inline-edit {
+  position: relative;
+  display: inline-flex; align-items: center; gap: .4rem;
+  max-width: 100%;
+  margin: -.2rem -.4rem; padding: .2rem .4rem;
+  border-radius: var(--radius-sm);
+  cursor: text; outline: none;
+  transition: background var(--dur-fast), box-shadow var(--dur-fast);
+}
+.inline-edit:not([data-editing]):hover { background: var(--muted); }
+.inline-edit:focus-visible { box-shadow: 0 0 0 2px var(--ring); }
+.inline-edit-text { min-width: 0; overflow-wrap: anywhere; }
+.inline-edit[data-empty] .inline-edit-text { color: var(--muted-fg); font-style: italic; }
+.inline-edit-icon { position: absolute; left: calc(100% + .1rem); top: 50%; margin-top: -.5em; display: grid; flex-shrink: 0; color: var(--muted-fg); opacity: 0; transform: translateX(-4px) scale(.8); transition: opacity var(--dur-fast), transform var(--dur) var(--ease-spring); }
+.inline-edit-icon svg { width: .85em; height: .85em; min-width: 12px; min-height: 12px; }
+.inline-edit:hover .inline-edit-icon, .inline-edit:focus-visible .inline-edit-icon { opacity: 1; transform: none; }
+.inline-edit-input {
+  display: block; max-width: 100%; margin: -.2rem -.4rem; padding: .2rem .4rem;
+  color: inherit; background: var(--field-bg);
+  border: 0; border-radius: var(--radius-sm); outline: none;
+  box-shadow: 0 0 0 1px var(--field-focus), var(--field-ring);
+  resize: none; overflow: hidden;
+  animation: inline-edit-in var(--dur) var(--ease-out);
+}
+.inline-edit[data-editing] { padding: .2rem .4rem; background: none; }
+.inline-edit-input[aria-invalid="true"] { box-shadow: 0 0 0 1px var(--destructive), var(--field-ring-error); }
+textarea.inline-edit-input { width: 100%; min-width: 0 !important; }
+.inline-edit:has(textarea) { display: flex; }
+@keyframes inline-edit-in { from { box-shadow: 0 0 0 1px transparent; } }
+.inline-edit-saved { animation: inline-edit-saved .9s var(--ease-out); }
+@keyframes inline-edit-saved { 0% { background: color-mix(in oklab, var(--success) 22%, transparent); } 100% { background: transparent; } }
+.inline-edit-block { display: flex; }

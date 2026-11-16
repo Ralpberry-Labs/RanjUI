@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Drawer — mobile bottom sheet with drag handle, swipe-to-dismiss, snap points.
+   ========================================================================== */
+.drawer {
+  --drawer-w: 42rem;
+  --drawer-ease: cubic-bezier(.32, .72, 0, 1);
+  position: fixed; z-index: var(--z-modal);
+  left: 0; right: 0; bottom: 0; margin-inline: auto;
+  width: 100%; max-width: var(--drawer-w);
+  max-height: calc(100dvh - 2.5rem);
+  display: flex; flex-direction: column;
+  background: var(--card); color: var(--card-fg);
+  border: 1px solid var(--border); border-bottom: 0;
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  box-shadow: 0 -12px 48px -12px rgb(0 0 0 / .28);
+  outline: none; touch-action: none;
+  transform: translate3d(0, var(--drawer-y, 0px), 0);
+  transition: transform .5s var(--drawer-ease);
+  animation: drawer-in .5s var(--drawer-ease);
+}
+.drawer::after { /* bleed below the fold so overshoot never shows a gap */
+  content: ''; position: absolute; left: -1px; right: -1px; top: 100%; height: 50vh; background: inherit; border-inline: inherit;
+}
+.drawer:not([data-state="open"]):not([data-closing]) { display: none; }
+.dialog-overlay > .drawer:not([data-state]) { display: flex; }
+.drawer[data-closing] { animation: drawer-out .34s var(--drawer-ease) forwards; }
+.drawer[data-dragging] { transition: none; cursor: grabbing; user-select: none; -webkit-user-select: none; }
+@keyframes drawer-in { from { transform: translate3d(0, 100%, 0); } to { transform: translate3d(0, var(--drawer-y, 0px), 0); } }
+@keyframes drawer-out { from { transform: translate3d(0, var(--drawer-y, 0px), 0); } to { transform: translate3d(0, calc(100% + 2rem), 0); } }
+.dialog-overlay:has(> .drawer[data-dragging])::before { transition: none; }
+.dialog-overlay:has(> .drawer)::before { transition: opacity .5s var(--drawer-ease); }
+
+.drawer-handle {
+  flex-shrink: 0; width: 100%; height: 1.75rem; display: grid; place-items: center; cursor: grab; touch-action: none;
+}
+.drawer-handle::before {
+  content: ''; width: 2.75rem; height: .3125rem; border-radius: var(--radius-full);
+  background: var(--border-strong); transition: background var(--transition), width var(--dur) var(--ease-spring);
+}
+.drawer-handle:hover::before, .drawer[data-dragging] .drawer-handle::before { background: var(--muted-fg); width: 3.25rem; }
+.drawer-header { display: flex; flex-direction: column; gap: .3rem; padding: .25rem 1.5rem 1rem; text-align: center; flex-shrink: 0; }
+.drawer-title { font-size: 1.0625rem; font-weight: 600; letter-spacing: -.01em; }
+.drawer-description { font-size: .875rem; color: var(--muted-fg); }
+.drawer-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding: 0 1.5rem 1rem; }
+.drawer-footer { display: flex; flex-direction: column; gap: .5rem; padding: .75rem 1.5rem calc(1.25rem + env(safe-area-inset-bottom)); flex-shrink: 0; }
+.drawer-footer > .btn { width: 100%; }
+
+/* Side drawers (vaul-style direction) */
+.drawer-right, .drawer-left { top: .5rem; bottom: .5rem; width: min(24rem, calc(100% - 1rem)); max-height: none; margin: 0; border: 1px solid var(--border); border-radius: var(--radius-2xl); }
+.drawer-right { left: auto; right: .5rem; transform: translate3d(var(--drawer-y, 0px), 0, 0); animation-name: drawer-in-x; }
+.drawer-left { right: auto; left: .5rem; transform: translate3d(calc(var(--drawer-y, 0px) * -1), 0, 0); animation-name: drawer-in-x-left; }
+.drawer-right::after, .drawer-left::after { display: none; }
+.drawer-right[data-closing] { animation-name: drawer-out-x; }
+.drawer-left[data-closing] { animation-name: drawer-out-x-left; }
+@keyframes drawer-in-x { from { transform: translate3d(calc(100% + 1rem), 0, 0); } }
+@keyframes drawer-out-x { from { transform: translate3d(var(--drawer-y, 0px), 0, 0); } to { transform: translate3d(calc(100% + 1rem), 0, 0); } }
+@keyframes drawer-in-x-left { from { transform: translate3d(calc(-100% - 1rem), 0, 0); } }
+@keyframes drawer-out-x-left { from { transform: translate3d(calc(var(--drawer-y, 0px) * -1), 0, 0); } to { transform: translate3d(calc(-100% - 1rem), 0, 0); } }

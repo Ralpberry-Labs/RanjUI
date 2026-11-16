@@ -1,0 +1,50 @@
+/* ==========================================================================
+   Date picker — input + popover with presets sidebar and range footer
+   ========================================================================== */
+.date-picker { position: relative; display: block; width: 100%; min-width: 0; }
+.date-picker .input-wrap { cursor: pointer; }
+.date-picker .input-wrap > input[readonly] { cursor: pointer; }
+.date-picker[data-state="open"] .input-wrap { border-color: var(--field-focus); box-shadow: var(--field-shadow), var(--field-ring); }
+.date-picker[data-state="open"] .date-picker-trigger svg { transform: rotate(180deg); }
+.date-picker-trigger svg { transition: transform var(--dur) var(--ease-out); }
+.date-picker[aria-invalid="true"] .input-wrap { border-color: var(--destructive); }
+.date-picker-panel { display: flex; padding: 0; overflow: hidden; }
+.date-picker-main { padding: .75rem; min-width: 0; }
+.date-picker-presets {
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 9.5rem; padding: .6rem;
+  border-right: 1px solid var(--border);
+  background: color-mix(in oklab, var(--muted) 45%, transparent);
+}
+.date-picker-presets button {
+  text-align: left; padding: .45rem .6rem; border-radius: var(--radius-sm);
+  font-size: .82rem; font-weight: 500; color: var(--fg); white-space: nowrap;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.date-picker-presets button:hover { background: var(--secondary); }
+.date-picker-presets button:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--ring); }
+.date-picker-presets button[data-active] { background: var(--primary-soft); color: var(--primary-soft-fg); }
+.date-picker-foot { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--border); }
+.date-picker-summary { font-size: .8rem; color: var(--muted-fg); }
+.date-picker-actions { display: flex; gap: .4rem; margin-left: auto; }
+@media (max-width: 560px) {
+  .date-picker-panel { flex-direction: column; }
+  .date-picker-presets { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--border); min-width: 0; scrollbar-width: none; }
+}
+
+/* Small buttons used inside pickers (independent from .btn) */
+.picker-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
+  height: 2rem; padding: 0 .8rem;
+  font-size: .8rem; font-weight: 500; color: var(--fg);
+  border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg);
+  box-shadow: var(--shadow-xs);
+  transition: background var(--dur-fast), border-color var(--dur-fast), opacity var(--dur-fast), transform var(--dur) var(--ease-spring);
+}
+.picker-btn:hover:not(:disabled) { background: var(--muted); }
+.picker-btn:active:not(:disabled) { transform: scale(.96); }
+.picker-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+.picker-btn:disabled { opacity: .5; cursor: not-allowed; }
+.picker-btn-primary { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
+.picker-btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+.picker-btn svg { width: .9rem; height: .9rem; }

@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Accordion — animated height via the grid-rows trick (no max-height hacks).
+   Variants: default (bordered), .accordion-card, .accordion-flush, .accordion-plus icon.
+   ========================================================================== */
+.accordion { width: 100%; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); overflow: hidden; text-align: left; }
+.accordion-item { border-bottom: 1px solid var(--border); }
+.accordion-item:last-child { border-bottom: 0; }
+.accordion-trigger {
+  display: flex; align-items: center; gap: .75rem; width: 100%;
+  padding: 1rem 1.25rem; font-size: .9375rem; font-weight: 500; line-height: 1.4; color: var(--fg); text-align: left;
+  outline: none; transition: background var(--transition), color var(--transition);
+}
+.accordion-trigger:hover { background: color-mix(in oklab, var(--fg) 3%, transparent); }
+.accordion-trigger:focus-visible { box-shadow: inset 0 0 0 2px var(--ring); }
+.accordion-trigger > span:first-child:not(.accordion-icon), .accordion-title { flex: 1; min-width: 0; }
+.accordion-trigger::after {
+  content: ''; flex-shrink: 0; width: 1rem; height: 1rem; margin-left: auto; background: var(--muted-fg);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform .35s var(--ease-out), background var(--transition);
+}
+.accordion-item[data-state="open"] > .accordion-trigger::after { transform: rotate(180deg); background: var(--fg); }
+.accordion-trigger:has(> .accordion-chevron)::after { display: none; }
+.accordion-icon { display: grid; place-items: center; flex-shrink: 0; width: 2rem; height: 2rem; border-radius: var(--radius); background: var(--muted); color: var(--fg); }
+.accordion-icon svg { width: 1rem; height: 1rem; }
+.accordion-meta { font-size: .75rem; font-weight: 400; color: var(--muted-fg); }
+.accordion-trigger:disabled, .accordion-item[data-disabled] > .accordion-trigger { opacity: .5; pointer-events: none; }
+
+.accordion-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s var(--ease-out); }
+.accordion-item[data-state="open"] > .accordion-content { grid-template-rows: 1fr; }
+.accordion-content > * { min-height: 0; overflow: hidden; }
+.accordion-body { padding: 0 1.25rem; color: var(--muted-fg); font-size: .9063rem; line-height: 1.65; opacity: 0; transform: translateY(-4px); transition: opacity .25s var(--ease), transform .35s var(--ease-out); }
+.accordion-body::after { content: ''; display: block; height: 1.1rem; }
+.accordion-item[data-state="open"] > .accordion-content > .accordion-body { opacity: 1; transform: none; transition-delay: .05s; }
+.accordion-body > :first-child { margin-top: 0; }
+.accordion-body p + p { margin-top: .6rem; }
+.accordion-body a { font-weight: 500; }
+.accordion-trigger:has(> .accordion-icon) + .accordion-content > .accordion-body { padding-left: 4rem; }
+
+/* Plus / minus icon */
+.accordion-plus .accordion-trigger::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+}
+.accordion-plus .accordion-item[data-state="open"] > .accordion-trigger::after { transform: rotate(135deg); }
+
+/* Flush: no outer frame */
+.accordion-flush { border: 0; border-radius: 0; background: transparent; }
+.accordion-flush .accordion-trigger { padding-left: 0; padding-right: 0; }
+.accordion-flush .accordion-trigger:hover { background: transparent; color: var(--primary); }
+.accordion-flush .accordion-body { padding-left: 0; padding-right: 0; }
+.accordion-flush .accordion-item:last-child { border-bottom: 1px solid var(--border); }
+
+/* Card: separated, lifted items */
+.accordion-card { border: 0; background: transparent; overflow: visible; display: grid; gap: .625rem; }
+.accordion-card .accordion-item { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); overflow: hidden; transition: box-shadow var(--dur-slow) var(--ease), border-color var(--dur-slow) var(--ease); }
+.accordion-card .accordion-item:last-child { border-bottom: 1px solid var(--border); }
+.accordion-card .accordion-item[data-state="open"] { box-shadow: var(--shadow-md); border-color: color-mix(in oklab, var(--primary) 30%, var(--border)); }

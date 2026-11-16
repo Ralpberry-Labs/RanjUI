@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Alert — inline status message. Variants, solid/outline/accent styles,
+   actions, and animated dismiss (.alert-close).
+   ========================================================================== */
+.alert {
+  --alert-c: var(--fg);
+  --alert-bg: var(--card);
+  --alert-bd: var(--border);
+  --alert-fg: var(--fg);
+  position: relative; display: flex; align-items: flex-start; gap: .75rem;
+  width: 100%; padding: .875rem 1rem;
+  background: var(--alert-bg); color: var(--alert-fg);
+  border: 1px solid var(--alert-bd); border-radius: var(--radius-lg);
+  font-size: .875rem; line-height: 1.5; text-align: left;
+}
+.alert-icon, .alert > svg:first-child { flex-shrink: 0; width: 1.125rem; height: 1.125rem; margin-top: .125rem; color: var(--alert-c); }
+.alert-icon svg { width: 100%; height: 100%; }
+.alert-content { flex: 1; min-width: 0; }
+.alert-title { font-weight: 600; line-height: 1.4; letter-spacing: -.005em; }
+.alert-title + .alert-description { margin-top: .2rem; }
+.alert-description { color: color-mix(in oklab, var(--alert-fg) 72%, transparent); font-size: .8438rem; }
+.alert-description a { color: inherit; font-weight: 500; text-decoration: underline; text-underline-offset: .2em; }
+.alert-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.alert-actions-end { align-self: center; display: flex; gap: .5rem; flex-shrink: 0; margin-left: auto; }
+.alert:has(.alert-close) { padding-right: 2.75rem; }
+.alert-close {
+  position: absolute; top: .55rem; right: .55rem;
+  display: grid; place-items: center; width: 1.75rem; height: 1.75rem;
+  border-radius: var(--radius-sm); color: color-mix(in oklab, var(--alert-fg) 60%, transparent);
+  font-size: 1.125rem; line-height: 1;
+  transition: background var(--transition), color var(--transition);
+}
+.alert-close:hover { color: var(--alert-fg); background: color-mix(in oklab, var(--alert-c) 12%, transparent); }
+.alert-close svg { width: .875rem; height: .875rem; }
+
+.alert-info    { --alert-c: var(--info);        --alert-bg: var(--info-soft);        --alert-bd: color-mix(in oklab, var(--info) 28%, transparent);        --alert-fg: var(--info-soft-fg); }
+.alert-success { --alert-c: var(--success);     --alert-bg: var(--success-soft);     --alert-bd: color-mix(in oklab, var(--success) 28%, transparent);     --alert-fg: var(--success-soft-fg); }
+.alert-warning { --alert-c: var(--warning);     --alert-bg: var(--warning-soft);     --alert-bd: color-mix(in oklab, var(--warning) 35%, transparent);     --alert-fg: var(--warning-soft-fg); }
+.alert-destructive, .alert-error, .alert-danger { --alert-c: var(--destructive); --alert-bg: var(--destructive-soft); --alert-bd: color-mix(in oklab, var(--destructive) 28%, transparent); --alert-fg: var(--destructive-soft-fg); }
+.alert-primary { --alert-c: var(--primary); --alert-bg: var(--primary-soft); --alert-bd: color-mix(in oklab, var(--primary) 25%, transparent); --alert-fg: var(--primary-soft-fg); }
+
+/* Styles */
+.alert-outline { --alert-bg: transparent; }
+.alert-outline:not([class*="alert-info"]):not([class*="alert-success"]):not([class*="alert-warning"]):not([class*="alert-destructive"]):not([class*="alert-error"]) { --alert-bg: transparent; }
+.alert-accent { border-left-width: 3px; border-left-color: var(--alert-c); border-radius: var(--radius-sm) var(--radius-lg) var(--radius-lg) var(--radius-sm); }
+.alert-solid { --alert-bg: var(--alert-c); --alert-bd: transparent; --alert-fg: #fff; }
+.alert-solid .alert-icon, .alert-solid > svg:first-child { color: currentColor; }
+.alert-solid.alert-warning { --alert-fg: var(--warning-fg); }
+.alert-solid:not(.alert-info):not(.alert-success):not(.alert-warning):not(.alert-destructive):not(.alert-error):not(.alert-primary) { --alert-bg: var(--fg); --alert-fg: var(--bg); }
+.alert-banner { border-radius: 0; border-width: 0 0 1px; justify-content: center; align-items: center; padding: .6rem 1rem; }
+.alert-banner .alert-content { flex: 0 1 auto; }
+.alert .btn { flex-shrink: 0; }
+
+/* Dismiss animation (driven by alert.js) */
+.alert[data-closing] { overflow: hidden; pointer-events: none; transition: height .3s var(--ease-out), opacity .2s var(--ease), transform .3s var(--ease-out), margin .3s var(--ease-out), padding .3s var(--ease-out), border-width .3s var(--ease-out); }
+.alert[data-enter] { animation: alert-in .4s var(--ease-out); }
+@keyframes alert-in { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
+@media (max-width: 480px) { .alert-actions-end { display: none; } }

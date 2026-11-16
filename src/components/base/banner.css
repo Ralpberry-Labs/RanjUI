@@ -1,0 +1,62 @@
+/* ==========================================================================
+   Banner — top announcement bar
+   ========================================================================== */
+.banner {
+  --banner-bg: var(--fg);
+  --banner-fg: var(--bg);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  min-height: 2.75rem;
+  padding: .55rem 3rem;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  text-align: center;
+  color: var(--banner-fg);
+  background: var(--banner-bg);
+  overflow: hidden;
+  isolation: isolate;
+}
+.banner-content { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .35rem .75rem; min-width: 0; }
+.banner b, .banner strong { font-weight: 600; }
+.banner > svg, .banner-content > svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+.banner a:not(.btn) { color: inherit; font-weight: 600; text-decoration: underline; text-decoration-color: color-mix(in oklab, currentColor 45%, transparent); text-underline-offset: .22em; }
+.banner a:not(.btn):hover { text-decoration-color: currentColor; }
+.banner-link { display: inline-flex; align-items: center; gap: .25rem; white-space: nowrap; }
+.banner-link svg { width: .9rem; height: .9rem; transition: transform var(--dur) var(--ease-out); }
+.banner-link:hover svg { transform: translateX(3px); }
+.banner-sep { width: 1px; height: 1rem; background: currentColor; opacity: .25; }
+.banner-pill { display: inline-flex; align-items: center; height: 1.35rem; padding: 0 .55rem; border-radius: var(--radius-full); font-size: .7rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; background: color-mix(in oklab, currentColor 16%, transparent); }
+.banner-close {
+  position: absolute; right: .5rem; top: 50%; transform: translateY(-50%);
+  display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: var(--radius-sm);
+  color: inherit; opacity: .7; transition: opacity var(--transition), background-color var(--transition);
+}
+.banner-close:hover { opacity: 1; background: color-mix(in oklab, currentColor 14%, transparent); }
+.banner-close svg { width: 1rem; height: 1rem; }
+
+.banner-primary { --banner-bg: var(--primary); --banner-fg: var(--primary-fg); }
+.banner-soft { --banner-bg: var(--primary-soft); --banner-fg: var(--primary-soft-fg); border-bottom: 1px solid color-mix(in oklab, var(--primary) 18%, transparent); }
+.banner-muted { --banner-bg: var(--bg-subtle); --banner-fg: var(--fg); border-bottom: 1px solid var(--border); }
+.banner-warning { --banner-bg: var(--warning); --banner-fg: var(--warning-fg); }
+.banner-danger, .banner-destructive { --banner-bg: var(--destructive); --banner-fg: var(--destructive-fg); }
+.banner-gradient {
+  --banner-fg: #fff;
+  background: linear-gradient(100deg, oklch(0.52 0.24 var(--hue)), oklch(0.58 0.25 calc(var(--hue) + 45)), oklch(0.62 0.2 calc(var(--hue) + 95)), oklch(0.52 0.24 var(--hue)));
+  background-size: 300% 100%;
+  animation: banner-pan 12s linear infinite;
+}
+@keyframes banner-pan { to { background-position: 300% 0; } }
+.banner-glow::before {
+  content: ''; position: absolute; inset: -50% 30%; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, rgb(255 255 255 / .28), transparent);
+  animation: banner-glow 5s var(--ease-in-out) infinite alternate;
+}
+@keyframes banner-glow { from { transform: translateX(-40%); } to { transform: translateX(40%); } }
+.banner-floating { border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+.banner[data-state="closed"] { display: none; }
+.banner[data-state="closing"] { animation: banner-collapse var(--dur-slow) var(--ease) forwards; }
+@keyframes banner-collapse { to { opacity: 0; min-height: 0; height: 0; padding-block: 0; margin: 0; } }
+@media (max-width: 639px) { .banner { padding-left: 1rem; justify-content: flex-start; text-align: left; } .banner-sep { display: none; } }

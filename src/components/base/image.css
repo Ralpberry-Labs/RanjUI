@@ -1,0 +1,49 @@
+/* ==========================================================================
+   Image / figure
+   ========================================================================== */
+.img, .image {
+  display: block; max-width: 100%; height: auto;
+  border-radius: var(--img-radius, 0);
+  background: var(--muted);
+}
+.img-rounded { --img-radius: var(--radius-lg); }
+.img-rounded-xl { --img-radius: var(--radius-2xl); }
+.img-circle { --img-radius: 50%; aspect-ratio: 1; object-fit: cover; }
+.img-bordered { box-shadow: 0 0 0 1px color-mix(in oklab, var(--fg) 10%, transparent), var(--shadow-sm); }
+.img-cover { width: 100%; height: 100%; object-fit: cover; }
+
+.figure { display: flex; flex-direction: column; gap: .65rem; margin: 0; min-width: 0; }
+.figure-caption, .figure > figcaption { font-size: var(--text-sm); color: var(--muted-fg); line-height: 1.5; }
+.figure-caption b, .figure > figcaption b { color: var(--fg); font-weight: 600; }
+.figure-center > figcaption { text-align: center; }
+
+/* Frame: clips + adds a hairline ring that sits above the image */
+.img-frame {
+  --img-radius: var(--radius-xl);
+  position: relative; overflow: hidden; border-radius: var(--img-radius); background: var(--muted); isolation: isolate;
+}
+.img-frame > img, .img-frame > .img-art { display: block; width: 100%; height: 100%; object-fit: cover; }
+.img-frame::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--fg) 10%, transparent); z-index: 2; }
+
+/* Zoom on hover */
+.img-zoom > img, .img-zoom > .img-art { transition: transform var(--dur-slower) var(--ease-out), filter var(--dur-slow) var(--ease); }
+.img-zoom:hover > img, .img-zoom:hover > .img-art { transform: scale(var(--zoom, 1.08)); }
+/* Grayscale → color */
+.img-grayscale > img, .img-grayscale > .img-art { filter: grayscale(1) contrast(1.05); transition: filter var(--dur-slow) var(--ease); }
+.img-grayscale:hover > img, .img-grayscale:hover > .img-art { filter: none; }
+/* Overlay caption on hover */
+.img-overlay > figcaption, .img-frame > .img-caption {
+  position: absolute; inset: auto 0 0 0; z-index: 1; padding: 2.5rem 1rem .9rem;
+  color: #fff; font-size: var(--text-sm); font-weight: 500;
+  background: linear-gradient(to top, rgb(0 0 0 / .7), transparent);
+}
+.img-overlay > figcaption { opacity: 0; transform: translateY(6px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.img-overlay:hover > figcaption, .img-overlay:focus-within > figcaption { opacity: 1; transform: none; }
+@media (hover: none) { .img-overlay > figcaption { opacity: 1; transform: none; } }
+/* Badge on the image */
+.img-frame > .badge { position: absolute; top: .75rem; left: .75rem; z-index: 1; }
+/* Image gallery helper */
+.img-grid { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(min(var(--min, 160px), 100%), 1fr)); }
+/* Fallback when an image fails (set by JS: data-state="error") */
+.img-frame[data-state="error"] > img { opacity: 0; }
+.img-frame[data-state="error"]::before { content: ''; position: absolute; inset: 0; background: var(--muted) center / 2rem no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='1.6'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21'/%3E%3C/svg%3E"); }

@@ -1,0 +1,82 @@
+/* ==========================================================================
+   Tabs — underline (default), .tabs-pills, .tabs-enclosed, .tabs-vertical.
+   A sliding .tabs-indicator is injected by tabs.js.
+   ========================================================================== */
+.tabs { display: flex; flex-direction: column; min-width: 0; }
+.tabs-list {
+  position: relative; display: flex; align-items: center; gap: .25rem;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -ms-overflow-style: none;
+}
+.tabs-list::-webkit-scrollbar { display: none; }
+.tabs-trigger {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+  height: 2.5rem; padding: 0 .875rem; flex-shrink: 0;
+  font-size: .875rem; font-weight: 500; color: var(--muted-fg); white-space: nowrap;
+  border-radius: var(--radius-sm); outline: none; user-select: none;
+  transition: color var(--dur) var(--ease);
+}
+.tabs-trigger:hover { color: var(--fg); }
+.tabs-trigger:focus-visible { box-shadow: inset 0 0 0 2px var(--ring); }
+.tabs-trigger[aria-selected="true"], .tabs-trigger.active { color: var(--fg); }
+.tabs-trigger:disabled, .tabs-trigger[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+.tabs-trigger > svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+.tabs-badge { min-width: 1.25rem; height: 1.25rem; padding: 0 .35rem; display: inline-grid; place-items: center; border-radius: var(--radius-full); background: var(--muted); color: var(--muted-fg); font-size: .6875rem; font-weight: 600; font-variant-numeric: tabular-nums; transition: background var(--dur) var(--ease), color var(--dur) var(--ease); }
+.tabs-trigger[aria-selected="true"] .tabs-badge { background: var(--primary-soft); color: var(--primary-soft-fg); }
+
+.tabs-indicator {
+  position: absolute; left: 0; bottom: 0; z-index: 0; pointer-events: none;
+  width: var(--tab-w, 0px); height: 2px; border-radius: 2px 2px 0 0;
+  background: var(--fg);
+  transform: translateX(var(--tab-x, 0px));
+}
+.tabs[data-ready] .tabs-indicator { transition: transform .35s var(--ease-out), width .35s var(--ease-out), height .35s var(--ease-out); }
+/* No-JS fallback */
+.tabs:not([data-ready]) .tabs-trigger[aria-selected="true"], .tabs:not([data-ready]) .tabs-trigger.active { box-shadow: inset 0 -2px 0 var(--fg); }
+
+/* Panels */
+.tabs-content { padding-top: 1rem; min-width: 0; }
+.tab-panel, .tabs-panel { outline: none; }
+.tab-panel:not(.active):not([data-state="active"]), .tabs-panel:not(.active):not([data-state="active"]) { display: none; }
+.tabs[data-ready] .tab-panel.active, .tabs[data-ready] .tabs-panel.active { animation: tabs-panel-in .35s var(--ease-out); }
+@keyframes tabs-panel-in { from { opacity: 0; transform: translateY(4px); } }
+.tab-panel:focus-visible, .tabs-panel:focus-visible { box-shadow: 0 0 0 2px var(--ring); border-radius: var(--radius-sm); }
+
+/* Pills */
+.tabs-pills .tabs-list { border-bottom: 0; gap: .25rem; }
+.tabs-pills .tabs-trigger { height: 2.125rem; border-radius: var(--radius-full); padding: 0 .95rem; }
+.tabs-pills .tabs-trigger[aria-selected="true"] { color: var(--primary-fg); }
+.tabs-pills .tabs-trigger[aria-selected="true"] .tabs-badge { background: rgb(255 255 255 / .22); color: inherit; }
+.tabs-pills:not([data-ready]) .tabs-trigger[aria-selected="true"], .tabs-pills:not([data-ready]) .tabs-trigger.active { background: var(--primary); box-shadow: none; }
+:is(.tabs-pills, .tabs-enclosed) .tabs-indicator { top: 0; bottom: auto; width: var(--tab-w, 0px); height: var(--tab-h, 0px); border-radius: var(--radius-full); transform: translate(var(--tab-x, 0px), var(--tab-y, 0px)); background: var(--primary); box-shadow: 0 2px 8px -2px color-mix(in oklab, var(--primary) 50%, transparent); }
+
+/* Enclosed / segmented */
+.tabs-enclosed .tabs-list { display: inline-flex; align-self: flex-start; max-width: 100%; gap: 0; padding: .25rem; border: 0; border-radius: var(--radius-lg); background: var(--muted); }
+.tabs-enclosed .tabs-trigger { height: 2rem; padding: 0 .875rem; border-radius: calc(var(--radius-lg) - .25rem); }
+.tabs-enclosed .tabs-indicator { background: var(--card); border-radius: calc(var(--radius-lg) - .25rem); box-shadow: var(--shadow-sm), 0 0 0 1px color-mix(in oklab, var(--fg) 6%, transparent); }
+[data-theme="dark"] .tabs-enclosed .tabs-indicator { background: var(--secondary-hover); }
+.tabs-enclosed:not([data-ready]) .tabs-trigger[aria-selected="true"] { background: var(--card); box-shadow: var(--shadow-sm); }
+.tabs-enclosed.tabs-full .tabs-list { display: flex; align-self: stretch; }
+.tabs-full .tabs-trigger { flex: 1; }
+
+/* Vertical */
+.tabs-vertical { flex-direction: row; gap: 1.5rem; }
+.tabs-vertical .tabs-list { flex-direction: column; align-items: stretch; border-bottom: 0; border-left: 1px solid var(--border); overflow: visible; flex-shrink: 0; gap: .125rem; }
+.tabs-vertical .tabs-trigger { justify-content: flex-start; height: 2.25rem; padding: 0 1rem; }
+.tabs-vertical:not(.tabs-pills) .tabs-indicator { left: -1px; top: 0; bottom: auto; width: 2px; height: var(--tab-h, 0px); border-radius: 0 2px 2px 0; transform: translateY(var(--tab-y, 0px)); }
+.tabs-vertical:not(.tabs-pills):not([data-ready]) .tabs-trigger[aria-selected="true"] { box-shadow: inset 2px 0 0 var(--fg); }
+.tabs-vertical.tabs-pills .tabs-list { border-left: 0; }
+.tabs-vertical.tabs-pills .tabs-indicator { border-radius: var(--radius); background: var(--muted); box-shadow: none; }
+.tabs-vertical.tabs-pills .tabs-trigger { border-radius: var(--radius); }
+.tabs-vertical.tabs-pills .tabs-trigger[aria-selected="true"] { color: var(--fg); }
+.tabs-vertical .tabs-content { padding-top: 0; flex: 1; }
+@media (max-width: 560px) {
+  .tabs-vertical { flex-direction: column; gap: 1rem; }
+  .tabs-vertical .tabs-list { flex-direction: row; border-left: 0; border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tabs-vertical:not(.tabs-pills) .tabs-indicator { left: 0; top: auto; bottom: 0; height: 2px; width: var(--tab-w); transform: translateX(var(--tab-x)); }
+}
+
+/* Sizes */
+.tabs-sm .tabs-trigger { height: 2rem; font-size: .8125rem; padding: 0 .7rem; }
+.tabs-lg .tabs-trigger { height: 3rem; font-size: .9375rem; padding: 0 1.1rem; }

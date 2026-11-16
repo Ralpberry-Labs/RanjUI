@@ -1,0 +1,11 @@
+/* ==========================================================================
+   Multi-select — chip box (see 0-forms.css) + listbox panel
+   ========================================================================== */
+.multi-select { position: relative; display: block; width: 100%; min-width: 0; }
+.multi-select-box .input-btn svg { transition: transform var(--dur) var(--ease-out); }
+.multi-select[data-state="open"] .multi-select-box .input-btn svg { transform: rotate(180deg); }
+.multi-select[data-full] .multi-select-input::placeholder { color: transparent; }
+.multi-select-panel .listbox-option[aria-selected="true"] { background: color-mix(in oklab, var(--primary-soft) 55%, transparent); }
+.multi-select-panel .listbox-option[aria-selected="true"][data-highlighted] { background: var(--primary-soft); }
+.multi-select-sm .chip-box { --h: var(--control-h-sm); font-size: .8125rem; }
+.multi-select-sm .input-chip { height: 1.3rem; font-size: .75rem; }

@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Separator / Divider
+   ========================================================================== */
+.separator, .divider {
+  --sep-color: var(--border);
+  --sep-space: 1rem;
+  display: block;
+  flex-shrink: 0;
+  height: 1px;
+  width: 100%;
+  margin: var(--sep-space) 0;
+  border: 0;
+  background: var(--sep-color);
+}
+hr.separator, hr.divider { border-top: 0; }
+.separator-vertical, .divider-vertical {
+  display: inline-block; width: 1px; height: auto; min-height: 1em; align-self: stretch; margin: 0 calc(var(--sep-space) * .75);
+}
+.separator-flush { margin: 0; }
+.separator-strong { --sep-color: var(--border-strong); }
+.separator-dashed { background: none; border-top: 1px dashed var(--border-strong); height: 0; }
+.separator-dotted { background: radial-gradient(circle, var(--border-strong) 1px, transparent 1.5px) 0 50% / 8px 3px repeat-x; height: 3px; }
+.separator-gradient { background: linear-gradient(90deg, transparent, var(--border-strong) 20%, var(--border-strong) 80%, transparent); }
+.separator-glow { height: 1px; background: linear-gradient(90deg, transparent, var(--primary), transparent); box-shadow: 0 0 12px 0 color-mix(in oklab, var(--primary) 55%, transparent); }
+.separator-thick { height: 4px; border-radius: 99px; width: 3rem; background: var(--primary); }
+
+/* With label */
+.separator-label, .divider-label {
+  display: flex; align-items: center; gap: .9rem; height: auto; background: none;
+  font-size: var(--text-xs); font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--muted-fg); white-space: nowrap;
+}
+.separator-label::before, .separator-label::after, .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--sep-color); }
+.separator-label.separator-dashed { border: 0; }
+.separator-label.separator-dashed::before, .separator-label.separator-dashed::after { height: 0; background: none; border-top: 1px dashed var(--border-strong); }
+.separator-label.separator-start::before, .separator-label.align-start::before { flex: 0 0 1.25rem; }
+.separator-label.separator-end::after, .separator-label.align-end::after { flex: 0 0 1.25rem; }
+.separator-label > .badge, .separator-label > .btn { text-transform: none; letter-spacing: 0; }
+.separator-label.normal-case { text-transform: none; letter-spacing: 0; font-size: var(--text-sm); }
+/* Icon in the middle */
+.separator-icon > svg { width: 1rem; height: 1rem; color: var(--muted-fg); }

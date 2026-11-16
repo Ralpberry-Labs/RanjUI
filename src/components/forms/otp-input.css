@@ -1,0 +1,50 @@
+/* ==========================================================================
+   OTP input — slot boxes with pop, groups, joined style, success/error states
+   ========================================================================== */
+.otp {
+  --slot-w: 2.75rem; --slot-h: 3.125rem;
+  display: inline-flex; align-items: center; gap: .5rem;
+  max-width: 100%;
+}
+.otp-slot {
+  width: var(--slot-w); height: var(--slot-h); min-width: 0; flex: 0 1 var(--slot-w);
+  padding: 0; text-align: center;
+  font-family: var(--font-mono); font-size: 1.3rem; font-weight: 600; font-variant-numeric: tabular-nums;
+  color: var(--fg); caret-color: var(--primary);
+  background: var(--field-bg);
+  border: 1px solid var(--field-border);
+  border-radius: var(--radius);
+  box-shadow: var(--field-shadow);
+  outline: none;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur), transform var(--dur) var(--ease-spring);
+}
+.otp-slot:hover:not(:focus) { border-color: var(--field-border-hover); }
+.otp-slot:focus { border-color: var(--field-focus); box-shadow: var(--field-shadow), var(--field-ring); transform: translateY(-1px); z-index: 1; }
+.otp-slot[data-filled] { border-color: color-mix(in oklab, var(--fg) 25%, var(--field-border)); }
+.otp-slot[type="password"] { font-size: 1.6rem; letter-spacing: 0; }
+.otp-pop { animation: otp-pop var(--dur-slow) var(--ease-spring); }
+@keyframes otp-pop { 0% { transform: scale(.86); } 60% { transform: scale(1.06); } 100% { transform: none; } }
+.otp-sep { flex-shrink: 0; width: .6rem; height: 2px; border-radius: 2px; background: var(--border-strong); }
+.otp:has(.otp-slot:disabled) { opacity: .5; }
+.otp[data-state="error"] .otp-slot { border-color: var(--destructive); background: color-mix(in oklab, var(--destructive) 6%, var(--field-bg)); color: var(--destructive); }
+.otp[data-state="success"] .otp-slot { border-color: var(--success); background: color-mix(in oklab, var(--success) 8%, var(--field-bg)); color: var(--success-soft-fg); }
+.otp[data-state="success"] .otp-slot { animation: otp-success .5s var(--ease-spring) both; }
+.otp[data-state="success"] .otp-slot:nth-of-type(2) { animation-delay: 40ms; } .otp[data-state="success"] .otp-slot:nth-of-type(3) { animation-delay: 80ms; }
+.otp[data-state="success"] .otp-slot:nth-of-type(4) { animation-delay: 120ms; } .otp[data-state="success"] .otp-slot:nth-of-type(5) { animation-delay: 160ms; }
+.otp[data-state="success"] .otp-slot:nth-of-type(6) { animation-delay: 200ms; }
+@keyframes otp-success { 40% { transform: translateY(-4px); } }
+
+/* Joined (shadcn-style) */
+.otp-joined { gap: 0; }
+.otp-joined .otp-slot { border-radius: 0; margin-left: -1px; box-shadow: none; }
+.otp-joined .otp-slot:first-child, .otp-joined .otp-sep + .otp-slot { border-radius: var(--radius) 0 0 var(--radius); margin-left: 0; }
+.otp-joined .otp-slot:last-of-type, .otp-joined .otp-slot:has(+ .otp-sep) { border-radius: 0 var(--radius) var(--radius) 0; }
+.otp-joined .otp-sep { margin: 0 .6rem; }
+.otp-joined .otp-slot:focus { transform: none; }
+
+/* Sizes */
+.otp-sm { --slot-w: 2.25rem; --slot-h: 2.5rem; gap: .35rem; }
+.otp-sm .otp-slot { font-size: 1.05rem; }
+.otp-lg { --slot-w: 3.25rem; --slot-h: 3.75rem; }
+.otp-lg .otp-slot { font-size: 1.6rem; border-radius: var(--radius-lg); }
+@media (max-width: 420px) { .otp { gap: .35rem; --slot-w: 2.5rem; } }

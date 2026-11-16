@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Logo cloud — static grid of customer/partner logos
+   (the scrolling marquee version lives with the motion components)
+   ========================================================================== */
+.logo-cloud {
+  --logo-h: 1.75rem;
+  --logo-cols: 6;
+  display: grid;
+  grid-template-columns: repeat(var(--logo-cols), minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: 2rem 2.5rem;
+}
+.logo-cloud > * {
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+  height: var(--logo-h); max-width: 100%;
+  color: var(--muted-fg);
+  opacity: .85;
+  transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease), filter var(--dur) var(--ease);
+  font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -.03em; white-space: nowrap;
+}
+.logo-cloud > * > svg { height: 100%; width: auto; aspect-ratio: 1; flex-shrink: 0; }
+.logo-cloud > * > img, .logo-cloud > svg, .logo-cloud > img { height: 100%; width: auto; max-width: 100%; }
+.logo-cloud > a:hover, .logo-cloud-hover > *:hover { color: var(--fg); opacity: 1; text-decoration: none; }
+.logo-cloud > img, .logo-cloud > * > img { filter: grayscale(1); opacity: .65; }
+.logo-cloud > img:hover, .logo-cloud > *:hover > img { filter: none; opacity: 1; }
+/* Dim the others while one is hovered */
+.logo-cloud-focus:hover > * { opacity: .35; }
+.logo-cloud-focus:hover > *:hover { opacity: 1; color: var(--fg); }
+@media (max-width: 767px) { .logo-cloud { grid-template-columns: repeat(min(var(--logo-cols), 3), minmax(0, 1fr)); gap: 1.5rem; } }
+@media (max-width: 420px) { .logo-cloud { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Bordered tiles */
+.logo-cloud-grid { gap: 0; border-top: 1px solid var(--border); border-left: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; }
+.logo-cloud-grid > * { width: 100%; height: auto; min-height: calc(var(--logo-h) + 3.5rem); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.5rem 1rem; }
+.logo-cloud-grid > * > svg { height: var(--logo-h); }
+.logo-cloud-grid > *:hover { background: var(--bg-subtle); }
+.logo-cloud-title { text-align: center; font-size: var(--text-sm); color: var(--muted-fg); margin-bottom: 1.75rem; font-weight: 500; }
+/* Edge fade for wide rows */
+.logo-cloud-fade { -webkit-mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }

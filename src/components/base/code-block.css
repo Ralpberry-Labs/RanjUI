@@ -1,0 +1,126 @@
+/* ==========================================================================
+   Code block — header, filename, copy, line numbers, highlighted/diff lines,
+   tabs (npm / pnpm / yarn)
+   ========================================================================== */
+.code-block {
+  --code-bg: color-mix(in oklab, var(--fg) 2.5%, var(--bg));
+  --code-fg: color-mix(in oklab, var(--fg) 88%, var(--bg));
+  --code-header-bg: color-mix(in oklab, var(--fg) 4%, var(--bg));
+  --code-border: var(--border);
+  --code-muted: var(--muted-fg);
+  --code-hl: color-mix(in oklab, var(--primary) 10%, transparent);
+  --code-hl-bar: var(--primary);
+  --code-add: color-mix(in oklab, var(--success) 13%, transparent);
+  --code-del: color-mix(in oklab, var(--destructive) 12%, transparent);
+  --tok-k: oklch(0.5 0.2 300);   /* keyword */
+  --tok-s: oklch(0.5 0.13 150);  /* string */
+  --tok-n: oklch(0.55 0.15 50);  /* number */
+  --tok-c: color-mix(in oklab, var(--fg) 45%, var(--bg)); /* comment */
+  --tok-t: oklch(0.52 0.19 350); /* tag */
+  --tok-a: oklch(0.5 0.15 245);  /* attribute / property */
+  --tok-f: oklch(0.5 0.17 265);  /* function */
+  --tok-p: color-mix(in oklab, var(--fg) 55%, var(--bg)); /* punctuation */
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--code-fg);
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-lg);
+  font-size: .8125rem;
+  text-align: left;
+}
+[data-theme="dark"] .code-block, .code-block-dark {
+  --code-bg: #0b0b0f;
+  --code-fg: #e4e4e7;
+  --code-header-bg: #111116;
+  --code-border: #222229;
+  --code-muted: #8b8b97;
+  --code-hl: color-mix(in oklab, var(--primary) 16%, transparent);
+  --tok-k: #c4b5fd; --tok-s: #86efac; --tok-n: #fdba74; --tok-c: #6b6b78;
+  --tok-t: #f9a8d4; --tok-a: #93c5fd; --tok-f: #a5b4fc; --tok-p: #8b8b97;
+}
+.code-block-dark { color-scheme: dark; }
+
+.code-block-header {
+  display: flex; align-items: center; gap: .75rem; min-height: 2.6rem; padding: 0 .5rem 0 1rem;
+  background: var(--code-header-bg); border-bottom: 1px solid var(--code-border);
+  font-family: var(--font-sans); font-size: .78rem; color: var(--code-muted);
+}
+.code-block-filename { display: inline-flex; align-items: center; gap: .5rem; min-width: 0; color: var(--code-fg); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.code-block-filename svg { width: .95rem; height: .95rem; flex-shrink: 0; color: var(--code-muted); }
+.code-block-lang { margin-left: auto; font-family: var(--font-mono); font-size: .7rem; text-transform: lowercase; color: var(--code-muted); }
+.code-block-dots { display: inline-flex; gap: .4rem; margin-right: .25rem; }
+.code-block-dots i { width: .65rem; height: .65rem; border-radius: 50%; background: color-mix(in oklab, var(--code-muted) 40%, transparent); }
+.code-block-dots.mac i:nth-child(1) { background: #ff5f57; } .code-block-dots.mac i:nth-child(2) { background: #febc2e; } .code-block-dots.mac i:nth-child(3) { background: #28c840; }
+
+.code-block-copy {
+  display: inline-flex; align-items: center; justify-content: center; gap: .35rem; height: 1.85rem; min-width: 1.85rem; padding: 0 .5rem;
+  margin-left: auto; border-radius: var(--radius-sm); color: var(--code-muted); font-size: .75rem; font-weight: 500;
+  transition: background-color var(--transition), color var(--transition);
+}
+.code-block-lang + .code-block-copy { margin-left: 0; }
+.code-block-copy:hover { background: color-mix(in oklab, var(--code-fg) 9%, transparent); color: var(--code-fg); }
+.code-block-copy svg { width: .9rem; height: .9rem; }
+.code-block-copy .icon-done { display: none; color: var(--success); }
+.code-block-copy[data-copied] .icon-copy { display: none; }
+.code-block-copy[data-copied] .icon-done { display: block; animation: r-zoom-in var(--dur) var(--ease-spring); }
+/* floating copy when there's no header */
+.code-block > .code-block-copy { position: absolute; top: .5rem; right: .5rem; z-index: 1; opacity: 0; background: var(--code-bg); border: 1px solid var(--code-border); }
+.code-block:hover > .code-block-copy, .code-block > .code-block-copy:focus-visible, .code-block > .code-block-copy[data-copied] { opacity: 1; }
+@media (hover: none) { .code-block > .code-block-copy { opacity: 1; } }
+
+.code-block pre {
+  margin: 0; padding: 1rem 0; overflow: auto; max-height: var(--code-max-h, 32rem);
+  font-family: var(--font-mono); font-size: inherit; line-height: 1.7; tab-size: 2;
+  background: transparent; border: 0; color: inherit;
+}
+.code-block pre > code { display: block; min-width: max-content; padding: 0 1.1rem; background: none; border: 0; font-size: inherit; color: inherit; border-radius: 0; }
+.code-block .line { display: block; position: relative; padding: 0 1.1rem; margin: 0 -1.1rem; min-height: 1.7em; }
+.code-block .line.hl, .code-block .line[data-hl] { background: var(--code-hl); box-shadow: inset 2px 0 0 var(--code-hl-bar); }
+.code-block .line.add { background: var(--code-add); box-shadow: inset 2px 0 0 var(--success); }
+.code-block .line.del { background: var(--code-del); box-shadow: inset 2px 0 0 var(--destructive); }
+.code-block .line.add::after, .code-block .line.del::after { position: absolute; left: .4rem; top: 0; font-weight: 600; }
+.code-block .line.add::after { content: '+'; color: var(--success); }
+.code-block .line.del::after { content: '−'; color: var(--destructive); }
+.code-block .line.dim { opacity: .45; }
+/* line numbers */
+.code-block[data-line-numbers] code { counter-reset: line; }
+.code-block[data-line-numbers] .line { padding-left: 3.4rem; }
+.code-block[data-line-numbers] .line::before {
+  counter-increment: line; content: counter(line);
+  position: absolute; left: 0; width: 2.4rem; text-align: right; color: var(--code-muted); opacity: .6;
+  font-variant-numeric: tabular-nums; user-select: none; -webkit-user-select: none;
+}
+.code-block[data-line-numbers] .line.hl::before { color: var(--code-fg); opacity: 1; }
+.code-block[data-line-numbers] .line.add::after, .code-block[data-line-numbers] .line.del::after { left: 2.75rem; }
+.code-block.code-block-wrap pre > code { min-width: 0; white-space: pre-wrap; word-break: break-word; }
+
+/* tokens (from the built-in highlighter or your own spans) */
+.code-block .tok-k { color: var(--tok-k); } .code-block .tok-s { color: var(--tok-s); } .code-block .tok-n { color: var(--tok-n); }
+.code-block .tok-c { color: var(--tok-c); font-style: italic; } .code-block .tok-t { color: var(--tok-t); } .code-block .tok-a { color: var(--tok-a); }
+.code-block .tok-f { color: var(--tok-f); } .code-block .tok-p { color: var(--tok-p); }
+.code-block .tok-prompt { color: var(--code-muted); user-select: none; -webkit-user-select: none; }
+
+/* tabs */
+.code-block-tabs { display: flex; gap: .15rem; align-self: stretch; margin-left: -.5rem; overflow-x: auto; scrollbar-width: none; }
+.code-block-tabs button {
+  position: relative; padding: 0 .65rem; height: 100%; min-height: 2.6rem; font-size: .78rem; font-weight: 500; color: var(--code-muted);
+  transition: color var(--transition); white-space: nowrap;
+}
+.code-block-tabs button:hover { color: var(--code-fg); }
+.code-block-tabs button[aria-selected="true"] { color: var(--code-fg); }
+.code-block-tabs button[aria-selected="true"]::after { content: ''; position: absolute; left: .5rem; right: .5rem; bottom: -1px; height: 2px; border-radius: 2px; background: var(--primary); }
+.code-block [data-code-panel][hidden] { display: none; }
+
+/* inline one-liner (install command) */
+.code-inline {
+  display: inline-flex; align-items: center; gap: .75rem; max-width: 100%; height: 2.75rem; padding: 0 .4rem 0 1rem;
+  font-family: var(--font-mono); font-size: .8125rem; color: var(--fg);
+  background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-xs);
+}
+.code-inline > code { background: none; padding: 0; border: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.code-inline > code::before { content: '$ '; color: var(--muted-fg); }
+.code-inline > .code-block-copy { margin-left: 0; color: var(--muted-fg); }
+.code-inline > .code-block-copy:hover { color: var(--fg); background: var(--muted); }

@@ -1,0 +1,126 @@
+/* ==========================================================================
+   Checkbox — animated check draw, indeterminate, sizes, descriptions, cards
+   ========================================================================== */
+.checkbox {
+  --size: 1.0625rem;
+  --check: var(--primary);
+  position: relative;
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: .875rem; line-height: 1.35; color: var(--fg);
+  cursor: pointer; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.checkbox > input[type="checkbox"] {
+  position: absolute; opacity: 0; width: var(--size); height: var(--size); margin: 0; pointer-events: none;
+}
+.checkbox-mark {
+  position: relative; flex-shrink: 0;
+  display: grid; place-items: center;
+  width: var(--size); height: var(--size);
+  border: 1px solid var(--border-strong);
+  border-radius: calc(var(--size) * .3);
+  background: var(--field-bg);
+  box-shadow: var(--shadow-xs);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease-spring);
+}
+.checkbox-mark::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--primary-fg);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.6 8.4 6.6 11.2 12.4 4.8'/%3E%3C/svg%3E") center / 78% no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.6 8.4 6.6 11.2 12.4 4.8'/%3E%3C/svg%3E") center / 78% no-repeat;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--dur-slow) var(--ease-out);
+}
+.checkbox:hover > input:not(:disabled) + .checkbox-mark, .checkbox-card:hover > input:not(:disabled) + .checkbox-mark { border-color: color-mix(in oklab, var(--primary) 55%, var(--border-strong)); }
+.checkbox:active > input:not(:disabled) + .checkbox-mark { transform: scale(.88); }
+.checkbox > input:focus-visible + .checkbox-mark, .checkbox-card > input:focus-visible + .checkbox-mark { box-shadow: 0 0 0 3px var(--ring); border-color: var(--primary); }
+.checkbox > input:checked + .checkbox-mark, .checkbox > input:indeterminate + .checkbox-mark,
+.checkbox-card > input:checked + .checkbox-mark, .checkbox-card > input:indeterminate + .checkbox-mark {
+  background: var(--check); border-color: var(--check);
+  animation: checkbox-pop var(--dur-slow) var(--ease-spring);
+}
+.checkbox > input:checked + .checkbox-mark::after, .checkbox-card > input:checked + .checkbox-mark::after { clip-path: inset(0 0 0 0); transition-delay: 40ms; }
+.checkbox > input:indeterminate + .checkbox-mark::after, .checkbox-card > input:indeterminate + .checkbox-mark::after {
+  -webkit-mask: none; mask: none; inset: auto; width: 52%; height: 2px; border-radius: 2px; clip-path: none; position: static;
+}
+.checkbox > input:disabled + .checkbox-mark { opacity: .5; }
+.checkbox:has(> input:disabled), .checkbox-card:has(> input:disabled) { cursor: not-allowed; color: var(--muted-fg); }
+.checkbox > input[aria-invalid="true"]:not(:checked) + .checkbox-mark { border-color: var(--destructive); box-shadow: var(--field-ring-error); }
+@keyframes checkbox-pop { 0% { transform: scale(.8); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+
+/* Body with description */
+.checkbox-body, .radio-body, .switch-body { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+.checkbox-label, .radio-label, .switch-label { font-weight: 500; }
+.checkbox-desc, .radio-desc, .switch-desc { font-size: .8125rem; color: var(--muted-fg); line-height: 1.45; font-weight: 400; }
+.checkbox:has(.checkbox-desc) { align-items: flex-start; }
+.checkbox:has(.checkbox-desc) .checkbox-mark { margin-top: .1rem; }
+
+/* Sizes & colors */
+.checkbox-sm { --size: .875rem; font-size: .8125rem; gap: .5rem; }
+.checkbox-lg { --size: 1.3rem; font-size: .95rem; gap: .7rem; }
+.checkbox-round .checkbox-mark { border-radius: 50%; }
+.checkbox-success { --check: var(--success); }
+.checkbox-destructive { --check: var(--destructive); }
+.checkbox-strike > input:checked ~ .checkbox-body .checkbox-label, .checkbox-strike > input:checked ~ span:last-child {
+  color: var(--muted-fg); text-decoration: line-through; text-decoration-color: color-mix(in oklab, var(--muted-fg) 70%, transparent);
+}
+.checkbox-strike span { transition: color var(--dur); }
+
+/* Bare <input class="checkbox"> */
+input.checkbox[type="checkbox"] {
+  -webkit-appearance: none; appearance: none;
+  width: var(--size); height: var(--size); flex-shrink: 0;
+  border: 1px solid var(--border-strong); border-radius: calc(var(--size) * .3);
+  background: var(--field-bg) no-repeat center / 0 0;
+  box-shadow: var(--shadow-xs);
+  transition: background-color var(--dur), border-color var(--dur), background-size var(--dur-slow) var(--ease-spring);
+  display: inline-block; vertical-align: middle;
+}
+input.checkbox[type="checkbox"]:checked {
+  background-color: var(--check); border-color: var(--check); background-size: 78% 78%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.6 8.4 6.6 11.2 12.4 4.8'/%3E%3C/svg%3E");
+}
+input.checkbox[type="checkbox"]:indeterminate {
+  background-color: var(--check); border-color: var(--check); background-size: 78% 78%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='4' y='7' width='8' height='2' rx='1' fill='white'/%3E%3C/svg%3E");
+}
+input.checkbox[type="checkbox"]:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+
+/* Checkbox group */
+.checkbox-group, .radio-group { display: flex; flex-direction: column; gap: .7rem; }
+.checkbox-group-horizontal, .radio-group-horizontal { flex-direction: row; flex-wrap: wrap; gap: .6rem 1.4rem; }
+
+/* Checkbox card */
+.checkbox-card, .radio-card {
+  position: relative;
+  display: flex; align-items: flex-start; gap: .75rem;
+  padding: .9rem 1rem;
+  font-size: .875rem; color: var(--fg);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  cursor: pointer; user-select: none;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur), transform var(--dur) var(--ease-spring);
+  -webkit-tap-highlight-color: transparent;
+}
+.checkbox-card { --size: 1.0625rem; --check: var(--primary); }
+.checkbox-card > input, .radio-card > input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.checkbox-card .checkbox-mark { margin-top: .1rem; }
+.checkbox-card:hover, .radio-card:hover { border-color: var(--border-strong); }
+.checkbox-card:active, .radio-card:active { transform: scale(.985); }
+.checkbox-card:has(> input:checked), .radio-card:has(> input:checked) {
+  border-color: var(--primary);
+  background: color-mix(in oklab, var(--primary) 5%, var(--card));
+  box-shadow: 0 0 0 1px var(--primary), var(--shadow-sm);
+}
+.checkbox-card:has(> input:focus-visible), .radio-card:has(> input:focus-visible) { box-shadow: 0 0 0 1px var(--primary), 0 0 0 4px var(--ring); }
+.checkbox-card:has(> input:disabled), .radio-card:has(> input:disabled) { opacity: .55; cursor: not-allowed; transform: none; }
+.checkbox-card-icon, .radio-card-icon {
+  flex-shrink: 0; display: grid; place-items: center; width: 2.25rem; height: 2.25rem;
+  border-radius: var(--radius); background: var(--muted); color: var(--fg);
+  transition: background var(--dur), color var(--dur);
+}
+.checkbox-card-icon svg, .radio-card-icon svg { width: 1.15rem; height: 1.15rem; }
+.checkbox-card:has(> input:checked) .checkbox-card-icon, .radio-card:has(> input:checked) .radio-card-icon { background: var(--primary); color: var(--primary-fg); }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: .75rem; width: 100%; }

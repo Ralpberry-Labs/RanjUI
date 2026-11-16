@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Badge
+   Tones: (primary) secondary success warning destructive info neutral
+   Styles: solid (default) · .badge-soft · .badge-outline · .badge-dot
+   ========================================================================== */
+.badge {
+  --badge-bg: var(--primary);
+  --badge-fg: var(--primary-fg);
+  --badge-border: transparent;
+  --badge-soft: var(--primary-soft);
+  --badge-soft-fg: var(--primary-soft-fg);
+  --badge-tone: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  height: 1.375rem;
+  padding: 0 .55rem;
+  font-size: .75rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .005em;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: var(--badge-fg);
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+  border-radius: var(--radius-full);
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+.badge > svg { width: .85rem; height: .85rem; flex-shrink: 0; margin-left: -.1rem; }
+a.badge:hover { text-decoration: none; filter: brightness(1.06); }
+
+/* tones */
+.badge-secondary, .badge-neutral { --badge-bg: var(--secondary); --badge-fg: var(--secondary-fg); --badge-soft: var(--muted); --badge-soft-fg: var(--fg); --badge-tone: var(--muted-fg); }
+.badge-success { --badge-bg: var(--success); --badge-fg: var(--success-fg); --badge-soft: var(--success-soft); --badge-soft-fg: var(--success-soft-fg); --badge-tone: var(--success); }
+.badge-warning { --badge-bg: var(--warning); --badge-fg: var(--warning-fg); --badge-soft: var(--warning-soft); --badge-soft-fg: var(--warning-soft-fg); --badge-tone: var(--warning); }
+.badge-destructive, .badge-danger { --badge-bg: var(--destructive); --badge-fg: var(--destructive-fg); --badge-soft: var(--destructive-soft); --badge-soft-fg: var(--destructive-soft-fg); --badge-tone: var(--destructive); }
+.badge-info { --badge-bg: var(--info); --badge-fg: var(--info-fg); --badge-soft: var(--info-soft); --badge-soft-fg: var(--info-soft-fg); --badge-tone: var(--info); }
+.badge-contrast { --badge-bg: var(--fg); --badge-fg: var(--bg); --badge-tone: var(--fg); }
+
+/* styles */
+.badge-soft { background: var(--badge-soft); color: var(--badge-soft-fg); border-color: color-mix(in oklab, var(--badge-tone) 18%, transparent); }
+.badge-outline { background: transparent; color: var(--fg); border-color: var(--border-strong); }
+.badge-outline:is(.badge-success, .badge-warning, .badge-destructive, .badge-danger, .badge-info) { color: var(--badge-soft-fg); border-color: color-mix(in oklab, var(--badge-tone) 45%, transparent); }
+.badge-ghost { background: transparent; color: var(--muted-fg); border-color: transparent; }
+.badge-dot { background: transparent; color: var(--fg); border-color: var(--border); }
+.badge-dot::before, .badge-soft.badge-dot::before { content: ''; width: .4rem; height: .4rem; border-radius: 50%; background: var(--badge-tone); flex-shrink: 0; }
+.badge-soft.badge-dot { background: var(--badge-soft); color: var(--badge-soft-fg); }
+.badge-gradient { background: linear-gradient(100deg, oklch(0.6 0.23 var(--hue)), oklch(0.65 0.22 calc(var(--hue) + 60))); color: #fff; border-color: transparent; }
+
+/* pulse: live dot */
+.badge-pulse::before {
+  content: ''; position: relative; width: .45rem; height: .45rem; border-radius: 50%; background: var(--badge-tone); flex-shrink: 0;
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--badge-tone) 60%, transparent);
+  animation: badge-pulse 1.8s var(--ease-out) infinite;
+}
+.badge:not(.badge-soft):not(.badge-outline):not(.badge-dot):not(.badge-ghost).badge-pulse::before { background: currentColor; }
+@keyframes badge-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--badge-tone) 55%, transparent); } 70%, 100% { box-shadow: 0 0 0 .45rem transparent; } }
+
+/* sizes */
+.badge-sm { height: 1.125rem; padding: 0 .4rem; font-size: .6875rem; gap: .25rem; }
+.badge-lg { height: 1.75rem; padding: 0 .75rem; font-size: .8125rem; gap: .4rem; }
+.badge-square { border-radius: var(--radius-xs); }
+
+/* removable */
+.badge-remove {
+  display: inline-grid; place-items: center; width: 1rem; height: 1rem; margin: 0 -.3rem 0 -.05rem; border-radius: 50%;
+  color: inherit; opacity: .65; cursor: pointer; transition: opacity var(--transition), background-color var(--transition);
+}
+.badge-remove:hover { opacity: 1; background: color-mix(in oklab, currentColor 16%, transparent); }
+.badge-remove svg { width: .65rem; height: .65rem; }
+
+/* count / notification */
+.badge-count {
+  min-width: 1.25rem; height: 1.25rem; padding: 0 .35rem; justify-content: center;
+  font-size: .6875rem; font-weight: 700; letter-spacing: 0;
+}
+.badge-anchor { position: relative; display: inline-flex; }
+.badge-anchor > .badge-count, .badge-anchor > .badge-indicator {
+  position: absolute; top: 0; right: 0; transform: translate(40%, -40%);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+.badge-indicator { width: .6rem; height: .6rem; border-radius: 50%; background: var(--destructive); }

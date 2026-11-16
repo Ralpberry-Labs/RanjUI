@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Scrollspy / table of contents — highlights the section in view with a
+   sliding indicator; nested levels via .toc-sub.
+   ========================================================================== */
+.toc { position: relative; display: flex; flex-direction: column; gap: .125rem; padding-left: .875rem; border-left: 1px solid var(--border); font-size: .8125rem; }
+.toc-title { margin: 0 0 .5rem -.875rem; padding-left: .875rem; font-size: .75rem; font-weight: 600; color: var(--fg); letter-spacing: .02em; }
+.toc-link {
+  position: relative; display: block; padding: .3rem 0; line-height: 1.4;
+  color: var(--muted-fg); text-decoration: none; transition: color .25s var(--ease), transform .3s var(--ease-out);
+}
+.toc-link:hover { color: var(--fg); text-decoration: none; }
+.toc-link[aria-current="true"], .toc-link.active { color: var(--primary); font-weight: 500; }
+.toc-link[data-passed]:not([aria-current="true"]) { color: color-mix(in oklab, var(--fg) 70%, var(--muted-fg)); }
+.toc-sub { padding-left: .875rem; font-size: .78rem; }
+.toc-indicator {
+  position: absolute; left: -1px; top: 0; width: 2px; height: var(--th, 0px); border-radius: 2px;
+  background: var(--primary); transform: translateY(var(--ty, 0px)); opacity: 0;
+  box-shadow: 0 0 10px color-mix(in oklab, var(--primary) 50%, transparent);
+}
+.toc[data-ready] .toc-indicator { opacity: 1; transition: transform .4s var(--ease-out), height .4s var(--ease-out), opacity .2s; }
+.toc-progress { margin-top: .75rem; height: 3px; border-radius: 3px; background: var(--muted); overflow: hidden; margin-left: -.875rem; }
+.toc-progress span { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: var(--primary); transition: width .15s linear; }
+/* Pill style: no rail, active link gets a soft background */
+.toc-pills { border-left: 0; padding-left: 0; }
+.toc-pills .toc-title { margin-left: 0; padding-left: .6rem; }
+.toc-pills .toc-link { padding: .35rem .6rem; border-radius: var(--radius-sm); z-index: 1; }
+.toc-pills .toc-sub { padding-left: 1.4rem; }
+.toc-pills .toc-indicator { left: 0; right: 0; width: auto; border-radius: var(--radius-sm); background: var(--primary-soft); box-shadow: none; z-index: 0; }

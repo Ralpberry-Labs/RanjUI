@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Examples — RanjuUI</title>
+  <title>Examples — Ranj UI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../ranju.css">
+  <link rel="stylesheet" href="../dist/ranj.css">
   <style>
     body { min-height: 100vh; display: flex; flex-direction: column; }
     .ex-header {
@@ -32,12 +32,12 @@
   <header class="ex-header">
     <a href="../index.html" style="text-decoration:none;color:var(--fg)" class="flex items-center gap-2">
       <span style="color:var(--primary);font-size:1.25rem">&#9650;</span>
-      <span class="font-bold">RanjuUI</span>
+      <span class="font-bold">Ranj UI</span>
       <span class="text-muted text-sm">/ Examples</span>
     </a>
     <div class="flex gap-2 items-center">
       <a href="../index.html" class="btn btn-ghost btn-sm">Docs</a>
-      <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranju.theme.toggle();document.getElementById('ti').textContent=Ranju.theme.current()==='dark'?'\u2600':'\u263E'" aria-label="Theme">
+      <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranj.theme.toggle();document.getElementById('ti').textContent=Ranj.theme.current()==='dark'?'\u2600':'\u263E'" aria-label="Theme">
         <span id="ti">&#9790;</span>
       </button>
     </div>
@@ -45,7 +45,7 @@
 
   <div class="ex-content">
     <h1>Examples</h1>
-    <p>Real-world pages built entirely with RanjuUI components. No extra CSS frameworks, no JavaScript libraries — just RanjuUI.</p>
+    <p>Real-world pages built entirely with Ranj UI components. No extra CSS frameworks, no JavaScript libraries — just Ranj UI.</p>
 
     <div class="grid grid-cols-2 gap-6">
       <a href="saas-landing.html" class="card example-card" style="text-decoration:none;color:inherit">
@@ -133,9 +133,9 @@
     </div>
   </div>
 
-  <script src="../ranju.js"></script>
+  <script src="../dist/ranj.js"></script>
   <script>
-    document.getElementById('ti').textContent = Ranju.theme.current() === 'dark' ? '\u2600' : '\u263E';
+    document.getElementById('ti').textContent = Ranj.theme.current() === 'dark' ? '\u2600' : '\u263E';
   </script>
 </body>
 </html>

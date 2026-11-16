@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Field — label, hint, error, layout, fieldset/form sections
+   ========================================================================== */
+.label {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-size: .875rem; font-weight: 500; line-height: 1.3;
+  color: var(--fg);
+  margin-bottom: .45rem;
+  user-select: none;
+}
+.label-required::after, .label[data-required]::after, .field-required .label::after {
+  content: '*'; margin-left: -.15rem; color: var(--destructive); font-weight: 600;
+}
+.label-optional { font-weight: 400; color: var(--muted-fg); font-size: .8125rem; }
+.label:has(+ :disabled), .field[data-disabled] .label { opacity: .6; }
+
+.field { display: flex; flex-direction: column; min-width: 0; margin-bottom: 1.25rem; }
+.field:last-child { margin-bottom: 0; }
+.field > .label { align-self: flex-start; }
+.field-row { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; }
+.field-row > .label { margin-bottom: .45rem; }
+.field-row > a, .field-row > .field-aside { font-size: .8125rem; color: var(--muted-fg); }
+.field-row > a:hover { color: var(--primary); }
+.field-hint, .field-error, .field-success {
+  display: flex; align-items: flex-start; gap: .35rem;
+  font-size: .8125rem; line-height: 1.4; margin-top: .45rem;
+}
+.field-hint { color: var(--muted-fg); }
+.field-error { color: var(--destructive); font-weight: 500; }
+[data-theme="dark"] .field-error { color: color-mix(in oklab, var(--destructive) 75%, white); }
+.field-success { color: var(--success-soft-fg); }
+.field-error svg, .field-success svg, .field-hint svg { flex-shrink: 0; width: .9rem; height: .9rem; margin-top: .1rem; }
+.field-error:empty { display: none; }
+.field-error[data-live] { animation: field-error-in var(--dur-slow) var(--ease-out); }
+@keyframes field-error-in { from { opacity: 0; transform: translateY(-4px); } }
+.field[data-invalid] .label { color: var(--destructive); }
+[data-theme="dark"] .field[data-invalid] .label { color: color-mix(in oklab, var(--destructive) 75%, white); }
+
+/* Horizontal: label column + control column */
+.field-horizontal { display: grid; grid-template-columns: minmax(8rem, 32%) 1fr; column-gap: 1.25rem; align-items: start; }
+.field-horizontal > .label { padding-top: calc((var(--control-h) - 1.15rem) / 2); margin-bottom: 0; grid-column: 1; grid-row: 1 / span 3; }
+.field-horizontal > :not(.label) { grid-column: 2; }
+.field-horizontal > .field-label-block { grid-column: 1; grid-row: 1 / span 3; }
+.field-label-block .label { margin-bottom: .2rem; }
+.field-label-block .field-hint { margin-top: 0; }
+@media (max-width: 560px) {
+  .field-horizontal { display: flex; flex-direction: column; }
+  .field-horizontal > .label { padding-top: 0; margin-bottom: .45rem; }
+  .field-horizontal > .field-label-block { margin-bottom: .55rem; }
+}
+
+/* Inline: control and label side by side (checkbox / switch rows) */
+.field-inline { flex-direction: row; align-items: center; gap: .6rem; }
+.field-inline > .label { margin: 0; }
+
+/* Grid helpers for forms */
+.form-grid { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); gap: 1rem 1rem; }
+.form-grid > .field { margin-bottom: 0; }
+.form-grid > .span-2, .form-grid > .col-span-2 { grid-column: span 2; }
+.form-grid > .span-full { grid-column: 1 / -1; }
+@media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } .form-grid > .span-2, .form-grid > .col-span-2 { grid-column: auto; } }
+.form-group { margin-bottom: 1.25rem; } /* v1 alias */
+.form-stack { display: flex; flex-direction: column; gap: 1.1rem; }
+.form-stack > .field { margin-bottom: 0; }
+.form-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .6rem; margin-top: 1.5rem; }
+.form-actions-between { justify-content: space-between; }
+
+/* Fieldsets & sections */
+.fieldset { border: 0; min-width: 0; margin: 0; padding: 0; }
+.fieldset > legend, .fieldset-legend { font-size: .95rem; font-weight: 600; letter-spacing: -.01em; margin-bottom: .2rem; padding: 0; color: var(--fg); }
+.fieldset-desc { font-size: .85rem; color: var(--muted-fg); margin-bottom: 1rem; }
+.fieldset[disabled] { opacity: .6; }
+.form-section { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 1.25rem 2.5rem; padding: 1.75rem 0; border-top: 1px solid var(--border); }
+.form-section:first-child { border-top: 0; padding-top: 0; }
+.form-section-head h3, .form-section-title { font-size: .95rem; font-weight: 600; letter-spacing: -.01em; margin-bottom: .25rem; }
+.form-section-head p { font-size: .85rem; color: var(--muted-fg); line-height: 1.5; }
+@media (max-width: 720px) { .form-section { grid-template-columns: 1fr; gap: 1rem; } }
+
+/* Character counter shared by input/textarea */
+.field-counter { margin-left: auto; font-size: .75rem; color: var(--muted-fg); font-variant-numeric: tabular-nums; transition: color var(--dur); }
+.field-counter[data-warn] { color: var(--warning-soft-fg); }
+.field-counter[data-over] { color: var(--destructive); font-weight: 600; }
+.field-hint { display: block; }
+.field-hint:has(> svg) { display: flex; }

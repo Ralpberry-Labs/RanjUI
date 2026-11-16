@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Rating (read-only stars)
+   <span class="stars" style="--value: 4.5" role="img" aria-label="Rated 4.5 out of 5"></span>
+   ========================================================================== */
+.stars {
+  --value: 0;
+  --max: 5;
+  --size: 1.1rem;
+  --gap: .15rem;
+  --star-on: oklch(0.8 0.16 80);
+  --star-off: color-mix(in oklab, var(--fg) 14%, transparent);
+  --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.8l3.1 6.6 7.2.9-5.3 5 1.4 7.2L12 18l-6.4 3.5L7 14.3l-5.3-5 7.2-.9z'/%3E%3C/svg%3E");
+  --pct: calc(var(--value) / var(--max) * 100%);
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(var(--max) * (var(--size) + var(--gap)));
+  height: var(--size);
+  flex: none;
+  background: linear-gradient(90deg, var(--star-on) var(--pct), var(--star-off) 0);
+  -webkit-mask-image: var(--star); mask-image: var(--star);
+  -webkit-mask-size: calc(var(--size) + var(--gap)) var(--size); mask-size: calc(var(--size) + var(--gap)) var(--size);
+  -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x;
+  -webkit-mask-position: 0 0; mask-position: 0 0;
+}
+/* Fractional stars snap the fill to the star shape, not the gaps */
+.stars { background: linear-gradient(90deg, var(--star-on) calc(round(down, var(--value), 1) * (var(--size) + var(--gap)) + (var(--value) - round(down, var(--value), 1)) * var(--size) + var(--gap) / 2), var(--star-off) 0); }
+@supports not (width: round(down, 1px, 1px)) {
+  .stars { background: linear-gradient(90deg, var(--star-on) calc(var(--value) * (var(--size) + var(--gap))), var(--star-off) 0); }
+}
+.stars-xs { --size: .8rem; --gap: .1rem; }
+.stars-sm { --size: .95rem; --gap: .12rem; }
+.stars-lg { --size: 1.5rem; --gap: .2rem; }
+.stars-xl { --size: 2.1rem; --gap: .25rem; }
+.stars-primary { --star-on: var(--primary); }
+.stars-success { --star-on: var(--success); }
+.stars-rose { --star-on: oklch(0.65 0.22 15); }
+.stars-heart { --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-8.5-5.3-9.8-11A5.5 5.5 0 0 1 12 5.8 5.5 5.5 0 0 1 21.8 10C20.5 15.7 12 21 12 21z'/%3E%3C/svg%3E"); }
+.stars-circle { --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3C/svg%3E"); --star-on: var(--success); }
+
+/* Inline with a number: <span class="stars-group"><span class="stars" …></span><b>4.8</b><span>(2,148)</span></span> */
+.stars-group { display: inline-flex; align-items: center; gap: .45rem; font-size: var(--text-sm); color: var(--muted-fg); font-variant-numeric: tabular-nums; }
+.stars-group b { color: var(--fg); font-weight: 600; }
+
+/* Summary with distribution bars */
+.rating-summary { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.25rem 2rem; align-items: center; }
+.rating-score { display: grid; justify-items: start; gap: .35rem; }
+.rating-score strong { font-family: var(--font-display); font-size: 3rem; line-height: 1; font-weight: 700; letter-spacing: -.04em; }
+.rating-score small { font-size: .8125rem; color: var(--muted-fg); }
+.rating-bars { display: grid; gap: .4rem; min-width: 0; }
+.rating-bar { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr) 2.75rem; align-items: center; gap: .6rem; font-size: .8125rem; color: var(--muted-fg); font-variant-numeric: tabular-nums; }
+.rating-bar > span:last-child { text-align: right; }
+.rating-bar-track { height: .5rem; border-radius: var(--radius-full); background: var(--muted); overflow: hidden; }
+.rating-bar-track > i { display: block; height: 100%; width: var(--w, 0%); border-radius: inherit; background: oklch(0.8 0.16 80); }
+@media (max-width: 480px) { .rating-summary { grid-template-columns: 1fr; } }

@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Color picker — trigger, SV area, hue rail, hex field, swatches
+   ========================================================================== */
+.color-picker { position: relative; display: inline-block; max-width: 100%; }
+.color-picker-trigger {
+  display: inline-flex; align-items: center; gap: .55rem;
+  height: var(--control-h); padding: 0 .55rem 0 .4rem;
+  font-family: var(--font-mono); font-size: .8rem; color: var(--fg);
+  background: var(--field-bg); border: 1px solid var(--field-border); border-radius: var(--field-radius);
+  box-shadow: var(--field-shadow);
+  transition: border-color var(--dur), box-shadow var(--dur), background var(--dur);
+}
+.color-picker-trigger:hover { border-color: var(--field-border-hover); background: var(--field-bg-hover); }
+.color-picker-trigger:focus-visible, .color-picker[data-state="open"] .color-picker-trigger { outline: none; border-color: var(--field-focus); box-shadow: var(--field-shadow), var(--field-ring); }
+.color-picker-caret { display: grid; color: var(--muted-fg); }
+.color-picker-caret svg { width: .9rem; height: .9rem; transition: transform var(--dur) var(--ease-out); }
+.color-picker[data-state="open"] .color-picker-caret svg { transform: rotate(180deg); }
+.color-swatch {
+  flex-shrink: 0; width: 1.6rem; height: 1.6rem; border-radius: calc(var(--field-radius) * .7);
+  background: var(--color, #6366f1);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .12);
+  transition: background var(--dur-fast);
+}
+.color-panel { --color: #6366f1; --hue-color: #0000ff; width: 15.5rem; max-width: calc(100vw - 16px); display: flex; flex-direction: column; gap: .7rem; }
+.color-picker > .color-panel { padding: .75rem; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); }
+.color-area {
+  position: relative; height: 9.5rem; border-radius: var(--radius);
+  background: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, var(--hue-color));
+  cursor: crosshair; touch-action: none; outline: none;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08);
+}
+.color-area-thumb, .color-hue-thumb {
+  position: absolute; width: 1.05rem; height: 1.05rem; margin: -.525rem 0 0 -.525rem;
+  border-radius: 50%; border: 2.5px solid #fff; background: var(--color);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / .2), 0 2px 6px rgb(0 0 0 / .3);
+  pointer-events: none;
+  transition: transform var(--dur) var(--ease-spring);
+}
+.color-area[data-dragging] .color-area-thumb, .color-hue[data-dragging] .color-hue-thumb { transform: scale(1.2); }
+.color-area:focus-visible .color-area-thumb, .color-hue:focus-visible .color-hue-thumb { box-shadow: 0 0 0 1px rgb(0 0 0 / .2), 0 0 0 4px var(--ring); }
+.color-row { display: flex; align-items: center; gap: .6rem; }
+.color-hue {
+  position: relative; flex: 1; height: .75rem; border-radius: var(--radius-full);
+  background: linear-gradient(to right, #f00, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00);
+  cursor: pointer; touch-action: none; outline: none;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08);
+}
+.color-hue-thumb { top: 50%; background: var(--hue-color); }
+.color-eyedropper { flex-shrink: 0; display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: var(--radius-sm); color: var(--muted-fg); border: 1px solid var(--border); transition: background var(--dur-fast), color var(--dur-fast); }
+.color-eyedropper:hover { background: var(--muted); color: var(--fg); }
+.color-fields { display: flex; align-items: center; gap: .5rem; }
+.color-preview { width: 2rem; height: 2rem; }
+.color-hex-field {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: .5rem; height: 2rem; padding: 0 .6rem;
+  font-size: .7rem; font-weight: 600; color: var(--muted-fg);
+  background: var(--field-bg); border: 1px solid var(--field-border); border-radius: var(--radius-sm);
+  transition: border-color var(--dur), box-shadow var(--dur);
+  margin: 0;
+}
+.color-hex-field:focus-within { border-color: var(--field-focus); box-shadow: var(--field-ring); }
+.color-hex-input { flex: 1; min-width: 0; width: 100%; border: 0; outline: none; background: none; font-family: var(--font-mono); font-size: .8rem; color: var(--fg); text-transform: uppercase; }
+.color-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(1.5rem, 1fr)); gap: .4rem; }
+.color-swatch-btn {
+  position: relative; aspect-ratio: 1; border-radius: calc(var(--radius) * .6);
+  background: var(--c); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .1);
+  transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur);
+}
+.color-swatch-btn:hover { transform: scale(1.12); }
+.color-swatch-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ring); }
+.color-swatch-btn[data-active] { box-shadow: 0 0 0 2px var(--popover), 0 0 0 4px var(--c); }
+.color-swatch-btn[data-active]::after {
+  content: ''; position: absolute; inset: 25%;
+  background: var(--ck, #fff);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5 6.5 11.5 12.5 4.5'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5 6.5 11.5 12.5 4.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  animation: checkbox-pop var(--dur-slow) var(--ease-spring);
+}
+/* Swatch-only picker: a row of radio-like swatches */
+.swatch-picker { display: flex; flex-wrap: wrap; gap: .55rem; }
+.swatch-picker > label { position: relative; cursor: pointer; }
+.swatch-picker > label > input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.swatch-picker > label > span {
+  display: block; width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--c);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .1);
+  transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur);
+}
+.swatch-picker > label:hover > span { transform: scale(1.1); }
+.swatch-picker > label > input:checked + span { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--c); transform: scale(.92); }
+.swatch-picker > label > input:focus-visible + span { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ring); }
+[data-theme="dark"] .color-swatch-btn:not([data-active]):not(:focus-visible), [data-theme="dark"] .color-swatch, [data-theme="dark"] .swatch-picker > label > span { box-shadow: inset 0 0 0 1px rgb(255 255 255 / .14); }

@@ -1,0 +1,297 @@
+/* ==========================================================================
+   Ranj UI — Animated backgrounds
+   Every .bg-* element absolutely fills its position:relative parent.
+   Put content in a sibling with .bg-content (or .bg-hero) so it sits on top.
+   ========================================================================== */
+
+/* ---------- Host + content helpers ---------- */
+.bg-host { position: relative; isolation: isolate; overflow: hidden; background-color: var(--bg); color: var(--fg); }
+.bg-content { position: relative; z-index: 1; }
+.bg-hero {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1rem; text-align: center; min-height: inherit; height: 100%;
+  padding: 3rem 1.25rem; pointer-events: none;
+}
+.bg-hero > * { pointer-events: auto; }
+.bg-hero h1, .bg-hero h2 {
+  font-family: var(--font-display); font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.1rem);
+  font-weight: 800; letter-spacing: -.04em; line-height: 1.04; max-width: 17ch; text-wrap: balance;
+}
+.bg-hero p { color: var(--muted-fg); max-width: 44ch; font-size: clamp(.95rem, .9rem + .2vw, 1.05rem); line-height: 1.55; text-wrap: pretty; }
+.bg-hero-badge {
+  display: inline-flex; align-items: center; gap: .45rem; padding: .3rem .75rem .3rem .4rem;
+  font-size: .78rem; font-weight: 600; border-radius: var(--radius-full);
+  background: color-mix(in oklab, var(--bg) 70%, transparent); border: 1px solid color-mix(in oklab, var(--fg) 10%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--fg);
+}
+.bg-hero-badge b { padding: .1rem .45rem; border-radius: var(--radius-full); background: var(--primary); color: var(--primary-fg); font-size: .68rem; }
+.bg-hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin-top: .35rem; }
+.bg-hero-dark, .bg-hero-dark h1, .bg-hero-dark h2 { color: #fafafa; }
+.bg-hero-dark p { color: rgb(250 250 250 / .7); }
+.bg-hero-dark .bg-hero-badge { background: rgb(255 255 255 / .08); border-color: rgb(255 255 255 / .14); color: #fafafa; }
+
+/* ---------- Shared base ---------- */
+.bg-aurora, .bg-mesh, .bg-line-grid, .bg-dot-pattern, .bg-noise, .bg-beams, .bg-meteors, .bg-particles, .bg-stars,
+.bg-waves, .bg-retro-grid, .bg-light-rays, .bg-squares, .bg-flicker-grid, .bg-ripple, .bg-gradient-orbs,
+.bg-silk, .bg-liquid {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+  --c1: oklch(.7 .2 var(--hue));
+  --c2: oklch(.74 .17 calc(var(--hue) + 65));
+  --c3: oklch(.76 .15 calc(var(--hue) - 75));
+  --c4: oklch(.68 .19 calc(var(--hue) + 150));
+}
+.bg-host > canvas, .bg-particles > canvas, .bg-stars > canvas, .bg-waves > canvas, .bg-squares > canvas,
+.bg-flicker-grid > canvas, .bg-silk > canvas, .bg-liquid > canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+}
+/* Fade modifiers usable on any background */
+.bg-fade { -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 35%, transparent 100%); mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 35%, transparent 100%); }
+.bg-fade-b { -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
+.bg-fade-t { -webkit-mask-image: linear-gradient(transparent, #000 45%); mask-image: linear-gradient(transparent, #000 45%); }
+
+/* ---------- Aurora (blurred drifting blobs) ---------- */
+.bg-aurora { --speed: 16s; --blur: 64px; --opacity: .5; }
+[data-theme="dark"] .bg-aurora { --opacity: .55; }
+.bg-aurora::before, .bg-aurora::after {
+  content: ''; position: absolute; inset: -30%; opacity: var(--opacity); filter: blur(var(--blur));
+  will-change: transform;
+}
+.bg-aurora::before {
+  background:
+    radial-gradient(28% 34% at 26% 32%, var(--c1), transparent 70%),
+    radial-gradient(30% 30% at 72% 28%, var(--c2), transparent 70%),
+    radial-gradient(26% 32% at 52% 72%, var(--c3), transparent 70%);
+  animation: bg-aurora-a var(--speed) ease-in-out infinite alternate;
+}
+.bg-aurora::after {
+  background:
+    radial-gradient(24% 28% at 68% 66%, var(--c4), transparent 70%),
+    radial-gradient(22% 26% at 30% 70%, var(--c2), transparent 70%),
+    radial-gradient(20% 24% at 46% 34%, var(--c3), transparent 70%);
+  animation: bg-aurora-b calc(var(--speed) * 1.35) ease-in-out infinite alternate;
+}
+@keyframes bg-aurora-a {
+  0% { transform: translate3d(-6%, -4%, 0) rotate(0deg) scale(1); }
+  50% { transform: translate3d(5%, 3%, 0) rotate(18deg) scale(1.12); }
+  100% { transform: translate3d(-2%, 6%, 0) rotate(-12deg) scale(.95); }
+}
+@keyframes bg-aurora-b {
+  0% { transform: translate3d(6%, 4%, 0) rotate(0deg) scale(1.08); }
+  50% { transform: translate3d(-6%, -2%, 0) rotate(-22deg) scale(.94); }
+  100% { transform: translate3d(3%, -6%, 0) rotate(14deg) scale(1.1); }
+}
+/* Ribbon variant: northern-lights curtains from the top */
+.bg-aurora-ribbon::before {
+  inset: -20% -10% 20%; filter: blur(var(--blur, 40px)); opacity: calc(var(--opacity) * 1.25);
+  background: repeating-linear-gradient(100deg, var(--c1) 0%, var(--c3) 8%, transparent 13%, var(--c2) 19%, var(--c4) 26%, transparent 32%);
+  background-size: 260% 100%;
+  -webkit-mask-image: radial-gradient(ellipse 100% 95% at 60% 0%, #000 25%, transparent 80%);
+  mask-image: radial-gradient(ellipse 100% 95% at 60% 0%, #000 25%, transparent 80%);
+  animation: bg-aurora-ribbon calc(var(--speed) * 2.4) linear infinite;
+}
+.bg-aurora-ribbon::after {
+  inset: -10% -20% 30%; opacity: calc(var(--opacity) * .7);
+  background: repeating-linear-gradient(80deg, transparent 0%, var(--c2) 6%, transparent 12%, var(--c1) 20%, transparent 27%);
+  background-size: 220% 100%;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 30% 0%, #000 10%, transparent 70%);
+  mask-image: radial-gradient(ellipse 70% 70% at 30% 0%, #000 10%, transparent 70%);
+  animation: bg-aurora-ribbon calc(var(--speed) * 3.2) linear infinite reverse;
+}
+.bg-aurora-ribbon { --blur: 34px; --opacity: .62; }
+@keyframes bg-aurora-ribbon { from { background-position: 0% 0; } to { background-position: 260% 0; } }
+
+/* ---------- Mesh gradient (orbiting color points) ---------- */
+@property --bg-mesh-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.bg-mesh {
+  --speed: 22s;
+  --base: color-mix(in oklab, var(--bg) 82%, var(--c1));
+  background-color: var(--base);
+  background-image:
+    radial-gradient(at calc(50% + 38% * cos(var(--bg-mesh-a))) calc(50% + 34% * sin(var(--bg-mesh-a))), var(--c1) 0, transparent 52%),
+    radial-gradient(at calc(50% + 40% * cos(var(--bg-mesh-a) * 2 + 120deg)) calc(50% + 36% * sin(var(--bg-mesh-a) + 120deg)), var(--c2) 0, transparent 50%),
+    radial-gradient(at calc(50% + 36% * cos(240deg - var(--bg-mesh-a))) calc(50% + 40% * sin(var(--bg-mesh-a) * 2 + 240deg)), var(--c3) 0, transparent 50%),
+    radial-gradient(at calc(50% + 30% * sin(var(--bg-mesh-a) + 60deg)) calc(50% + 30% * cos(var(--bg-mesh-a) * 3)), var(--c4) 0, transparent 46%);
+  animation: bg-mesh-spin var(--speed) linear infinite;
+  opacity: .85;
+}
+[data-theme="dark"] .bg-mesh { --base: color-mix(in oklab, var(--bg) 85%, var(--c1)); opacity: .7; }
+@keyframes bg-mesh-spin { to { --bg-mesh-a: 360deg; } }
+
+/* ---------- Line grid ---------- */
+.bg-line-grid {
+  --cell: 40px; --line: color-mix(in oklab, var(--fg) 10%, transparent); --glow: var(--primary);
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: var(--cell) var(--cell); background-position: center center;
+  -webkit-mask-image: radial-gradient(ellipse 72% 66% at 50% 40%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 72% 66% at 50% 40%, #000 30%, transparent 100%);
+}
+.bg-line-grid-scan::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 30%;
+  background: linear-gradient(transparent, color-mix(in oklab, var(--glow) 14%, transparent) 70%, color-mix(in oklab, var(--glow) 55%, transparent) 99%, transparent);
+  animation: bg-line-grid-scan 5s var(--ease-in-out) infinite; mix-blend-mode: normal;
+}
+@keyframes bg-line-grid-scan { from { transform: translateY(-100%); } to { transform: translateY(340%); } }
+.bg-line-grid-cell {
+  position: absolute; width: calc(var(--cell) - 1px); height: calc(var(--cell) - 1px);
+  background: color-mix(in oklab, var(--glow) 22%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--glow) 45%, transparent), 0 0 24px color-mix(in oklab, var(--glow) 35%, transparent);
+  opacity: 0; animation: bg-line-grid-cell var(--d, 3s) var(--ease-in-out) var(--delay, 0s) infinite;
+}
+@keyframes bg-line-grid-cell { 0%, 100% { opacity: 0; } 45%, 55% { opacity: 1; } }
+
+/* ---------- Dot pattern + hover spotlight ---------- */
+.bg-dot-pattern {
+  --gap: 22px; --dot: 1.3px; --dot-color: color-mix(in oklab, var(--fg) 24%, transparent);
+  --spot: var(--primary); --spot-size: 180px;
+}
+.bg-dot-pattern::before, .bg-dot-pattern::after {
+  content: ''; position: absolute; inset: 0; background-position: center center;
+  background-size: var(--gap) var(--gap);
+}
+.bg-dot-pattern::before {
+  background-image: radial-gradient(circle, var(--dot-color) var(--dot), transparent calc(var(--dot) + .6px));
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 30%, transparent 100%);
+}
+.bg-dot-pattern::after {
+  background-image: radial-gradient(circle, var(--spot) calc(var(--dot) + .5px), transparent calc(var(--dot) + 1.2px));
+  -webkit-mask-image: radial-gradient(var(--spot-size) circle at var(--mx, -999px) var(--my, -999px), #000 0%, transparent 100%);
+  mask-image: radial-gradient(var(--spot-size) circle at var(--mx, -999px) var(--my, -999px), #000 0%, transparent 100%);
+  opacity: 0; transition: opacity .4s var(--ease);
+}
+.bg-dot-pattern[data-active]::after { opacity: 1; }
+
+/* ---------- Grain overlay ---------- */
+.bg-noise { --opacity: .22; --size: 160px; opacity: var(--opacity); }
+[data-theme="dark"] .bg-noise { --opacity: .12; }
+.bg-noise::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.6 -.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: var(--size);
+}
+.bg-noise-animated::before { inset: -60px; animation: bg-noise-jitter .5s steps(4) infinite; }
+@keyframes bg-noise-jitter {
+  0% { transform: translate(0, 0); } 25% { transform: translate(-23px, 17px); }
+  50% { transform: translate(19px, -31px); } 75% { transform: translate(-37px, -9px); } 100% { transform: translate(11px, 29px); }
+}
+
+/* ---------- Light beams (falling streaks on rails + soft sweeping cones) ---------- */
+.bg-beams {
+  --rail: color-mix(in oklab, var(--fg) 6%, transparent); --gap: 72px; --beam: var(--primary);
+  background-image: linear-gradient(90deg, var(--rail) 1px, transparent 1px);
+  background-size: var(--gap) 100%; background-position: center 0;
+  -webkit-mask-image: linear-gradient(transparent, #000 25%, #000 75%, transparent);
+  mask-image: linear-gradient(transparent, #000 25%, #000 75%, transparent);
+}
+.bg-beams::before, .bg-beams::after {
+  content: ''; position: absolute; top: -40%; width: 46%; height: 180%; left: 27%;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--beam) 16%, transparent) 45%, color-mix(in oklab, var(--beam) 24%, transparent) 50%, color-mix(in oklab, var(--beam) 16%, transparent) 55%, transparent);
+  filter: blur(18px); transform-origin: 50% 0; animation: bg-beams-sweep 11s var(--ease-in-out) infinite alternate;
+}
+.bg-beams::after { left: 10%; width: 30%; animation-duration: 15s; animation-direction: alternate-reverse; opacity: .7; }
+@keyframes bg-beams-sweep { from { transform: rotate(-18deg); } to { transform: rotate(18deg); } }
+.bg-beam {
+  position: absolute; top: 0; width: 1px; height: var(--len, 120px);
+  background: linear-gradient(transparent, color-mix(in oklab, var(--beam) 70%, transparent) 80%, var(--beam));
+  box-shadow: 0 0 10px 0 color-mix(in oklab, var(--beam) 60%, transparent);
+  opacity: 0; animation: bg-beam-fall var(--d, 4s) linear var(--delay, 0s) infinite;
+}
+.bg-beam::after { content: ''; position: absolute; bottom: -2px; left: -2px; width: 5px; height: 5px; border-radius: 50%; background: var(--beam); box-shadow: 0 0 12px 3px var(--beam); }
+@keyframes bg-beam-fall {
+  0% { transform: translateY(calc(var(--len, 120px) * -1)); opacity: 0; }
+  8%, 85% { opacity: 1; }
+  100% { transform: translateY(var(--travel, 400px)); opacity: 0; }
+}
+
+/* ---------- Meteors ---------- */
+.bg-meteors { --meteor: color-mix(in oklab, var(--fg) 70%, var(--primary)); }
+.bg-meteor {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--meteor);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--meteor) 15%, transparent), 0 0 8px 1px color-mix(in oklab, var(--meteor) 60%, transparent);
+  opacity: 0; animation: bg-meteor var(--d, 6s) linear var(--delay, 0s) infinite;
+}
+.bg-meteor::before {
+  content: ''; position: absolute; top: 50%; right: 1px; width: var(--tail, 90px); height: 1px; transform: translateY(-50%);
+  background: linear-gradient(90deg, transparent, var(--meteor));
+}
+@keyframes bg-meteor {
+  0% { transform: rotate(var(--ang, 145deg)) translateX(0); opacity: 0; }
+  6% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: rotate(var(--ang, 145deg)) translateX(var(--dist, 520px)); opacity: 0; }
+}
+
+/* ---------- Synthwave perspective grid ---------- */
+.bg-retro-grid {
+  --line: color-mix(in oklab, var(--primary) 55%, transparent); --cell: 56px; --angle: 68deg; --speed: 1.4s;
+  perspective: 280px;
+}
+.bg-retro-grid::before {
+  content: ''; position: absolute; left: -50%; right: -50%; bottom: -10%; height: 140%;
+  transform-origin: 50% 100%; transform: rotateX(var(--angle));
+  background-image: linear-gradient(var(--line) 1.5px, transparent 1.5px), linear-gradient(90deg, var(--line) 1.5px, transparent 1.5px);
+  background-size: var(--cell) var(--cell); background-position: center 0;
+  -webkit-mask-image: linear-gradient(transparent 0%, #000 55%); mask-image: linear-gradient(transparent 0%, #000 55%);
+  animation: bg-retro-move var(--speed) linear infinite;
+}
+.bg-retro-grid::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 34% at 50% 52%, color-mix(in oklab, var(--primary) 30%, transparent), transparent 70%),
+    linear-gradient(var(--bg) 22%, color-mix(in oklab, var(--bg) 0%, transparent) 62%);
+}
+@keyframes bg-retro-move { to { background-position: center var(--cell); } }
+
+/* ---------- God rays ---------- */
+.bg-light-rays { --ray: color-mix(in oklab, var(--primary) 75%, #fff); --opacity: .6; --speed: 14s; }
+[data-theme="dark"] .bg-light-rays { --ray: color-mix(in oklab, var(--primary) 45%, #fff); --opacity: .5; }
+.bg-light-rays::before, .bg-light-rays::after {
+  content: ''; position: absolute; left: -40%; right: -40%; top: -6%; height: 120%; transform-origin: 50% 0;
+  -webkit-mask-image: radial-gradient(ellipse 48% 92% at 50% 0%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(ellipse 48% 92% at 50% 0%, #000 0%, transparent 78%);
+  filter: blur(7px); opacity: var(--opacity);
+}
+.bg-light-rays::before {
+  background:
+    repeating-conic-gradient(from 90deg at 50% 0%, transparent 0deg, color-mix(in oklab, var(--ray) 70%, transparent) 2.2deg, transparent 5deg, transparent 11deg),
+    repeating-conic-gradient(from 93deg at 50% 0%, transparent 0deg, color-mix(in oklab, var(--ray) 45%, transparent) 1.4deg, transparent 3.5deg, transparent 7deg);
+  animation: bg-rays-sway var(--speed) var(--ease-in-out) infinite alternate;
+}
+.bg-light-rays::after {
+  background:
+    radial-gradient(40% 30% at 50% 0%, color-mix(in oklab, var(--ray) 65%, transparent), transparent 70%),
+    repeating-conic-gradient(from 88deg at 50% 0%, transparent 0deg, color-mix(in oklab, var(--ray) 55%, transparent) 3deg, transparent 6.5deg, transparent 13deg);
+  animation: bg-rays-sway calc(var(--speed) * 1.4) var(--ease-in-out) infinite alternate-reverse;
+  filter: blur(12px);
+}
+@keyframes bg-rays-sway { from { transform: rotate(-5deg) scaleY(1); } to { transform: rotate(5deg) scaleY(1.08); } }
+
+/* ---------- Ripple rings ---------- */
+.bg-ripple { --ring: color-mix(in oklab, var(--fg) 14%, transparent); --fill: color-mix(in oklab, var(--primary) 5%, transparent); --speed: 3.4s; }
+.bg-ripple-ring {
+  position: absolute; left: var(--x, 50%); top: var(--y, 50%); width: var(--s); height: var(--s); border-radius: 50%;
+  transform: translate(-50%, -50%); border: 1px solid var(--ring); background: var(--fill);
+  opacity: var(--o, .6); animation: bg-ripple var(--speed) var(--ease-in-out) var(--delay, 0s) infinite;
+}
+@keyframes bg-ripple { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(.92); border-color: color-mix(in oklab, var(--primary) 40%, transparent); } }
+
+/* ---------- Gradient orbs ---------- */
+.bg-gradient-orbs { --blur: 60px; --opacity: .85; }
+[data-theme="dark"] .bg-gradient-orbs { --opacity: .6; }
+.bg-orb {
+  position: absolute; left: 0; top: 0; width: var(--s, 320px); height: var(--s, 320px); border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--oc), color-mix(in oklab, var(--oc) 0%, transparent) 70%);
+  filter: blur(var(--blur)); opacity: var(--opacity); will-change: transform;
+}
+
+/* ---------- Canvas-backed (JS) ---------- */
+.bg-squares { --line: color-mix(in oklab, var(--fg) 9%, transparent); --fill: var(--primary); }
+.bg-particles, .bg-stars, .bg-waves, .bg-flicker-grid { --color: var(--primary); }
+.bg-stars { --color: var(--fg); }
+.bg-stars-sky { background: radial-gradient(120% 90% at 50% 100%, #1e1b4b 0%, #0b0b1a 55%, #05050b 100%); --color: #f5f5ff; }
+.bg-silk { --color: var(--c1); --base: color-mix(in oklab, var(--bg) 70%, var(--c1)); }
+.bg-silk::after, .bg-liquid::after {
+  content: ''; position: absolute; inset: 0; opacity: .12; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}

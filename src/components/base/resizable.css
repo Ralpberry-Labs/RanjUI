@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Resizable panels
+   ========================================================================== */
+.resizable {
+  --handle-size: 1px;
+  --handle-hit: 10px;
+  display: flex;
+  width: 100%;
+  min-width: 0; min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card); color: var(--card-fg);
+}
+.resizable .resizable { border: 0; border-radius: 0; background: transparent; height: 100%; }
+.resizable-vertical { flex-direction: column; }
+.resizable-panel {
+  flex: var(--size, 1) 1 0px;
+  min-width: 0; min-height: 0;
+  overflow: auto;
+  position: relative;
+}
+.resizable.is-resizing .resizable-panel { pointer-events: none; user-select: none; }
+.resizable-panel[data-collapsed] { overflow: hidden; }
+
+.resizable-handle {
+  position: relative; flex: none;
+  width: var(--handle-size);
+  background: var(--border);
+  cursor: col-resize;
+  touch-action: none;
+  outline: none;
+  z-index: 1;
+  transition: background-color var(--dur-fast) var(--ease);
+}
+.resizable-vertical > .resizable-handle { width: auto; height: var(--handle-size); cursor: row-resize; }
+.resizable-handle::before { content: ''; position: absolute; inset: 0 calc((var(--handle-hit) - var(--handle-size)) / -2); }
+.resizable-vertical > .resizable-handle::before { inset: calc((var(--handle-hit) - var(--handle-size)) / -2) 0; }
+.resizable-handle::after {
+  content: ''; position: absolute; inset: 0 -1px;
+  background: var(--primary);
+  opacity: 0; transform: scaleY(.6);
+  transition: opacity var(--dur) var(--ease), transform var(--dur-slow) var(--ease-out);
+}
+.resizable-vertical > .resizable-handle::after { inset: -1px 0; transform: scaleX(.6); }
+.resizable-handle:hover::after, .resizable-handle.is-dragging::after, .resizable-handle:focus-visible::after { opacity: 1; transform: none; }
+.resizable-handle.is-dragging::after, .resizable-handle:focus-visible::after { box-shadow: 0 0 0 3px var(--ring); }
+html.resizable-col, html.resizable-col * { cursor: col-resize !important; }
+html.resizable-row, html.resizable-row * { cursor: row-resize !important; }
+.resizable-handle[aria-valuenow="0"] { background: var(--border-strong); }
+
+/* Grip pill */
+.resizable-grip {
+  position: absolute; z-index: 2; left: 50%; top: 50%;
+  width: .75rem; height: 1.6rem;
+  transform: translate(-50%, -50%);
+  display: grid; place-items: center;
+  background: var(--card); color: var(--muted-fg);
+  border: 1px solid var(--border); border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-xs);
+  pointer-events: none;
+}
+.resizable-grip::before { content: ''; width: 2px; height: .7rem; border-left: 2px dotted currentColor; }
+.resizable-vertical > .resizable-handle .resizable-grip { width: 1.6rem; height: .75rem; }
+.resizable-vertical > .resizable-handle .resizable-grip::before { width: .7rem; height: 2px; border-left: 0; border-top: 2px dotted currentColor; }
+.resizable-handle:hover .resizable-grip, .resizable-handle.is-dragging .resizable-grip { color: var(--primary); border-color: color-mix(in oklab, var(--primary) 45%, var(--border)); }
+
+/* Size label shown while dragging */
+.resizable-panel[data-label]::after {
+  content: attr(data-label);
+  position: absolute; top: .5rem; right: .5rem;
+  padding: .1rem .4rem; border-radius: var(--radius-xs);
+  font: 600 .7rem/1.4 var(--font-mono); color: var(--primary-fg); background: var(--primary);
+  opacity: 0; transition: opacity var(--dur);
+  pointer-events: none;
+}
+.resizable.is-resizing > .resizable-panel[data-label]::after { opacity: 1; }

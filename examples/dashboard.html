@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — App Example | RanjuUI</title>
+  <title>Dashboard — App Example | Ranj UI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../ranju.css">
+  <link rel="stylesheet" href="../dist/ranj.css">
   <style>
     body { display: flex; min-height: 100vh; background: var(--muted); }
     .app-sidebar {
@@ -115,13 +115,13 @@
         <h1 class="text-lg font-semibold" style="margin:0">Dashboard</h1>
       </div>
       <div class="app-topbar-right">
-        <button class="btn btn-outline btn-sm" onclick="Ranju.command.open('cmd-demo')">
+        <button class="btn btn-outline btn-sm" onclick="Ranj.command.open('cmd-demo')">
           <span class="text-muted text-xs">Search...</span> &nbsp;<kbd>Ctrl+K</kbd>
         </button>
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranju.theme.toggle();updateIcon()" aria-label="Theme">
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranj.theme.toggle();updateIcon()" aria-label="Theme">
           <span id="t-icon">&#9790;</span>
         </button>
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranju.toast({title:'3 new notifications',description:'You have unread messages.',variant:'info',position:'top-right'})" aria-label="Notifications">&#128276;</button>
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="Ranj.toast({title:'3 new notifications',description:'You have unread messages.',variant:'info',position:'top-right'})" aria-label="Notifications">&#128276;</button>
         <div class="dropdown" data-state="closed">
           <div class="avatar" style="width:2rem;height:2rem;font-size:.75rem;background:var(--primary);color:white;cursor:pointer" data-dropdown-trigger>JD</div>
           <ul class="dropdown-menu" style="right:0;left:auto">
@@ -256,8 +256,8 @@
                       <td class="font-mono text-sm">main</td>
                       <td>8s</td>
                       <td>
-                        <button class="btn btn-ghost btn-sm" onclick="Ranju.dialog.open('deploy-dialog')">View</button>
-                        <button class="btn btn-ghost btn-sm" onclick="Ranju.toast({title:'Redeploying...',description:'frontend-app is rebuilding.',position:'bottom-right'})">Redeploy</button>
+                        <button class="btn btn-ghost btn-sm" onclick="Ranj.dialog.open('deploy-dialog')">View</button>
+                        <button class="btn btn-ghost btn-sm" onclick="Ranj.toast({title:'Redeploying...',description:'frontend-app is rebuilding.',position:'bottom-right'})">Redeploy</button>
                       </td>
                     </tr>
                     <tr>
@@ -405,7 +405,7 @@
       </div>
       <div class="dialog-footer">
         <button class="btn btn-outline btn-sm" data-dialog-close>Close</button>
-        <button class="btn btn-sm" onclick="Ranju.toast({title:'Redeploying...',position:'bottom-right'});Ranju.dialog.close('deploy-dialog')">Redeploy</button>
+        <button class="btn btn-sm" onclick="Ranj.toast({title:'Redeploying...',position:'bottom-right'});Ranj.dialog.close('deploy-dialog')">Redeploy</button>
       </div>
     </div>
   </div>
@@ -426,15 +426,15 @@
         </div>
         <div>
           <div class="command-group-label">Actions</div>
-          <div class="command-item" onclick="Ranju.theme.toggle();updateIcon();Ranju.command.close('cmd-demo')">Toggle Theme <span class="command-shortcut">T T</span></div>
-          <div class="command-item" onclick="Ranju.command.close('cmd-demo')">Settings <span class="command-shortcut">G S</span></div>
-          <div class="command-item" onclick="Ranju.command.close('cmd-demo')">New Project <span class="command-shortcut">N P</span></div>
+          <div class="command-item" onclick="Ranj.theme.toggle();updateIcon();Ranj.command.close('cmd-demo')">Toggle Theme <span class="command-shortcut">T T</span></div>
+          <div class="command-item" onclick="Ranj.command.close('cmd-demo')">Settings <span class="command-shortcut">G S</span></div>
+          <div class="command-item" onclick="Ranj.command.close('cmd-demo')">New Project <span class="command-shortcut">N P</span></div>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="../ranju.js"></script>
+  <script src="../dist/ranj.js"></script>
   <script>
     function toggleSidebar() {
       document.getElementById('app-sidebar').classList.toggle('open');
@@ -445,7 +445,7 @@
       document.getElementById('mob-overlay').classList.remove('open');
     }
     function updateIcon() {
-      document.getElementById('t-icon').textContent = Ranju.theme.current() === 'dark' ? '\u2600' : '\u263E';
+      document.getElementById('t-icon').textContent = Ranj.theme.current() === 'dark' ? '\u2600' : '\u263E';
     }
     updateIcon();
   </script>

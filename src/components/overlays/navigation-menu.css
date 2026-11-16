@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Navigation menu — mega menu: one shared viewport that morphs its size and
+   slides content left/right as you move between triggers.
+   ========================================================================== */
+.nav-menu { position: relative; display: flex; justify-content: center; z-index: var(--z-dropdown); }
+.nav-menu-list { position: relative; display: flex; align-items: center; gap: .125rem; list-style: none; margin: 0; padding: .25rem; }
+.nav-menu-item { position: relative; list-style: none; }
+.nav-menu-trigger, .nav-menu-link {
+  display: inline-flex; align-items: center; gap: .3rem; height: 2.25rem; padding: 0 .875rem;
+  border-radius: var(--radius); font-size: .875rem; font-weight: 500; color: var(--fg); text-decoration: none; white-space: nowrap;
+  outline: none; transition: background var(--transition), color var(--transition);
+}
+.nav-menu-trigger:hover, .nav-menu-link:hover, .nav-menu-trigger[aria-expanded="true"] { background: var(--muted); text-decoration: none; color: var(--fg); }
+.nav-menu-trigger:focus-visible, .nav-menu-link:focus-visible { box-shadow: 0 0 0 2px var(--ring); }
+.nav-menu-trigger::after {
+  content: ''; width: .75rem; height: .75rem; background: currentColor; opacity: .55;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform .3s var(--ease-out);
+}
+.nav-menu-trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
+.nav-menu-indicator { position: absolute; top: 100%; left: 0; z-index: 2; width: 12px; height: 12px; margin-top: 2px; transform: translateX(var(--ix, 0px)) rotate(45deg); background: var(--popover); border: 1px solid var(--border); border-right: 0; border-bottom: 0; border-radius: 2px 0 0 0; opacity: 0; transition: transform .3s var(--ease-out), opacity .2s var(--ease); pointer-events: none; }
+.nav-menu[data-open] .nav-menu-indicator { opacity: 1; }
+.nav-menu:not([data-moved]) .nav-menu-indicator { transition: opacity .2s var(--ease); }
+
+.nav-menu-viewport {
+  position: fixed; z-index: var(--z-popover); left: 0; top: 0;
+  width: var(--vw, 0px); height: var(--vh, 0px); max-width: calc(100vw - 1rem);
+  background: var(--popover); color: var(--popover-fg);
+  border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-xl);
+  overflow: hidden; transform-origin: top center;
+  transition: width .35s var(--ease-out), height .35s var(--ease-out), left .35s var(--ease-out);
+  animation: nav-menu-vp-in .25s var(--ease-out);
+}
+[data-theme="dark"] .nav-menu-viewport { box-shadow: var(--shadow-xl), inset 0 1px 0 rgb(255 255 255 / .04); }
+.nav-menu-viewport[data-instant] { transition: none; }
+.nav-menu-viewport:not([data-state="open"]):not([data-closing]):not([data-measure]) { display: none; }
+.nav-menu-viewport[data-closing] { animation: nav-menu-vp-out .18s var(--ease) forwards; }
+@keyframes nav-menu-vp-in { from { opacity: 0; transform: translateY(-6px) rotateX(-12deg) scale(.97); } }
+@keyframes nav-menu-vp-out { to { opacity: 0; transform: translateY(-4px) scale(.98); } }
+
+.nav-menu-content { position: absolute; top: 0; left: 0; width: max-content; max-width: calc(100vw - 1rem); padding: 1rem; }
+.nav-menu-content:not([data-active]):not([data-leaving]) { display: none; }
+.nav-menu-content[data-motion="from-end"] { animation: nav-menu-from-end .3s var(--ease-out); }
+.nav-menu-content[data-motion="from-start"] { animation: nav-menu-from-start .3s var(--ease-out); }
+.nav-menu-content[data-motion="to-end"] { animation: nav-menu-to-end .3s var(--ease-out) forwards; }
+.nav-menu-content[data-motion="to-start"] { animation: nav-menu-to-start .3s var(--ease-out) forwards; }
+@keyframes nav-menu-from-end { from { opacity: 0; transform: translateX(48px); } }
+@keyframes nav-menu-from-start { from { opacity: 0; transform: translateX(-48px); } }
+@keyframes nav-menu-to-end { to { opacity: 0; transform: translateX(48px); } }
+@keyframes nav-menu-to-start { to { opacity: 0; transform: translateX(-48px); } }
+/* Before JS mounts, keep content out of the flow */
+.nav-menu-item > .nav-menu-content { display: none; }
+
+/* Content helpers */
+.nav-menu-grid { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 15rem)); gap: .25rem; }
+.nav-menu-card {
+  display: flex; gap: .75rem; padding: .75rem; border-radius: var(--radius-lg); color: var(--fg); text-decoration: none;
+  transition: background var(--transition); outline: none;
+}
+.nav-menu-card:hover, .nav-menu-card:focus-visible { background: var(--muted); text-decoration: none; color: var(--fg); }
+.nav-menu-card-icon { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; flex-shrink: 0; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); color: var(--fg); box-shadow: var(--shadow-xs); }
+.nav-menu-card-icon svg { width: 1.05rem; height: 1.05rem; }
+.nav-menu-card b { display: block; font-size: .875rem; font-weight: 600; line-height: 1.35; }
+.nav-menu-card span { display: block; font-size: .8rem; line-height: 1.45; color: var(--muted-fg); }
+.nav-menu-feature {
+  display: flex; flex-direction: column; justify-content: flex-end; gap: .35rem; min-height: 100%; padding: 1.1rem;
+  border-radius: var(--radius-lg); color: #fff; text-decoration: none;
+  background: radial-gradient(circle at 80% 0%, oklch(.75 .16 calc(var(--hue) + 70) / .9), transparent 60%), linear-gradient(160deg, oklch(.55 .22 var(--hue)), oklch(.35 .18 calc(var(--hue) + 30)));
+}
+.nav-menu-feature:hover { text-decoration: none; color: #fff; }
+.nav-menu-feature b { font-size: 1rem; font-weight: 600; } .nav-menu-feature span { font-size: .8rem; opacity: .85; line-height: 1.45; }
+.nav-menu-label { padding: .25rem .75rem .5rem; font-size: .6875rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted-fg); }
+.nav-menu-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: .75rem -1rem -1rem; padding: .75rem 1.25rem; border-top: 1px solid var(--border); background: var(--bg-subtle); font-size: .8125rem; color: var(--muted-fg); }
+@media (max-width: 640px) { .nav-menu-grid { grid-template-columns: minmax(0, 1fr); } }

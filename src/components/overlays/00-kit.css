@@ -1,0 +1,26 @@
+/* Ranj UI — overlay kit: shared floating-panel motion + arrow. */
+[data-measure] { animation: none !important; transition: none !important; visibility: hidden !important; }
+
+/* Direction-aware enter offsets for every floating panel (set via data-side by Ranj.position) */
+:is(.dropdown-menu, .context-menu, .menubar-content, .popover-content, .hover-card-content, .tooltip-content, .notif-panel, .tour-popover) {
+  --ov-dx: 0px; --ov-dy: -6px;
+}
+:is(.dropdown-menu, .context-menu, .menubar-content, .popover-content, .hover-card-content, .tooltip-content, .notif-panel, .tour-popover)[data-side="top"] { --ov-dx: 0px; --ov-dy: 6px; }
+:is(.dropdown-menu, .context-menu, .menubar-content, .popover-content, .hover-card-content, .tooltip-content, .notif-panel, .tour-popover)[data-side="left"] { --ov-dx: 6px; --ov-dy: 0px; }
+:is(.dropdown-menu, .context-menu, .menubar-content, .popover-content, .hover-card-content, .tooltip-content, .notif-panel, .tour-popover)[data-side="right"] { --ov-dx: -6px; --ov-dy: 0px; }
+
+@keyframes ov-pop-in { from { opacity: 0; transform: translate(var(--ov-dx), var(--ov-dy)) scale(.96); } }
+@keyframes ov-pop-out { to { opacity: 0; transform: scale(.96); } }
+@keyframes ov-fade-in { from { opacity: 0; } }
+@keyframes ov-fade-out { to { opacity: 0; } }
+
+/* Arrow: a rotated square that inherits the panel's surface + border */
+.ov-arrow {
+  position: absolute; width: 10px; height: 10px; pointer-events: none;
+  background: inherit; border: inherit; border-radius: 0 0 2px 0;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+[data-side="bottom"] > .ov-arrow { top: -5.5px; left: calc(var(--arrow-x, 50%) - 5px); transform: rotate(-135deg); }
+[data-side="top"] > .ov-arrow { bottom: -5.5px; left: calc(var(--arrow-x, 50%) - 5px); transform: rotate(45deg); }
+[data-side="left"] > .ov-arrow { right: -5.5px; top: calc(var(--arrow-y, 50%) - 5px); transform: rotate(-45deg); }
+[data-side="right"] > .ov-arrow { left: -5.5px; top: calc(var(--arrow-y, 50%) - 5px); transform: rotate(135deg); }

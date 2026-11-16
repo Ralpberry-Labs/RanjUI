@@ -1,0 +1,49 @@
+/* ==========================================================================
+   Floating action menu — FAB that fans out actions vertically (data-direction)
+   or along an arc (.fab-radial). Labels slide in beside each action.
+   ========================================================================== */
+.fab-menu { --fab-size: 3.5rem; --fab-action: 2.75rem; --fab-gap: .75rem; --fab-radius: 6rem; position: relative; display: inline-grid; place-items: center; z-index: var(--z-sticky); }
+.fab-menu-fixed { position: fixed; right: 1.5rem; bottom: 1.5rem; }
+.fab {
+  position: relative; z-index: 2; display: grid; place-items: center;
+  width: var(--fab-size); height: var(--fab-size); border-radius: var(--radius-full);
+  background: var(--primary); color: var(--primary-fg);
+  box-shadow: 0 10px 24px -8px color-mix(in oklab, var(--primary) 70%, transparent), 0 2px 6px rgb(0 0 0 / .12);
+  transition: transform .4s var(--ease-spring), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.fab:hover { box-shadow: 0 14px 30px -8px color-mix(in oklab, var(--primary) 80%, transparent), 0 2px 6px rgb(0 0 0 / .12); }
+.fab:active { transform: scale(.93); }
+.fab svg { width: 1.5rem; height: 1.5rem; transition: transform .45s var(--ease-spring); }
+.fab-menu[data-open] > .fab svg { transform: rotate(135deg); }
+.fab-menu[data-open] > .fab { background: var(--fg); color: var(--bg); box-shadow: var(--shadow-lg); }
+
+.fab-actions { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.fab-action {
+  --dx: 0px; --dy: 0px;
+  position: absolute; z-index: 1; display: grid; place-items: center;
+  width: var(--fab-action); height: var(--fab-action); border-radius: var(--radius-full);
+  background: var(--card); color: var(--fg); border: 1px solid var(--border); box-shadow: var(--shadow-md);
+  opacity: 0; transform: translate(0, 0) scale(.4); pointer-events: none;
+  transition: transform .4s var(--ease-spring), opacity .2s var(--ease), background var(--transition);
+  transition-delay: calc((var(--n, 1) - var(--i, 0) - 1) * 25ms);
+}
+.fab-action:hover { background: var(--muted); }
+.fab-action:focus-visible { box-shadow: 0 0 0 3px var(--ring), var(--shadow-md); outline: none; }
+.fab-action svg { width: 1.15rem; height: 1.15rem; }
+.fab-menu[data-open] .fab-action { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1); pointer-events: auto; transition-delay: calc(var(--i, 0) * 35ms); }
+/* label pill */
+.fab-action[data-label]::after {
+  content: attr(data-label); position: absolute; top: 50%; right: calc(100% + .625rem);
+  padding: .3rem .6rem; border-radius: var(--radius-sm); white-space: nowrap;
+  background: var(--fg); color: var(--bg); font-size: .75rem; font-weight: 500; box-shadow: var(--shadow-md);
+  opacity: 0; transform: translate(6px, -50%); transition: opacity .2s var(--ease), transform .3s var(--ease-out); pointer-events: none;
+}
+.fab-menu[data-open] .fab-action[data-label]::after { opacity: 1; transform: translate(0, -50%); transition-delay: calc(var(--i, 0) * 35ms + 120ms); }
+.fab-menu[data-label-side="right"] .fab-action[data-label]::after { right: auto; left: calc(100% + .625rem); transform: translate(-6px, -50%); }
+.fab-menu[data-label-side="right"][data-open] .fab-action[data-label]::after { transform: translate(0, -50%); }
+.fab-radial .fab-action[data-label]::after { display: none; }
+.fab-action-primary { background: var(--primary-soft); color: var(--primary-soft-fg); border-color: transparent; }
+
+/* scrim */
+.fab-scrim { position: fixed; inset: 0; z-index: calc(var(--z-sticky) - 1); background: color-mix(in oklab, var(--bg) 55%, transparent); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity .3s var(--ease); }
+.fab-menu[data-open] ~ .fab-scrim, .fab-scrim[data-open] { opacity: 1; pointer-events: auto; }

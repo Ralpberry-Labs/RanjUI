@@ -1,0 +1,137 @@
+/* ==========================================================================
+   Input — text inputs, input shells with icons/affixes, addons, variants
+   ========================================================================== */
+.input, .input-wrap {
+  --h: var(--control-h);
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: var(--h);
+  padding: 0 var(--field-px);
+  font-size: var(--field-fs);
+  line-height: 1.25;
+  color: var(--fg);
+  background: var(--field-bg);
+  border: 1px solid var(--field-border);
+  border-radius: var(--field-radius);
+  box-shadow: var(--field-shadow);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.input { display: block; outline: none; -webkit-appearance: none; appearance: none; }
+.input::placeholder, .input-wrap input::placeholder, .textarea::placeholder { color: var(--muted-fg); opacity: .85; }
+.input:hover:not(:disabled):not(:focus), .input-wrap:hover:not(:focus-within):not([data-disabled]) { border-color: var(--field-border-hover); background: var(--field-bg-hover); }
+.input:focus, .input:focus-visible, .input-wrap:focus-within {
+  outline: none;
+  border-color: var(--field-focus);
+  box-shadow: var(--field-shadow), var(--field-ring);
+}
+.input[aria-invalid="true"], .input.input-error, .input-wrap[aria-invalid="true"], .input-wrap:has(> input[aria-invalid="true"]) { border-color: var(--destructive); }
+.input[aria-invalid="true"]:focus, .input.input-error:focus, .input-wrap:has(> input[aria-invalid="true"]):focus-within { box-shadow: var(--field-shadow), var(--field-ring-error); }
+.input[data-valid="true"], .input-wrap:has(> input[data-valid="true"]) { border-color: color-mix(in oklab, var(--success) 70%, var(--input)); }
+.input:disabled, .input-wrap[data-disabled], .input-wrap:has(> input:disabled) { opacity: .5; cursor: not-allowed; box-shadow: none; }
+.input:read-only:not([type="file"]):not(.input-readonly-plain), .input-wrap:has(> input:read-only:not([data-picker])) { background: color-mix(in oklab, var(--muted) 70%, transparent); }
+.input[type="file"] { padding: .3rem .4rem; height: auto; min-height: var(--h); cursor: pointer; color: var(--muted-fg); background: var(--field-bg); }
+.input[type="file"]::file-selector-button {
+  margin-right: .75rem; padding: .3rem .7rem; border: 0; border-radius: var(--radius-sm);
+  background: var(--secondary); color: var(--secondary-fg); font: inherit; font-weight: 500; cursor: pointer;
+  transition: background var(--transition);
+}
+.input[type="file"]:hover::file-selector-button { background: var(--secondary-hover); }
+.input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+.input[type="number"]::-webkit-inner-spin-button { opacity: .6; }
+
+/* Sizes */
+.input-sm, .input-wrap.input-sm { --h: var(--control-h-sm); --field-px: .625rem; font-size: .8125rem; border-radius: var(--radius-sm); }
+.input-lg, .input-wrap.input-lg { --h: var(--control-h-lg); --field-px: .9rem; font-size: .95rem; }
+.input-xl, .input-wrap.input-xl { --h: 3.25rem; --field-px: 1rem; font-size: 1.05rem; border-radius: var(--radius-lg); }
+
+/* Variants */
+.input-filled, .input-wrap.input-filled { background: var(--muted); border-color: transparent; box-shadow: none; }
+.input-filled:hover:not(:focus), .input-wrap.input-filled:hover:not(:focus-within) { background: color-mix(in oklab, var(--muted) 70%, var(--border)); border-color: transparent; }
+.input-filled:focus, .input-wrap.input-filled:focus-within { background: var(--field-bg); }
+.input-underline, .input-wrap.input-underline {
+  border-width: 0 0 1px; border-radius: 0; padding-left: 0; padding-right: 0; background: transparent; box-shadow: none;
+  background-image: linear-gradient(var(--primary), var(--primary));
+  background-repeat: no-repeat; background-position: 50% 100%; background-size: 0% 2px;
+  transition: background-size var(--dur-slow) var(--ease-out), border-color var(--dur);
+}
+.input-underline:hover:not(:focus), .input-wrap.input-underline:hover:not(:focus-within) { background-color: transparent; }
+.input-underline:focus, .input-wrap.input-underline:focus-within { box-shadow: none; background-size: 100% 2px; border-color: transparent; background-color: transparent; }
+.input-ghost, .input-wrap.input-ghost { background: transparent; border-color: transparent; box-shadow: none; }
+.input-ghost:hover:not(:focus), .input-wrap.input-ghost:hover:not(:focus-within) { background: var(--muted); border-color: transparent; }
+
+/* ---------- Input shell: one bordered box hosting icons, prefix/suffix, buttons ---------- */
+.input-wrap { align-items: center; gap: .5rem; cursor: text; position: relative; }
+.input-wrap > input, .input-wrap > .input-native {
+  flex: 1; min-width: 0; height: 100%;
+  padding: 0; margin: 0; border: 0; outline: none; background: none; box-shadow: none;
+  font-size: inherit; color: inherit;
+}
+.input-wrap > input:focus-visible { outline: none; }
+.input-wrap > input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+.input-icon { flex-shrink: 0; display: grid; place-items: center; color: var(--muted-fg); transition: color var(--dur); pointer-events: none; }
+.input-icon svg { width: 1rem; height: 1rem; }
+.input-wrap:focus-within > .input-icon:first-child { color: var(--fg); }
+.input-prefix, .input-suffix { flex-shrink: 0; color: var(--muted-fg); white-space: nowrap; user-select: none; }
+.input-prefix + input, .input-wrap > input + .input-suffix { margin-left: -.35rem; }
+.input-btn {
+  flex-shrink: 0; display: grid; place-items: center;
+  width: 1.625rem; height: 1.625rem; margin-right: -.4rem;
+  border-radius: var(--radius-sm); color: var(--muted-fg);
+  transition: color var(--dur-fast), background var(--dur-fast), transform var(--dur) var(--ease-spring), opacity var(--dur-fast);
+}
+.input-btn:hover { color: var(--fg); background: var(--muted); }
+.input-btn:active { transform: scale(.88); }
+.input-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 0; }
+.input-btn svg { width: 1rem; height: 1rem; }
+.input-btn + .input-btn { margin-left: -.35rem; }
+.input-kbd {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: .15rem;
+  height: 1.3rem; padding: 0 .4rem; margin-right: -.3rem;
+  font-family: var(--font-sans); font-size: .7rem; font-weight: 500; color: var(--muted-fg);
+  background: var(--muted); border: 1px solid var(--border); border-bottom-width: 2px; border-radius: var(--radius-xs);
+  pointer-events: none;
+}
+/* Clear button (JS adds it for [data-clearable]) */
+.input-clear { opacity: 0; transform: scale(.6); pointer-events: none; }
+.input-wrap[data-has-value] .input-clear { opacity: 1; transform: none; pointer-events: auto; }
+.input-clear svg { width: .95rem; height: .95rem; }
+
+/* ---------- Addons (v1 .input-group) ---------- */
+.input-group { display: flex; align-items: stretch; width: 100%; isolation: isolate; }
+.input-group > .input, .input-group > .input-wrap, .input-group > .select, .input-group > .select-wrapper { flex: 1; border-radius: 0; min-width: 0; }
+.input-group > .input:focus, .input-group > .input-wrap:focus-within { z-index: 1; }
+.input-group > :first-child { border-top-left-radius: var(--field-radius); border-bottom-left-radius: var(--field-radius); }
+.input-group > :last-child { border-top-right-radius: var(--field-radius); border-bottom-right-radius: var(--field-radius); }
+.input-group > * + * { margin-left: -1px; }
+.input-group-text, .input-addon {
+  display: flex; align-items: center; gap: .4rem; flex-shrink: 0;
+  padding: 0 .75rem; font-size: var(--field-fs); color: var(--muted-fg);
+  background: var(--muted); border: 1px solid var(--field-border); white-space: nowrap;
+  box-shadow: var(--field-shadow);
+}
+.input-group > .btn { border-radius: 0; height: auto; }
+.input-group > .btn:last-child { border-top-right-radius: var(--field-radius); border-bottom-right-radius: var(--field-radius); }
+.input-group > .btn:first-child { border-top-left-radius: var(--field-radius); border-bottom-left-radius: var(--field-radius); }
+
+/* ---------- Floating label ---------- */
+.input-floating { position: relative; width: 100%; }
+.input-floating > .input, .input-floating > .textarea { height: 3.25rem; padding-top: 1.15rem; }
+.input-floating > .textarea { height: auto; padding-top: 1.5rem; }
+.input-floating > label, .input-floating > .label {
+  position: absolute; left: calc(var(--field-px) + 1px); top: 0; margin: 0;
+  height: 3.25rem; display: flex; align-items: center;
+  font-size: var(--field-fs); font-weight: 400; color: var(--muted-fg);
+  pointer-events: none; transform-origin: 0 50%;
+  transition: transform var(--dur-slow) var(--ease-out), color var(--dur);
+}
+.input-floating > .textarea + label { height: 2.6rem; }
+.input-floating > .input::placeholder, .input-floating > .textarea::placeholder { color: transparent; }
+.input-floating > .input:focus + label,
+.input-floating > .input:not(:placeholder-shown) + label,
+.input-floating > .textarea:focus + label,
+.input-floating > .textarea:not(:placeholder-shown) + label { transform: translateY(-.72rem) scale(.78); font-weight: 500; }
+.input-floating > .input:focus + label, .input-floating > .textarea:focus + label { color: var(--primary); }
+.input-floating > .input[aria-invalid="true"] + label { color: var(--destructive); }
+.input-floating.input-underline-float > .input { padding-left: 0; }
+.input-floating.input-underline-float > label { left: 0; }

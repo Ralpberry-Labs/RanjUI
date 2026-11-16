@@ -1,0 +1,13 @@
+/* ==========================================================================
+   Context menu — surface + items are shared with dropdown-menu.css.
+   ========================================================================== */
+.context-menu { --menu-w: 13.5rem; }
+[data-context-menu] { -webkit-touch-callout: none; }
+.context-area {
+  display: grid; place-items: center; text-align: center; gap: .25rem;
+  min-height: 11rem; width: 100%; max-width: 26rem; padding: 1.5rem;
+  border: 1.5px dashed var(--border-strong); border-radius: var(--radius-lg);
+  color: var(--muted-fg); font-size: .875rem; user-select: none; -webkit-user-select: none;
+  transition: border-color var(--transition), background var(--transition);
+}
+.context-area[data-state="open"] { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 5%, transparent); }

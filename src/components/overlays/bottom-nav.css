@@ -1,0 +1,57 @@
+/* ==========================================================================
+   Bottom nav — mobile tab bar with an animated active pill.
+   Default: Material 3 (pill behind the icon). .bottom-nav-expand: active item
+   grows to reveal its label. .bottom-nav-float: floating glass bar.
+   ========================================================================== */
+.bottom-nav {
+  position: relative; display: flex; align-items: stretch; justify-content: space-around;
+  width: 100%; padding: .5rem .25rem calc(.5rem + env(safe-area-inset-bottom));
+  background: var(--card); border-top: 1px solid var(--border);
+}
+.bottom-nav-fixed { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-sticky); }
+.bottom-nav-item {
+  position: relative; z-index: 1; flex: 1; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; gap: .25rem;
+  padding: 0 .25rem; color: var(--muted-fg); font-size: .6875rem; font-weight: 500; text-decoration: none;
+  -webkit-tap-highlight-color: transparent; outline: none; transition: color .3s var(--ease);
+}
+.bottom-nav-item:hover { color: var(--fg); text-decoration: none; }
+.bottom-nav-icon { position: relative; display: grid; place-items: center; width: 4rem; height: 2rem; border-radius: var(--radius-full); transition: transform .35s var(--ease-spring); }
+.bottom-nav-item > svg, .bottom-nav-icon svg { width: 1.375rem; height: 1.375rem; }
+.bottom-nav-item[aria-current="page"], .bottom-nav-item.active { color: var(--fg); font-weight: 600; }
+.bottom-nav-item[aria-current="page"] .bottom-nav-icon { color: var(--primary-soft-fg); }
+.bottom-nav-item:active .bottom-nav-icon { transform: scale(.9); }
+.bottom-nav-item:focus-visible .bottom-nav-icon { box-shadow: 0 0 0 2px var(--ring); }
+.bottom-nav-badge { position: absolute; top: -.1rem; left: calc(50% + .45rem); min-width: 1rem; height: 1rem; padding: 0 .25rem; display: grid; place-items: center; border-radius: var(--radius-full); background: var(--destructive); color: #fff; font-size: .625rem; font-weight: 700; box-shadow: 0 0 0 2px var(--card); }
+.bottom-nav-badge:empty { min-width: .5rem; width: .5rem; height: .5rem; padding: 0; top: .2rem; left: calc(50% + .55rem); }
+.bottom-nav-pill {
+  position: absolute; z-index: 0; top: .5rem; left: 0; width: 4rem; height: 2rem; border-radius: var(--radius-full);
+  background: var(--primary-soft); transform: translateX(var(--px, 0px)); pointer-events: none;
+}
+.bottom-nav[data-ready] .bottom-nav-pill { transition: transform .45s var(--ease-spring), width .45s var(--ease-out), left .45s var(--ease-out); }
+.bottom-nav:not([data-ready]) .bottom-nav-item[aria-current="page"] .bottom-nav-icon { background: var(--primary-soft); }
+
+/* Expand: horizontal pill with label */
+.bottom-nav-expand { padding: .625rem .5rem calc(.625rem + env(safe-area-inset-bottom)); justify-content: space-between; gap: .25rem; }
+.bottom-nav-expand .bottom-nav-item { flex: 0 0 auto; min-width: 0; flex-direction: row; gap: .5rem; height: 2.75rem; padding: 0 .6rem; font-size: .8125rem; transition: color .3s var(--ease), padding .4s var(--ease-out); }
+.bottom-nav-expand .bottom-nav-icon { width: auto; height: auto; }
+.bottom-nav-expand .bottom-nav-label { max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; transition: max-width .45s var(--ease-out), opacity .3s var(--ease); }
+.bottom-nav-expand .bottom-nav-item[aria-current="page"] { flex: 0 1 auto; padding: 0 1rem; color: var(--primary-soft-fg); }
+.bottom-nav-expand .bottom-nav-item[aria-current="page"] .bottom-nav-label { max-width: 6.5rem; opacity: 1; text-overflow: ellipsis; }
+.bottom-nav-expand .bottom-nav-pill { top: .625rem; height: 2.75rem; width: var(--pw, 4rem); }
+.bottom-nav-expand .bottom-nav-badge { left: auto; right: -.4rem; top: -.35rem; }
+
+/* Floating glass bar */
+.bottom-nav-float {
+  width: auto; margin: 0 1rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-full);
+  background: color-mix(in oklab, var(--card) 78%, transparent); -webkit-backdrop-filter: blur(18px) saturate(180%); backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: var(--shadow-lg); padding: .375rem;
+}
+.bottom-nav-float .bottom-nav-pill { top: .375rem; }
+.bottom-nav-float.bottom-nav-expand .bottom-nav-pill { top: .375rem; }
+.bottom-nav-float .bottom-nav-item { padding-top: 0; }
+.bottom-nav-float:not(.bottom-nav-expand) .bottom-nav-label { display: none; }
+.bottom-nav-float:not(.bottom-nav-expand) .bottom-nav-item { justify-content: center; height: 2.75rem; }
+.bottom-nav-float:not(.bottom-nav-expand) .bottom-nav-icon { height: 2.75rem; width: 3.5rem; }
+.bottom-nav-float:not(.bottom-nav-expand) .bottom-nav-pill { height: 2.75rem; width: 3.5rem; background: var(--primary); }
+.bottom-nav-float:not(.bottom-nav-expand) .bottom-nav-item[aria-current="page"] .bottom-nav-icon { color: var(--primary-fg); }

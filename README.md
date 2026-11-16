@@ -1,112 +1,101 @@
-# RanjuUI
+<div align="center">
 
-> Semantic, lightweight, zero dependencies. ~54KB CSS + ~21KB JS.
+<img src="assets/logo.svg" width="72" height="72" alt="Ranj UI logo">
 
-RanjuUI is an ultra-lightweight HTML + CSS + JS UI component library. No framework, no build tools. 40+ production-ready components with dark mode, responsive design, and semantic HTML.
+# Ranj UI
 
-**[📖 Full Documentation](https://alps-is-core.github.io/RanjuUI/)** · **[Examples](https://alps-is-core.github.io/RanjuUI/examples/)**
+**The zero-dependency component library for the plain web.**
+__COUNT__ components with live docs: forms, overlays, data display, text effects, animated backgrounds, micro-interactions and loaders.
+One CSS file, one JS file, no framework, no build step.
+
+[**Website**](https://alps-is-core.github.io/RanjUI/) · [**Docs**](https://alps-is-core.github.io/RanjUI/docs/) · [**Examples**](https://alps-is-core.github.io/RanjUI/examples/)
+
+![license](https://img.shields.io/badge/license-MIT-8b5cf6) ![deps](https://img.shields.io/badge/dependencies-0-10b981) ![size](https://img.shields.io/badge/min%2Bgzip-__GZ__-6366f1)
+
+</div>
 
 ---
+
+## Why Ranj UI
+
+- **Zero dependencies.** Semantic HTML plus classes and `data-*` attributes. Works with plain HTML, htmx, Alpine, Astro, Rails, Django, Laravel, React, Vue. Anything that outputs HTML.
+- **Auto-mounting.** Components mount on load *and* whenever HTML is added later (MutationObserver), and clean up after themselves when removed.
+- **Accessible.** Focus traps, roving tabindex, ARIA wiring, an Escape-key layer stack, and `prefers-reduced-motion` support everywhere.
+- **Motion built in.** Text effects, scroll reveals, magnetic/tilt/spotlight interactions, canvas backgrounds that pause offscreen, and Jitter-grade micro-interactions.
+- **One-number theming.** OKLCH tokens driven by a single `--hue`. Dark mode, 13 accent presets, radius and density scales, all switchable per element.
 
 ## Install
 
-### CDN (quickest)
+**CDN**
 
 ```html
-<link rel="stylesheet" href="https://alps-is-core.github.io/RanjuUI/ranju.css">
-<script src="https://alps-is-core.github.io/RanjuUI/ranju.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Alps-is-Core/RanjUI@master/dist/ranj.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Alps-is-Core/RanjUI@master/dist/ranj.min.js" defer></script>
 ```
 
-### Self-hosted
-
-Download [ranju.css](https://raw.githubusercontent.com/Alps-is-Core/RanjuUI/master/ranju.css) and [ranju.js](https://raw.githubusercontent.com/Alps-is-Core/RanjuUI/master/ranju.js) and reference them:
-
-```html
-<link rel="stylesheet" href="ranju.css">
-<script src="ranju.js" defer></script>
-```
-
-### npm
+**npm**
 
 ```bash
-npm install @alps/ranjuui
+npm install github:Alps-is-Core/RanjUI
 ```
 
----
+```js
+import 'ranj-ui/dist/ranj.css';
+import 'ranj-ui/dist/ranj.js';
+```
 
-## Quick Start
+**Only what you need:** `ranj-core` (required) + any of `ranj-base`, `ranj-forms`, `ranj-overlays`, `ranj-motion`, `ranj-fx` in `dist/`.
+
+## Quick start
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://alps-is-core.github.io/RanjuUI/ranju.css">
-</head>
-<body>
-  <button class="btn">Primary</button>
-  <button class="btn btn-outline">Outline</button>
-  <div class="card">
-    <div class="card-header"><div class="card-title">Title</div></div>
-    <div class="card-content">Content here</div>
-  </div>
-  <script src="https://alps-is-core.github.io/RanjuUI/ranju.js" defer></script>
-</body>
-</html>
+<button class="btn" onclick="Ranj.toast({ title: 'Saved', type: 'success' })">Save</button>
+
+<h1 data-split-text>Ship beautiful interfaces</h1>
+
+<div class="hero" style="position:relative">
+  <div class="bg-aurora"></div>
+</div>
 ```
 
----
-
-## Docs & Examples
-
-| Resource | Link |
-|----------|------|
-| **Full component reference** | [alps-is-core.github.io/RanjuUI](https://alps-is-core.github.io/RanjuUI/) |
-| **SaaS landing page** | [examples/saas-landing.html](https://alps-is-core.github.io/RanjuUI/examples/saas-landing.html) |
-| **Dashboard app** | [examples/dashboard.html](https://alps-is-core.github.io/RanjuUI/examples/dashboard.html) |
-| **Financial dashboard** | [examples/financial-dashboard.html](https://alps-is-core.github.io/RanjuUI/examples/financial-dashboard.html) |
-| **Task board (Kanban)** | [examples/task-board.html](https://alps-is-core.github.io/RanjuUI/examples/task-board.html) |
-
-The docs site has live demos and copy-paste code for every component: buttons, cards, dialogs, forms, tables, toasts, and 35+ more.
-
----
-
-## Components
-
-**Layout:** Typography · Grid · Container · Flex · Spacing · Separator · Scroll Area
-
-**Display:** Avatar · Badge · Card · Data Table · Empty State · Kbd · Skeleton · Meter · Progress · Spinner
-
-**Forms:** Button · Input · Textarea · Checkbox · Radio · Switch · Slider · Toggle · Combobox
-
-**Navigation:** Breadcrumb · Menubar · Navbar · Pagination · Sidebar · Tabs
-
-**Overlays:** Accordion · Alert · Calendar · Carousel · Collapsible · Command · Context Menu · Dialog · Drawer · Dropdown · Hover Card · Popover · Sheet · Toast · Tooltip
-
----
-
-## Individual Components
-
-Want only a subset? Import specific files from `src/css/` and `src/js/`:
-
-```
-src/css/button.css   src/css/card.css   src/css/dialog.css   ...
-src/js/toast.js      src/js/dialog.js   src/js/command.js    ...
+```js
+Ranj.theme.set('dark');            // or toggle(), accent('rose'), radius('full')
+const ok = await Ranj.confirm({ title: 'Delete project?', danger: true });
+Ranj.toast.promise(save(), { loading: 'Saving…', success: 'Saved', error: 'Failed' });
+Ranj.confetti();
 ```
 
-Or use the bundled `ranju.css` + `ranju.js` for everything.
+## What's inside
 
----
+__TABLE__
 
-## Build
+Browse every component with live previews and copy-paste code at **[alps-is-core.github.io/RanjUI/docs](https://alps-is-core.github.io/RanjUI/docs/)**.
+
+## Theming
+
+```html
+<html data-theme="dark" data-accent="violet" data-radius="lg" data-density="compact">
+```
+
+```css
+:root { --hue: 162; --radius: .75rem; --font-sans: "Geist", system-ui; }
+```
+
+## Development
 
 ```bash
-make dist    # concatenate src/* into ranju.css and ranju.js
-make clean   # remove built files
+npm install
+npm run build    # src/ → dist/ (+ minified)
+npm run dev      # rebuild on change
+npm run serve    # http://localhost:4321/docs/
+node scripts/check.mjs button dialog --dark   # headless screenshot + console check
 ```
 
----
+Source layout: `src/core` (tokens, reset, runtime), `src/components/{base,forms,overlays,motion,fx}`, docs entries in `docs/registry/`. See [docs/AUTHORING.md](docs/AUTHORING.md).
+
+## Upgrading from RanjuUI v1
+
+The project was renamed from **RanjuUI** to **Ranj UI**. v1 class names keep working, and `window.Ranju` is an alias of `window.Ranj`. Rename `ranju.css`/`ranju.js` to `dist/ranj.css`/`dist/ranj.js`.
 
 ## License
 

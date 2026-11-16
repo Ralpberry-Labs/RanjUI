@@ -1,0 +1,47 @@
+/* ==========================================================================
+   Description list — key / value pairs
+   <dl class="dl"><div><dt>Plan</dt><dd>Pro</dd></div>…</dl>
+   ========================================================================== */
+.dl, .description-list {
+  --dl-key: 11rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-width: 0;
+  font-size: var(--text-sm);
+  text-align: left;
+}
+.dl > div {
+  display: grid;
+  grid-template-columns: minmax(0, var(--dl-key)) minmax(0, 1fr);
+  gap: .25rem 1.5rem;
+  padding: .85rem 0;
+  align-items: baseline;
+}
+.dl > div + div { border-top: 1px solid var(--border); }
+.dl dt { color: var(--muted-fg); font-weight: 500; }
+.dl dd { margin: 0; color: var(--fg); min-width: 0; overflow-wrap: anywhere; display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
+.dl dd .dl-action { margin-left: auto; }
+.dl-mono dd, .dl dd.mono { font-family: var(--font-mono); font-size: .8125rem; }
+@media (max-width: 559px) { .dl:not(.dl-inline) > div { grid-template-columns: minmax(0, 1fr); gap: .2rem; } }
+
+/* Card style */
+.dl-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 0 1.25rem; box-shadow: var(--shadow-xs); }
+.dl-striped > div { padding-inline: 1rem; }
+.dl-striped > div:nth-child(odd) { background: var(--bg-subtle); }
+.dl-striped > div + div { border-top: 0; }
+.dl-striped { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+
+/* Stacked: key above value, in a responsive grid */
+.dl-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(var(--min, 10rem), 100%), 1fr)); gap: 1.25rem 2rem;
+}
+.dl-grid > div { display: flex; flex-direction: column; gap: .3rem; padding: 0; border: 0 !important; }
+.dl-grid dt { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+.dl-grid dd { font-size: var(--text-base); font-weight: 600; letter-spacing: -.01em; }
+/* Inline: key/value on one line, value right-aligned (receipts, summaries) */
+.dl-inline > div { grid-template-columns: minmax(0, 1fr) auto; padding: .55rem 0; }
+.dl-inline dd { justify-content: flex-end; font-variant-numeric: tabular-nums; text-align: right; }
+.dl-inline > div + div { border-top: 0; }
+.dl-inline > .dl-total { border-top: 1px dashed var(--border-strong) !important; margin-top: .35rem; padding-top: .85rem; }
+.dl-inline > .dl-total dt, .dl-inline > .dl-total dd { color: var(--fg); font-weight: 700; font-size: var(--text-base); }

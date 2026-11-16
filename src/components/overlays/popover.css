@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Popover — click-anchored floating panel (position: fixed, flips, shifts).
+   ========================================================================== */
+.popover { position: relative; display: inline-block; }
+.popover-content {
+  --popover-w: 20rem;
+  position: fixed; z-index: var(--z-popover);
+  width: max-content; min-width: 12rem; max-width: min(var(--popover-w), calc(100vw - 1rem));
+  background: var(--popover); color: var(--popover-fg);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem; outline: none; font-size: .875rem; line-height: 1.5; text-align: left;
+  animation: ov-pop-in var(--dur) var(--ease-out);
+}
+[data-theme="dark"] .popover-content { box-shadow: var(--shadow-lg), inset 0 1px 0 rgb(255 255 255 / .04); }
+.popover-content:not([data-state="open"]):not([data-closing]):not([data-measure]) { display: none; }
+.popover-content[data-closing] { animation: ov-pop-out var(--dur-fast) var(--ease) forwards; pointer-events: none; }
+.popover-content.popover-flush { padding: 0; overflow: hidden; }
+.popover-sm { --popover-w: 15rem; }
+.popover-lg { --popover-w: 26rem; }
+.popover-header { display: flex; flex-direction: column; gap: .2rem; margin-bottom: .75rem; }
+.popover-title { font-weight: 600; font-size: .9375rem; letter-spacing: -.01em; line-height: 1.35; }
+.popover-description { color: var(--muted-fg); font-size: .8125rem; }
+.popover-footer { display: flex; justify-content: flex-end; gap: .5rem; margin-top: 1rem; }
+.popover-close { position: absolute; top: .5rem; right: .5rem; display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: var(--radius-sm); color: var(--muted-fg); transition: background var(--transition), color var(--transition); }
+.popover-close:hover { background: var(--muted); color: var(--fg); }
+.popover-close svg { width: .875rem; height: .875rem; }
+[data-popover-trigger][aria-expanded="true"] { --_open: 1; }
