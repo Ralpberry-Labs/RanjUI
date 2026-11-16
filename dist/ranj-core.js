@@ -1,4 +1,4 @@
-/*! Ranj UI v2.0.0 | MIT | https://alps-is-core.github.io/RanjUI/ */
+/*! Ranj UI v2.0.0 | MIT | https://ralpberry-labs.github.io/RanjUI/ */
 /*!
  * Ranj UI — core runtime
  * Zero dependencies. Every component registers itself with Ranj.define().

@@ -1,4 +1,4 @@
-/*! Ranj UI v2.0.0 | MIT | https://alps-is-core.github.io/RanjUI/ */
+/*! Ranj UI v2.0.0 | MIT | https://ralpberry-labs.github.io/RanjUI/ */
 /* Ranj UI — Forms: shared private helpers (icons, floating panels, hidden inputs).
    Exposed as Ranj._forms for the other forms components; not a public API. */
 (function (R) {

@@ -14,7 +14,7 @@ const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 
 const list = (dir, ext) => existsSync(dir) ? readdirSync(dir).filter(f => f.endsWith(ext) && !f.startsWith('_')).sort().map(f => join(dir, f)) : [];
 const read = f => readFileSync(f, 'utf8');
-const banner = `/*! Ranj UI v${pkg.version} | MIT | https://alps-is-core.github.io/RanjUI/ */\n`;
+const banner = `/*! Ranj UI v${pkg.version} | MIT | https://ralpberry-labs.github.io/RanjUI/ */\n`;
 
 function bundle() {
   if (!existsSync(DIST)) mkdirSync(DIST);

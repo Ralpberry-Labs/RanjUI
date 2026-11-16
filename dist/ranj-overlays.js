@@ -1,4 +1,4 @@
-/*! Ranj UI v2.0.0 | MIT | https://alps-is-core.github.io/RanjUI/ */
+/*! Ranj UI v2.0.0 | MIT | https://ralpberry-labs.github.io/RanjUI/ */
 /*!
  * Ranj UI — overlay kit (private helpers shared by the overlays group)
  * Presence (animate-then-hide), portals, floating placement that survives

@@ -1,4 +1,4 @@
-/*! Ranj UI v2.0.0 | MIT | https://alps-is-core.github.io/RanjUI/ */
+/*! Ranj UI v2.0.0 | MIT | https://ralpberry-labs.github.io/RanjUI/ */
 /* Ranj UI — Interactions
  * magnetic, tilt, spotlight (card + grid), ripple, click-spark, confetti, cursor-follower, pixel-transition
  */

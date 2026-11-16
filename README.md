@@ -8,7 +8,7 @@
 200+ components with live docs: forms, overlays, data display, text effects, animated backgrounds, micro-interactions and loaders.
 One CSS file, one JS file, no framework, no build step.
 
-[**Website**](https://alps-is-core.github.io/RanjUI/) · [**Docs**](https://alps-is-core.github.io/RanjUI/docs/) · [**Examples**](https://alps-is-core.github.io/RanjUI/examples/)
+[**Website**](https://ralpberry-labs.github.io/RanjUI/) · [**Docs**](https://ralpberry-labs.github.io/RanjUI/docs/) · [**Examples**](https://ralpberry-labs.github.io/RanjUI/examples/)
 
 ![license](https://img.shields.io/badge/license-MIT-8b5cf6) ![deps](https://img.shields.io/badge/dependencies-0-10b981) ![size](https://img.shields.io/badge/min%2Bgzip-~250KB-6366f1)
 
@@ -29,14 +29,14 @@ One CSS file, one JS file, no framework, no build step.
 **CDN**
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Alps-is-Core/RanjUI@master/dist/ranj.min.css">
-<script src="https://cdn.jsdelivr.net/gh/Alps-is-Core/RanjUI@master/dist/ranj.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Ralpberry-Labs/RanjUI@master/dist/ranj.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Ralpberry-Labs/RanjUI@master/dist/ranj.min.js" defer></script>
 ```
 
 **npm**
 
 ```bash
-npm install github:Alps-is-Core/RanjUI
+npm install github:Ralpberry-Labs/RanjUI
 ```
 
 ```js
@@ -85,7 +85,7 @@ Ranj.confetti();
 | **Loaders** | 6 | Infinite Loader · Loader Gallery · Page Loading Bar · Progress Donut · Progress Pie · Spinner to Success |
 | **Blocks** | 9 | Call to Action · FAQ · Features · Footer · Hero · Pricing · Stats Section · Team · Testimonials |
 
-Browse every component with live previews and copy-paste code at **[alps-is-core.github.io/RanjUI/docs](https://alps-is-core.github.io/RanjUI/docs/)**.
+Browse every component with live previews and copy-paste code at **[ralpberry-labs.github.io/RanjUI/docs](https://ralpberry-labs.github.io/RanjUI/docs/)**.
 
 ## Theming
 

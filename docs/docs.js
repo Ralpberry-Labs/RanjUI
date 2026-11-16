@@ -5,8 +5,8 @@
   var main = document.getElementById('dx-main');
   var nav = document.getElementById('dx-nav');
   var toc = document.getElementById('dx-toc');
-  var REPO = 'https://github.com/Alps-is-Core/RanjUI';
-  var CDN = 'https://cdn.jsdelivr.net/gh/Alps-is-Core/RanjUI@master/dist';
+  var REPO = 'https://github.com/Ralpberry-Labs/RanjUI';
+  var CDN = 'https://cdn.jsdelivr.net/gh/Ralpberry-Labs/RanjUI@master/dist';
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
@@ -237,12 +237,12 @@
       '<h2 class="dx-h2">Browse</h2><div class="dx-group-links">' + groups().map(function (g) { return '<a href="#/g/' + encodeURIComponent(g.name) + '"><b>' + g.name + '</b><span>' + g.items.length + ' components</span></a>'; }).join('') + '</div>';
     P.install = '<h1 class="dx-h1">Installation</h1><p class="dx-lead">Pick whichever fits your project. All of them give you the same files.</p>' +
       '<h2 class="dx-h2">CDN</h2>' + codeBlock('<link rel="stylesheet" href="' + CDN + '/ranj.min.css">\n<script src="' + CDN + '/ranj.min.js" defer></script>', 'html') +
-      '<h2 class="dx-h2">npm</h2>' + codeBlock('npm install github:Alps-is-Core/RanjUI', 'bash') + codeBlock("import 'ranj-ui/dist/ranj.css';\nimport 'ranj-ui/dist/ranj.js';", 'js') +
+      '<h2 class="dx-h2">npm</h2>' + codeBlock('npm install github:Ralpberry-Labs/RanjUI', 'bash') + codeBlock("import 'ranj-ui/dist/ranj.css';\nimport 'ranj-ui/dist/ranj.js';", 'js') +
       '<h2 class="dx-h2">Only what you need</h2><p>Every group ships as its own bundle. Always include the core first.</p>' +
       codeBlock('<link rel="stylesheet" href="' + CDN + '/ranj-core.css">\n<link rel="stylesheet" href="' + CDN + '/ranj-forms.css">\n<script src="' + CDN + '/ranj-core.js" defer></script>\n<script src="' + CDN + '/ranj-forms.js" defer></script>', 'html') +
       '<table class="dx-api"><thead><tr><th>Bundle</th><th>Contains</th></tr></thead><tbody>' +
       '<tr><td><code>ranj-core</code></td><td>Tokens, reset, typography, layout, utilities, runtime</td></tr><tr><td><code>ranj-base</code></td><td>Buttons, cards, badges, tables, data display</td></tr><tr><td><code>ranj-forms</code></td><td>Inputs, selects, pickers, sliders, uploads</td></tr><tr><td><code>ranj-overlays</code></td><td>Dialogs, sheets, menus, popovers, toasts, navigation</td></tr><tr><td><code>ranj-motion</code></td><td>Text effects, reveals, interactions</td></tr><tr><td><code>ranj-fx</code></td><td>Backgrounds, loaders, micro-interactions</td></tr></tbody></table>' +
-      '<h2 class="dx-h2">Build from source</h2>' + codeBlock('git clone https://github.com/Alps-is-Core/RanjUI\ncd RanjUI && npm install\nnpm run build   # writes dist/\nnpm run dev     # rebuild on change', 'bash');
+      '<h2 class="dx-h2">Build from source</h2>' + codeBlock('git clone https://github.com/Ralpberry-Labs/RanjUI\ncd RanjUI && npm install\nnpm run build   # writes dist/\nnpm run dev     # rebuild on change', 'bash');
     P.theming = '<h1 class="dx-h1">Theming</h1><p class="dx-lead">Everything is a CSS variable. Change the hue and the whole library follows, including focus rings, soft fills and glows.</p>' +
       '<div class="dx-theme-live">' + R.$$('#dx-accents button').length + '</div>' +
       '<h2 class="dx-h2">Presets</h2>' + codeBlock('<html data-theme="dark" data-accent="violet" data-radius="lg" data-density="compact">', 'html') +

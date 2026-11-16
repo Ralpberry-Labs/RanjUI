@@ -1,4 +1,4 @@
-/*! Ranj UI v2.0.0 | MIT | https://alps-is-core.github.io/RanjUI/ */
+/*! Ranj UI v2.0.0 | MIT | https://ralpberry-labs.github.io/RanjUI/ */
 /* Ranj UI — Stateful action buttons (send, download, continue, add to cart), copy, subscribe, glow pointer */
 (function (R) {
   'use strict';

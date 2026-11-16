@@ -2,12 +2,12 @@
   "name": "ranj-ui",
   "version": "2.0.0",
   "license": "MIT",
-  "author": "Alps",
-  "homepage": "https://alps-is-core.github.io/RanjUI/",
+  "author": "Ralpberry Labs",
+  "homepage": "https://ralpberry-labs.github.io/RanjUI/",
   "description": "Ranj UI — the zero-dependency HTML/CSS/JS component library: 150+ components, motion effects, animated backgrounds and micro-interactions. No framework, no build step.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Alps-is-Core/RanjUI.git"
+    "url": "git+https://github.com/Ralpberry-Labs/RanjUI.git"
   },
   "keywords": [
     "ui",
